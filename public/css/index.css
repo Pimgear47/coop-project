@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Prompt-Regular';
+    src: url('/fonts/Prompt-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Prompt-Medium';
+    src: url('/fonts/Prompt-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Prompt-Bold';
+    src: url('/fonts/Prompt-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'RSU-Bold';
+    src: url('/fonts/RSU-Text_Bold.ttf')
+}
+
+@font-face {
+    font-family: 'RSU-Italic';
+    src: url('/fonts/RSU-Text_Italic.ttf')
+}
+
+@font-face {
+    font-family: 'RSU-Regular';
+    src: url('/fonts/RSU-Text_Regular.ttf')
+}
+
+h1,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.title {
+    font-family: 'Prompt-Medium';
+}
+
+.txt-title {
+    font-family: 'Prompt-Medium';
+}
+
+.txt-regular {
+    font-family: 'RSU-Regular';
+}
+
+.txt-bold {
+    font-family: 'RSU-Bold';
+}
+
+.action-container {
+    display: flex;
+    align-items: center;
+}
