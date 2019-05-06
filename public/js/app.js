@@ -1777,55 +1777,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log("Component mounted.");
-  },
   data: function data() {
     return {
-      menu: [{
-        icon: "home",
-        title: "Link A"
+      items: [{
+        title: "student",
+        value: "student"
       }, {
-        icon: "info",
-        title: "Link B"
-      }, {
-        icon: "warning",
-        title: "Link C"
-      }]
+        title: "teacher",
+        value: "teacher"
+      }],
+      value: null
     };
-  },
-  methods: {
-    menuItems: function menuItems() {
-      return this.menu;
-    }
   }
 });
 
@@ -2014,8 +1977,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
 //
 //
 //
@@ -37384,113 +37345,28 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-app",
-    { attrs: { id: "inspire" } },
+    "v-layout",
+    { attrs: { wrap: "", "align-center": "" } },
     [
       _c(
-        "v-toolbar",
+        "v-flex",
+        { attrs: { xs12: "", sm12: "", "d-flex": "" } },
         [
-          _c("v-toolbar-title", [_vm._v("Toolbar Mobile Menu")]),
-          _vm._v(" "),
-          _c("v-spacer"),
-          _vm._v(" "),
-          _c(
-            "v-toolbar-items",
-            { staticClass: "hidden-sm-and-down" },
-            _vm._l(_vm.menu, function(item) {
-              return _c(
-                "v-btn",
-                { key: item.icon, attrs: { to: item.link, flat: "" } },
-                [_vm._v(_vm._s(item.title))]
-              )
-            }),
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "v-menu",
-            { staticClass: "hidden-md-and-up" },
-            [
-              _c("v-toolbar-side-icon", {
-                attrs: { slot: "activator" },
-                slot: "activator"
-              }),
-              _vm._v(" "),
-              _c(
-                "v-list",
-                _vm._l(_vm.menu, function(item) {
-                  return _c(
-                    "v-list-tile",
-                    { key: item.icon },
-                    [
-                      _c(
-                        "v-list-tile-content",
-                        [_c("v-list-tile-title", [_vm._v(_vm._s(item.title))])],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                }),
-                1
-              )
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-content",
-        [
-          _c(
-            "v-container",
-            { attrs: { fluid: "", "fill-height": "" } },
-            [
-              _c(
-                "v-layout",
-                { attrs: { "justify-center": "", "align-center": "" } },
-                [
-                  _c("v-flex", { attrs: { shrink: "" } }, [
-                    _c("h1", { staticClass: "display-1" }, [
-                      _vm._v("Vuetify Mobile Navbar using v-menu")
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "p",
-                      [
-                        _vm._v(
-                          "\n            Quick example of collapsable mobile menu\n            "
-                        ),
-                        _c("tt", [_vm._v("<v-toolbar>")]),
-                        _vm._v(", with a\n            "),
-                        _c("tt", [_vm._v("<v-menu>")]),
-                        _vm._v(" for mobile screens.\n          ")
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "p",
-                      [
-                        _vm._v(
-                          "\n            Also shows how to use\n            "
-                        ),
-                        _c("tt", [_vm._v(".hidden-md-and-up")]),
-                        _vm._v(
-                          " CSS classes to appropriately hide/show the menu depending upon window width.\n          "
-                        )
-                      ],
-                      1
-                    )
-                  ])
-                ],
-                1
-              )
-            ],
-            1
-          )
+          _c("v-select", {
+            attrs: {
+              items: _vm.items,
+              "item-text": "title",
+              "item-value": "value",
+              label: "status"
+            },
+            model: {
+              value: _vm.value,
+              callback: function($$v) {
+                _vm.value = $$v
+              },
+              expression: "value"
+            }
+          })
         ],
         1
       )
@@ -37753,137 +37629,117 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-app",
-    { attrs: { id: "inspire" } },
+    "v-layout",
+    { staticClass: "justify-end mt-3 mr-5 mb-3" },
     [
       _c(
-        "v-layout",
-        { staticClass: "justify-end mt-3 mr-5 mb-3" },
+        "v-flex",
+        { attrs: { xs9: "", sm11: "" } },
         [
           _c(
-            "v-flex",
-            { attrs: { xs9: "", sm11: "" } },
+            "v-card",
             [
               _c(
-                "v-card",
+                "v-container",
+                { attrs: { fluid: "", "grid-list-md": "" } },
                 [
                   _c(
-                    "v-container",
-                    { attrs: { fluid: "", "grid-list-md": "" } },
+                    "v-layout",
+                    {
+                      attrs: { row: "", wrap: "", "justify-space-between": "" }
+                    },
                     [
+                      _c("h2", { staticClass: "txt-title mt-2" }, [
+                        _vm._v("รายการสินค้า")
+                      ]),
+                      _vm._v(" "),
                       _c(
-                        "v-layout",
-                        {
-                          attrs: {
-                            row: "",
-                            wrap: "",
-                            "justify-space-between": ""
-                          }
-                        },
+                        "v-flex",
+                        { attrs: { xs12: "", sm5: "", md3: "" } },
                         [
-                          _c("h2", { staticClass: "txt-title mt-2" }, [
-                            _vm._v("รายการสินค้า")
-                          ]),
-                          _vm._v(" "),
+                          _c("v-select", {
+                            attrs: {
+                              items: _vm.types,
+                              "item-text": "title",
+                              label: "ประเภทสินค้า",
+                              solo: ""
+                            },
+                            model: {
+                              value: _vm.type,
+                              callback: function($$v) {
+                                _vm.type = $$v
+                              },
+                              expression: "type"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-layout",
+                    { attrs: { row: "", wrap: "" } },
+                    _vm._l(_vm.filteredProducts, function(product) {
+                      return _c(
+                        "v-flex",
+                        { key: product.name, attrs: { sm2: "" } },
+                        [
                           _c(
-                            "v-flex",
-                            { attrs: { xs12: "", sm5: "", md3: "" } },
+                            "v-card",
                             [
-                              _c("v-select", {
-                                attrs: {
-                                  items: _vm.types,
-                                  "item-text": "title",
-                                  label: "ประเภทสินค้า",
-                                  solo: ""
+                              _c(
+                                "v-img",
+                                {
+                                  attrs: { src: product.image, height: "200px" }
                                 },
-                                model: {
-                                  value: _vm.type,
-                                  callback: function($$v) {
-                                    _vm.type = $$v
-                                  },
-                                  expression: "type"
-                                }
-                              })
+                                [
+                                  _c(
+                                    "v-container",
+                                    {
+                                      attrs: {
+                                        "fill-height": "",
+                                        fluid: "",
+                                        "pa-2": ""
+                                      }
+                                    },
+                                    [
+                                      _c("v-layout", {
+                                        attrs: { "fill-height": "" }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-card-title",
+                                { attrs: { "primary-title": "" } },
+                                [
+                                  _c("div", [
+                                    _c("h3", { staticClass: "txt-title" }, [
+                                      _vm._v(_vm._s(product.name))
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "span",
+                                      { staticClass: "grey--text txt-title" },
+                                      [_vm._v(_vm._s(product.price) + " บาท")]
+                                    )
+                                  ])
+                                ]
+                              )
                             ],
                             1
                           )
                         ],
                         1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-layout",
-                        { attrs: { row: "", wrap: "" } },
-                        _vm._l(_vm.filteredProducts, function(product) {
-                          return _c(
-                            "v-flex",
-                            { key: product.name, attrs: { sm2: "" } },
-                            [
-                              _c(
-                                "v-card",
-                                [
-                                  _c(
-                                    "v-img",
-                                    {
-                                      attrs: {
-                                        src: product.image,
-                                        height: "200px"
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "v-container",
-                                        {
-                                          attrs: {
-                                            "fill-height": "",
-                                            fluid: "",
-                                            "pa-2": ""
-                                          }
-                                        },
-                                        [
-                                          _c("v-layout", {
-                                            attrs: { "fill-height": "" }
-                                          })
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-card-title",
-                                    { attrs: { "primary-title": "" } },
-                                    [
-                                      _c("div", [
-                                        _c("h3", { staticClass: "txt-title" }, [
-                                          _vm._v(_vm._s(product.name))
-                                        ]),
-                                        _vm._v(" "),
-                                        _c(
-                                          "span",
-                                          {
-                                            staticClass: "grey--text txt-title"
-                                          },
-                                          [
-                                            _vm._v(
-                                              _vm._s(product.price) + " บาท"
-                                            )
-                                          ]
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          )
-                        }),
-                        1
                       )
-                    ],
+                    }),
                     1
                   )
                 ],

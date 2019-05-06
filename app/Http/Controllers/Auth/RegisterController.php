@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Student;
+use App\Teacher;
+use DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
+            'type' => ['required'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -64,11 +68,46 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $last_line = DB::table('users')->orderBy('id', 'DESC')->first();
+        $last = $last_line->id;
+        if($data['type']=='student'){
+            Student::create([
+                'iduser' => ++$last,
+                'Fname' => $data['firstname'],
+                'Lname' => $data['lastname'],
+                'level' => $data['level'],
+                'room' => $data['room'],
+                'unit' => $data['unit'],
+            ]);
+            // return User::create([
+            //     'firstname' => $data['firstname'],
+            //     'lastname' => $data['lastname'],
+            //     'type' => $data['type'],
+            //     'email' => $data['email'],
+            //     'password' => Hash::make($data['password'])
+            // ]);
+        }
+        if($data['type']=='teacher'){
+            Teacher::create([
+                'iduser' => ++$last,
+                'Fname' => $data['firstname'],
+                'Lname' => $data['lastname'],
+                'unit' => $data['unit'],
+            ]);
+            // return User::create([
+            //     'firstname' => $data['firstname'],
+            //     'lastname' => $data['lastname'],
+            //     'type' => $data['type'],
+            //     'email' => $data['email'],
+            //     'password' => Hash::make($data['password'])
+            // ]);
+        }
         return User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
+            'type' => $data['type'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password'])
         ]);
     }
 }

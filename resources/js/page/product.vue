@@ -1,5 +1,4 @@
 <template>
-  <v-app id="inspire">
     <v-layout class="justify-end mt-3 mr-5 mb-3">
       <v-flex xs9 sm11>
         <v-card>
@@ -32,7 +31,6 @@
         </v-card>
       </v-flex>
     </v-layout>
-  </v-app>
 </template>
 
 <script>
