@@ -24,7 +24,7 @@
 
 <body>
     <div id="app">
-        <v-toolbar>
+        <v-toolbar color="pink accent-3" dark permanent fixed>
             <v-toolbar-title class="txt-title action-container"><img src="/images/elements/logo.png"
                     height="60">ระบบสหกรณ์ร้านค้า</v-toolbar-title>
             <v-spacer></v-spacer>
@@ -35,7 +35,7 @@
                 <v-btn class="txt-title" href="/register" flat>REGISTER</v-btn>
                 @endif
                 @else
-                <v-btn class="txt-title" href="#" flat>{{ Auth::user()->name }}</v-btn>
+                <v-btn class="txt-title" href="#" flat>{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-btn>
                 <v-btn class="txt-title" flat href="{{ route('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
                     LOGOUT
@@ -60,7 +60,7 @@
                             </v-list-tile-content>
                             @endif
                             @else
-                            <v-list-tile-title class="txt-title" href="#">{{ Auth::user()->name }}</v-list-tile-title>
+                            <v-list-tile-title class="txt-title" href="#">{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-list-tile-title>
                             <v-list-tile-title class="txt-title" href="{{ route('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
                                 LOGOUT
@@ -74,9 +74,8 @@
                 </v-list>
             </v-menu>
         </v-toolbar>
-        <main class="py-4">
+        <navbar :usernow="{{ Auth::user()}}"></navbar>
             @yield('content')
-        </main>
     </div>
 </body>
 

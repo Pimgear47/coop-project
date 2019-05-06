@@ -28,6 +28,11 @@
     src: url('/fonts/RSU-Text_Regular.ttf')
 }
 
+@font-face {
+    font-family: 'TH-SarabunNew';
+    src: url('/fonts/THSarabunNew.ttf')
+}
+
 h1,
 h1,
 h2,
@@ -51,7 +56,22 @@ h6,
     font-family: 'RSU-Bold';
 }
 
+.txt-thS {
+    font-family: 'TH-SarabunNew';
+}
+
 .action-container {
     display: flex;
     align-items: center;
+}
+
+.application--wrap {
+    flex: 1 1 auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: row;
+    min-height: 10vh;
+    max-width: 100%;
+    position: relative
 }
