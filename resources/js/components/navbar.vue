@@ -84,13 +84,13 @@ export default {
         { title: 'ดูรายงานยอดขาย', icon: 'description' , link: '#' },
         { title: 'ดูรายงานปันผล/เฉลี่ยคืน', icon: 'monetization_on' , link: '#' },
         { title: 'ปฏิทินกำหนดการ', icon: 'date_range' , link: '#' },
-        { title: 'จัดการสมาชิก', icon: 'supervised_user_circle' , link: '#' },
+        { title: 'จัดการสมาชิก', icon: 'supervised_user_circle' , link: '/user' },
       ],
       itemsUser: [
         { title: 'หน้าแรก', icon: 'dashboard' , link: '/' },
         { title: 'รายการสินค้า', icon: 'shopping_cart' , link: '/product' },
         { title: 'ดูยอดปันผล', icon: 'monetization_on' , link: '#' },
-        //{ title: 'ปฏิทินกิจกรรม', icon: 'date_range' },
+        { title: 'ปฏิทินกำหนดการ', icon: 'date_range' , link: '#' },
       ],
       mini: true,
       right: null

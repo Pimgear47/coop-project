@@ -20,24 +20,35 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.firstname" label="firstname"></v-text-field>
+                    <v-text-field v-model="editedItem.firstname" label="ชื่อ"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.lastname" label="lastname"></v-text-field>
+                    <v-text-field v-model="editedItem.lastname" label="นามสกุล"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.code" label="รหัส"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.email" label="email"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.type" label="type"></v-text-field>
+                    <v-text-field v-model="editedItem.type" label="สถานะ"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.point" label="point"></v-text-field>
+                    <v-text-field v-model="editedItem.point" label="คะแนน"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.level" label="ระดับชั้น"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.room" label="ห้อง"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.unit" label="จำนวนหุ้น"></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
             </v-card-text>
-
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
@@ -56,12 +67,16 @@
         <template v-slot:items="props">
           <td>{{ props.item.firstname }}</td>
           <td>{{ props.item.lastname }}</td>
+          <td>{{ props.item.code }}</td>
           <td>{{ props.item.email }}</td>
           <td>{{ props.item.type }}</td>
           <td>{{ props.item.point }}</td>
+          <td>{{ props.item.level }}</td>
+          <td>{{ props.item.room }}</td>
+          <td>{{ props.item.unit }}</td>
           <td class="justify-center layout px-0">
-            <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-            <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+            <v-icon small class="mr-2" @click="editItem(props.item.id,props.item)">edit</v-icon>
+            <v-icon small @click="deleteItem(props.item.id,props.item)">delete</v-icon>
           </td>
         </template>
         <template v-slot:no-results>
@@ -70,9 +85,6 @@
             color="error"
             icon="warning"
           >Your search for "{{ search }}" found no results.</v-alert>
-        </template>
-        <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
       </v-data-table>
     </v-flex>
@@ -85,40 +97,49 @@ export default {
     pagination: {
       rowsPerPage: 10
     },
+    editid: null,
     search: "",
     dialog: false,
     headers: [
-      {
-        text: "Firstname",
-        sortable: false,
-        value: "firstname"
-      },
-      { text: "Lastname", sortable: false, value: "lastname" },
-      { text: "email", value: "email" },
-      { text: "type", value: "type" },
-      { text: "point", value: "point" }
+      { text: "ชื่อ", sortable: false, value: "firstname" },
+      { text: "นามสกุล", sortable: false, value: "lastname" },
+      { text: "รหัส", sortable: false, value: "code" },
+      { text: "Email", sortable: false, value: "email" },
+      { text: "สถานะ", value: "type" },
+      { text: "คะแนน", value: "point" },
+      { text: "ระดับชั้น", value: "level" },
+      { text: "ห้อง", value: "room" },
+      { text: "จำนวนหุ้น", value: "unit" }
     ],
     users: [],
     editedIndex: -1,
     editedItem: {
       firstname: "",
       lastname: "",
+      code: "",
       email: "",
       type: "",
-      point: 0
+      point: 0,
+      level: null,
+      room: null,
+      unit: 0
     },
     defaultItem: {
       firstname: "",
       lastname: "",
+      code: "",
       email: "",
       type: "",
-      point: 0
+      point: 0,
+      level: null,
+      room: null,
+      unit: 0
     }
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "New User" : "Edit User";
     }
   },
 
@@ -138,18 +159,20 @@ export default {
         this.users = response.data;
       });
     },
-    editItem(item) {
+    editItem(id, item) {
       this.editedIndex = this.users.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
+      this.editid = id;
     },
-
-    deleteItem(item) {
+    deleteItem(id, item) {
       const index = this.users.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
-        this.users.splice(index, 1);
+        this.users.splice(index, 1) &&
+        axios.delete("api/user/" + id).catch(error => {
+          console.log(error);
+        });
     },
-
     close() {
       this.dialog = false;
       setTimeout(() => {
@@ -157,12 +180,35 @@ export default {
         this.editedIndex = -1;
       }, 300);
     },
-
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.users[this.editedIndex], this.editedItem);
+        //กรณีที่เคยมี Edit
+        Object.assign(this.users[this.editedIndex], this.editedItem) &&
+          axios.put("/api/user/" + this.editid, {
+            firstname: this.editedItem.firstname,
+            lastname: this.editedItem.lastname,
+            code: this.editedItem.code,
+            email: this.editedItem.email,
+            type: this.editedItem.type,
+            point: this.editedItem.point,
+            level: this.editedItem.level,
+            room: this.editedItem.room,
+            unit: this.editedItem.unit
+          });
       } else {
-        this.users.push(this.editedItem);
+        this.users.push(this.editedItem)
+        &&
+          axios.post("/api/user", {
+            firstname: this.editedItem.firstname,
+            lastname: this.editedItem.firstname,
+            code: this.editedItem.code,
+            email: this.editedItem.email,
+            type: this.editedItem.type,
+            point: this.editedItem.point,
+            level: this.editedItem.level,
+            room: this.editedItem.room,
+            unit: this.editedItem.unit
+          });
       }
       this.close();
     }
