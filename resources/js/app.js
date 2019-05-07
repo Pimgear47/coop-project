@@ -25,8 +25,10 @@ Vue.use(Vuetify)
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('navbar', require('./components/navbar.vue').default);
-Vue.component('product', require('./page/product.vue').default);
 Vue.component('carousel', require('./components/carousel.vue').default);
+Vue.component('product', require('./page/product.vue').default);
+Vue.component('user-manage', require('./page/userManage.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

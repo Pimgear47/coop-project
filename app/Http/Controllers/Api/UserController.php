@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Product;
+use App\User;
 
-class ProductController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +20,8 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products=Product::orderBy('name','asc')->get();
-        return response()->json($products);
+        $users=User::orderBy('firstname','asc')->get();
+        return response()->json($users);
     }
 
     /**

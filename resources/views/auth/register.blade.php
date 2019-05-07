@@ -2,10 +2,10 @@
 @section('content')
 <v-app id="inspire" style="
     background: #ff6b6b;">
-    <v-layout class="justify-center">
+    <v-layout class="justify-center" height="722px">
         <v-flex d-flex xs9 sm8>
-            <v-card tile flat>
-                <v-card-title>
+            <v-card tile flat height="722px">
+                <v-card-title p-5>
                     <img src="https://data.bopp-obec.info/emis/pic_school/1056320084.jpg" alt="" width="8%">
                     &nbsp &nbsp<h2>ระบบสหกรณ์ร้านค้า<br>โรงเรียนอนุบาลเชียงคำ (วัดพระธาตุสบแวน)</h2>
                 </v-card-title>
@@ -13,26 +13,28 @@
                     <h2 class="txt-thS">สมัครสมาชิก</h2>
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-                        <div class="col-md-6">
-                            <v-text-field label="ชื่อ" id="firstname" type="text"
-                                class="{{ $errors->has('firstname') ? ' is-invalid' : '' }}" name="firstname"
-                                value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
-                                @if ($errors->has('firstname'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('firstname') }}</strong>
-                                </span>
-                                @endif
-                        </div>
-                        <div class="col-md-6">
-                            <v-text-field label="นามสกุล" id="lastname" type="text"
-                                class="{{ $errors->has('lastname') ? ' is-invalid' : '' }}" name="lastname"
-                                value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
-                                @if ($errors->has('lastname'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('lastname') }}</strong>
-                                </span>
-                                @endif
-                        </div><br>
+                        <v-layout row wrap>
+                            <v-flex sm5>
+                                <v-text-field label="ชื่อ" id="firstname" type="text"
+                                    class="{{ $errors->has('firstname') ? ' is-invalid' : '' }}" name="firstname"
+                                    value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
+                                    @if ($errors->has('firstname'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('firstname') }}</strong>
+                                    </span>
+                                    @endif
+                            </v-flex>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            <v-flex sm6>
+                                <v-text-field label="นามสกุล" id="lastname" type="text"
+                                    class="{{ $errors->has('lastname') ? ' is-invalid' : '' }}" name="lastname"
+                                    value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
+                                    @if ($errors->has('lastname'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('lastname') }}</strong>
+                                    </span>
+                                    @endif
+                            </v-flex><br><br>
+                        </v-layout>
                         <div class="form-group">
                             <select onchange="select_type(this);" name="type" class="form-control"
                                 id="exampleFormControlSelect1">
