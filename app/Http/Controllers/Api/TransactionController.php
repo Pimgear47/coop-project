@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Transaction;
-use App\Product;
-use App\User;
 
 class TransactionController extends Controller
 {
@@ -17,10 +15,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $users=User::orderBy('firstname','asc')->get();
-        $products=Product::orderBy('name','asc')->get();
         $transactions=Transaction::orderBy('created_at','desc')->get();
-        return response()->json(['users' => $users, 'products' => $products, 'transactions' => $transactions]);
+        return response()->json($transactions);
     }
 
     /**
@@ -41,7 +37,12 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $transaction=new Transaction();
+        $transaction->iduser = $request->get('iduser');
+        $transaction->idstaff=$request->get('idustaff');
+        $transaction->idproduct=$request->get('idproduct');
+        $transaction->save();
+        return response()->json($transaction);
     }
 
     /**

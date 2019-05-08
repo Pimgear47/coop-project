@@ -2165,7 +2165,6 @@ __webpack_require__.r(__webpack_exports__);
       products: [],
       currentUser: [],
       currentStaff: this.usernow,
-      currentOrder: [],
       orderProduct: [],
       orderPrice: 0,
       headers: [{
@@ -2179,16 +2178,22 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getData();
+    this.getUserData();
+    this.getProductData();
   },
   methods: {
-    getData: function getData() {
+    getUserData: function getUserData() {
       var _this = this;
 
-      axios.get("api/transaction").then(function (response) {
-        var data = response.data;
-        _this.users = data.users;
-        _this.products = data.products;
+      axios.get("api/user").then(function (response) {
+        _this.users = response.data;
+      });
+    },
+    getProductData: function getProductData() {
+      var _this2 = this;
+
+      axios.get("api/product").then(function (response) {
+        _this2.products = response.data;
       });
     },
     mapUser: function mapUser(user) {
@@ -2217,21 +2222,44 @@ __webpack_require__.r(__webpack_exports__);
     clearTwo: function clearTwo() {
       this.orderProduct = [];
       this.orderPrice = 0;
+    },
+    saveTransaction: function saveTransaction() {
+      var step;
+
+      for (step = 0; step < this.orderProduct.length; step++) {
+        this.addstuff(step);
+      }
+
+      this.orderProduct = [];
+      this.orderPrice = 0;
+      this.code_user = "";
+      this.currentUserId = "";
+    },
+    addstuff: function addstuff(i) {
+      var currentUser = this.orderProduct[i].pop();
+      console.log(currentUser);
+      axios.post("/api/transaction", {
+        iduser: this.currentUser.id,
+        idustaff: this.currentStaff.id,
+        idproduct: currentUser.idproduct
+      })["catch"](function (error) {
+        console.log(error.message);
+      });
     }
   },
   computed: {
     filteredUser: function filteredUser() {
-      var _this2 = this;
+      var _this3 = this;
 
       return this.users.filter(function (user) {
-        return user.code == _this2.code_user;
+        return user.code == _this3.code_user;
       });
     },
     filteredProduct: function filteredProduct() {
-      var _this3 = this;
+      var _this4 = this;
 
       return this.products.filter(function (product) {
-        return product.product_code == _this3.code_product;
+        return product.product_code == _this4.code_product;
       });
     }
   }
@@ -38539,7 +38567,7 @@ var render = function() {
                       attrs: { color: "primary" },
                       on: {
                         click: function($event) {
-                          _vm.e6 = 1
+                          ;(_vm.e6 = 1), _vm.saveTransaction()
                         }
                       }
                     },

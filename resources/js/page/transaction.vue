@@ -72,7 +72,7 @@
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
           <br>
           <br>
-          <v-btn class="txt-title" color="primary" @click="e6 = 1">Continue</v-btn>
+          <v-btn class="txt-title" color="primary" @click="e6 = 1,saveTransaction()">Continue</v-btn>
           <v-btn class="txt-title" color="primary">Receipt?</v-btn>
           <v-btn class="txt-title" flat @click="e6 = 2">Cancel</v-btn>
         </v-stepper-content>
@@ -96,7 +96,6 @@ export default {
       products: [],
       currentUser: [],
       currentStaff: this.usernow,
-      currentOrder: [],
       orderProduct: [],
       orderPrice: 0,
       headers: [
@@ -106,18 +105,22 @@ export default {
           value: "name"
         },
         { text: "ราคา", value: "price" }
-      ],
+      ]
     };
   },
   mounted() {
-    this.getData();
+    this.getUserData();
+    this.getProductData();
   },
   methods: {
-    getData() {
-      axios.get("api/transaction").then(response => {
-        var data = response.data;
-        this.users = data.users;
-        this.products = data.products;
+    getUserData() {
+      axios.get("api/user").then(response => {
+        this.users = response.data;
+      });
+    },
+    getProductData() {
+      axios.get("api/product").then(response => {
+        this.products = response.data;
       });
     },
     mapUser(user) {
@@ -146,6 +149,28 @@ export default {
       this.orderProduct = [];
       this.orderPrice = 0;
     },
+    saveTransaction() {
+      var step;
+      for (step = 0; step < this.orderProduct.length; step++) {
+        this.addstuff(step);
+      }
+      this.orderProduct = [];
+      this.orderPrice = 0;
+      this.code_user = "";
+      this.currentUserId = "";
+    },
+    addstuff(i) {
+      var currentUser = this.orderProduct[i].pop();
+      console.log(currentUser);
+      axios.post("/api/transaction", {
+          iduser: this.currentUser.id,
+          idustaff: this.currentStaff.id,
+          idproduct: currentUser.idproduct
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
+    }
   },
   computed: {
     filteredUser: function() {
@@ -157,7 +182,7 @@ export default {
       return this.products.filter(product => {
         return product.product_code == this.code_product;
       });
-    },
+    }
   }
 };
 </script>
