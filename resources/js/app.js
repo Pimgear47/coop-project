@@ -28,6 +28,7 @@ Vue.component('navbar', require('./components/navbar.vue').default);
 Vue.component('carousel', require('./components/carousel.vue').default);
 Vue.component('product', require('./page/product.vue').default);
 Vue.component('user-manage', require('./page/userManage.vue').default);
+Vue.component('transaction', require('./page/transaction.vue').default);
 
 
 /**
