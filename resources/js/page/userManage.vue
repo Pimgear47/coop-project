@@ -46,6 +46,9 @@
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.unit" label="จำนวนหุ้น"></v-text-field>
                   </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-text-field v-model="editedItem.bdate" label="วันเดือนปีเกิด"></v-text-field>
+                  </v-flex>
                 </v-layout>
               </v-container>
             </v-card-text>
@@ -103,7 +106,7 @@ export default {
     headers: [
       { text: "ชื่อ", sortable: false, value: "firstname" },
       { text: "นามสกุล", sortable: false, value: "lastname" },
-      { text: "รหัส", sortable: false, value: "code" },
+      { text: "รหัส", value: "code" },
       { text: "Email", sortable: false, value: "email" },
       { text: "สถานะ", value: "type" },
       { text: "คะแนน", value: "point" },
@@ -122,6 +125,7 @@ export default {
       point: 0,
       level: null,
       room: null,
+      bdate: null,
       unit: 0
     },
     defaultItem: {
@@ -133,6 +137,7 @@ export default {
       point: 0,
       level: null,
       room: null,
+      bdate: null,
       unit: 0
     }
   }),
@@ -200,14 +205,14 @@ export default {
         &&
           axios.post("/api/user", {
             firstname: this.editedItem.firstname,
-            lastname: this.editedItem.firstname,
+            lastname: this.editedItem.lastname,
             code: this.editedItem.code,
-            email: this.editedItem.email,
             type: this.editedItem.type,
             point: this.editedItem.point,
             level: this.editedItem.level,
             room: this.editedItem.room,
-            unit: this.editedItem.unit
+            unit: this.editedItem.unit,
+            bdate: this.editedItem.bdate,
           });
       }
       this.close();

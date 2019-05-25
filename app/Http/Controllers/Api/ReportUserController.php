@@ -4,24 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Transaction;
+use App\Product;
 
-class UserController extends Controller
+class ReportUserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-
     public function index()
     {
-        $users=User::orderBy('firstname','asc')->get();
-        return response()->json($users);
+        $transactions=Transaction::with('Product')->get();
+        return response()->json($transactions);
     }
 
     /**
@@ -42,19 +38,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user=new User();
-        $user->firstname = $request->get('firstname');
-        $user->lastname=$request->get('lastname');
-        $user->code=$request->get('code');
-        $user->email=$request->get('email');
-        $user->type=$request->get('type');
-        $user->point=$request->get('point');
-        $user->level=$request->get('level');
-        $user->room=$request->get('room');
-        $user->unit=$request->get('unit');
-        $user->password = bcrypt($request->get('bdate'));
-        $user->save();
-        return response()->json($user);
+        //
     }
 
     /**
@@ -88,18 +72,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user=User::find($id);
-        $user->firstname = $request->get('firstname');
-        $user->lastname=$request->get('lastname');
-        $user->code=$request->get('code');
-        $user->email=$request->get('email');
-        $user->type=$request->get('type');
-        $user->point=$request->get('point');
-        $user->level=$request->get('level');
-        $user->room=$request->get('room');
-        $user->unit=$request->get('unit');
-        $user->update();
-        return response()->json($user);
+        //
     }
 
     /**
@@ -110,8 +83,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user=User::find($id);
-        $user->delete();
-        return response()->json($user);
+        //
     }
 }

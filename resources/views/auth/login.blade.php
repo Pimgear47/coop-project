@@ -19,16 +19,16 @@
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
 
-                                    <h3 for="email" class="col-md-4 txt-thS">{{ __('E-Mail Address') }}
+                                    <h3 for="code" class="col-md-4 txt-thS">{{ __('รหัสสมาชิกสหกรณ์') }}
                                     </h3>
                                     <div class="col-md-6">
-                                        <v-text-field id="email" type="email"
-                                            class="{{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                            name="email" value="{{ old('email') }}" required autocomplete="email"
+                                        <v-text-field id="code" type="text"
+                                            class="{{ $errors->has('code') ? ' is-invalid' : '' }}"
+                                            name="code" value="{{ old('code') }}" required autocomplete="code"
                                             autofocus>
-                                            @if ($errors->has('email'))
+                                            @if ($errors->has('code'))
                                             <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('email') }}</strong>
+                                                <strong>{{ $errors->first('code') }}</strong>
                                             </span>
                                             @endif
                                     </div>

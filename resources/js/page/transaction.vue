@@ -5,14 +5,14 @@
       <br>
       <v-stepper v-model="e6" vertical>
         <v-stepper-step :complete="e6 > 1" step="1">
-          <h3>กรอกรหัสสมาชิก</h3>
+          <h3>กรอกชื่อหรือรหัสสมาชิก</h3>
         </v-stepper-step>
         <v-stepper-content step="1">
           <v-text-field v-model="code_user" label="รหัสสมาชิก"></v-text-field>
           <!-- @keyup.enter="e6 = 2 && mapUser(filteredUser.pop())" -->
           <v-layout v-if="filteredUser.length==1" row wrap>
             <v-flex v-for="user in filteredUser" :key="user.firstname" sm4 mb-2>
-              <h3 class="txt-title">ชื่อสมาชิก : {{user.firstname}} {{user.lastname}}</h3>
+              <h3 class="txt-title">ชื่อสมาชิก : {{user.firstname}} {{user.lastname}} <br> รหัสสมาชิก : {{user.code}}</h3>
               <br>
               <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
               <v-btn class="txt-title" flat @click="clearOne()">Cancel</v-btn>
@@ -160,12 +160,12 @@ export default {
       this.currentUserId = "";
     },
     addstuff(i) {
-      var currentUser = this.orderProduct[i].pop();
-      console.log(currentUser);
+      var currentProduct = this.orderProduct[i].pop();
+      console.log(currentProduct);
       axios.post("/api/transaction", {
           iduser: this.currentUser.id,
           idustaff: this.currentStaff.id,
-          idproduct: currentUser.idproduct
+          idproduct: currentProduct.id
         })
         .catch(error => {
           console.log(error.message);
@@ -175,7 +175,8 @@ export default {
   computed: {
     filteredUser: function() {
       return this.users.filter(user => {
-        return user.code == this.code_user;
+        name = user.firstname +" "+ user.lastname;
+        return user.code == this.code_user || name.match(this.code_user);
       });
     },
     filteredProduct: function() {

@@ -31,7 +31,7 @@
         </v-list>
       </v-toolbar>
   
-      <v-list class="pt-0" dense v-if="usernow.admin">
+      <v-list class="pt-0" dense v-if="usernow.type=='staff'&&usernow.admin">
         <v-divider></v-divider>
         <v-list-tile
           v-for="item in itemsAdmin"
@@ -46,7 +46,22 @@
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
-      <v-list class="pt-0" dense v-if="usernow.admin!=1">
+      <v-list class="pt-0" dense v-if="usernow.type=='staff'&&usernow.admin!=1">
+        <v-divider></v-divider>
+        <v-list-tile
+          v-for="item in itemsStaff"
+          :key="item.title"
+          :href="item.link"
+        >
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-list class="pt-0" dense v-if="usernow.type=='student'">
         <v-divider></v-divider>
         <v-list-tile
           v-for="item in itemsUser"
@@ -86,10 +101,17 @@ export default {
         { title: 'ปฏิทินกำหนดการ', icon: 'date_range' , link: '#' },
         { title: 'จัดการสมาชิก', icon: 'supervised_user_circle' , link: '/user' },
       ],
+      itemsStaff: [
+        { title: 'หน้าแรก', icon: 'dashboard' , link: '/' },
+        { title: 'รายการสินค้า', icon: 'shopping_cart' , link: '/product' },
+        { title: 'ทำรายการ', icon: 'assignment_turned_in' , link: '/transaction' },
+        { title: 'ปฏิทินกำหนดการ', icon: 'date_range' , link: '#' },
+      ],
       itemsUser: [
         { title: 'หน้าแรก', icon: 'dashboard' , link: '/' },
         { title: 'รายการสินค้า', icon: 'shopping_cart' , link: '/product' },
-        { title: 'ดูยอดปันผล', icon: 'monetization_on' , link: '#' },
+        { title: 'ดูรายงานการซื้อ', icon: 'description' , link: '/reportuser' },
+        { title: 'ดูยอดปันผล/เฉลี่ยคืน', icon: 'monetization_on' , link: '#' },
         { title: 'ปฏิทินกำหนดการ', icon: 'date_range' , link: '#' },
       ],
       mini: true,

@@ -1819,9 +1819,9 @@ __webpack_require__.r(__webpack_exports__);
       items: [{
         src: 'https://www.img.in.th/images/0a1b35dd1d3fb4e9604df679ea0c3aa7.png'
       }, {
-        src: 'https://www.img.live/images/2019/05/06/Scrot_5-copy.png'
-      }, {
         src: 'https://lh3.googleusercontent.com/p/AF1QipNH8ndFeuTs40hsiYLK8A3k4Lpgh0jrdkJ8Y6dY=w1024-k'
+      }, {
+        src: 'https://www.img.live/images/2019/05/06/Scrot_5-copy.png'
       }, {
         src: 'https://www.img.live/images/2019/05/06/5193fc1.png'
       }]
@@ -1840,6 +1840,21 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1947,6 +1962,23 @@ __webpack_require__.r(__webpack_exports__);
         icon: 'supervised_user_circle',
         link: '/user'
       }],
+      itemsStaff: [{
+        title: 'หน้าแรก',
+        icon: 'dashboard',
+        link: '/'
+      }, {
+        title: 'รายการสินค้า',
+        icon: 'shopping_cart',
+        link: '/product'
+      }, {
+        title: 'ทำรายการ',
+        icon: 'assignment_turned_in',
+        link: '/transaction'
+      }, {
+        title: 'ปฏิทินกำหนดการ',
+        icon: 'date_range',
+        link: '#'
+      }],
       itemsUser: [{
         title: 'หน้าแรก',
         icon: 'dashboard',
@@ -1956,7 +1988,11 @@ __webpack_require__.r(__webpack_exports__);
         icon: 'shopping_cart',
         link: '/product'
       }, {
-        title: 'ดูยอดปันผล',
+        title: 'ดูรายงานการซื้อ',
+        icon: 'description',
+        link: '/reportuser'
+      }, {
+        title: 'ดูยอดปันผล/เฉลี่ยคืน',
         icon: 'monetization_on',
         link: '#'
       }, {
@@ -2052,6 +2088,108 @@ __webpack_require__.r(__webpack_exports__);
 
       return this.products.filter(function (product) {
         return product.type.match(_this2.type);
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/reportforuser.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/page/reportforuser.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["usernow"],
+  data: function data() {
+    return {
+      check: false,
+      pagination: {
+        rowsPerPage: 10
+      },
+      search: "",
+      headers: [{
+        text: "ชื่อ",
+        sortable: false,
+        value: "product.name"
+      }, {
+        text: "ราคา",
+        sortable: false,
+        value: "product.price"
+      }, {
+        text: "วันเวลาที่ทำรายการ",
+        sortable: false,
+        value: "created_at"
+      }],
+      reports: [],
+      sumOfPrice: 0
+    };
+  },
+  mounted: function mounted() {
+    this.getReportData();
+  },
+  methods: {
+    getReportData: function getReportData() {
+      var _this = this;
+
+      axios.get("api/reportuser").then(function (response) {
+        _this.reports = response.data;
+      }).then();
+    },
+    calSum: function calSum() {
+      console.log(this.filteredReport.length);
+      this.check = true;
+      var step;
+
+      for (step = 0; step < this.filteredReport.length; step++) {
+        this.sumOfPrice += this.filteredReport[step].product.price;
+      }
+
+      console.log(this.sumOfPrice);
+      document.getElementById("price").innerHTML = "รวม&nbsp;" + this.sumOfPrice + "&nbsp;บาท";
+    }
+  },
+  computed: {
+    filteredReport: function filteredReport() {
+      var _this2 = this;
+
+      return this.reports.filter(function (report) {
+        return report.iduser == _this2.usernow.id;
       });
     }
   }
@@ -2236,12 +2374,12 @@ __webpack_require__.r(__webpack_exports__);
       this.currentUserId = "";
     },
     addstuff: function addstuff(i) {
-      var currentUser = this.orderProduct[i].pop();
-      console.log(currentUser);
+      var currentProduct = this.orderProduct[i].pop();
+      console.log(currentProduct);
       axios.post("/api/transaction", {
         iduser: this.currentUser.id,
         idustaff: this.currentStaff.id,
-        idproduct: currentUser.idproduct
+        idproduct: currentProduct.id
       })["catch"](function (error) {
         console.log(error.message);
       });
@@ -2252,7 +2390,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       return this.users.filter(function (user) {
-        return user.code == _this3.code_user;
+        name = user.firstname + " " + user.lastname;
+        return user.code == _this3.code_user || name.match(_this3.code_user);
       });
     },
     filteredProduct: function filteredProduct() {
@@ -2369,6 +2508,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2388,7 +2530,6 @@ __webpack_require__.r(__webpack_exports__);
         value: "lastname"
       }, {
         text: "รหัส",
-        sortable: false,
         value: "code"
       }, {
         text: "Email",
@@ -2421,6 +2562,7 @@ __webpack_require__.r(__webpack_exports__);
         point: 0,
         level: null,
         room: null,
+        bdate: null,
         unit: 0
       },
       defaultItem: {
@@ -2432,6 +2574,7 @@ __webpack_require__.r(__webpack_exports__);
         point: 0,
         level: null,
         room: null,
+        bdate: null,
         unit: 0
       }
     };
@@ -2495,14 +2638,14 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.users.push(this.editedItem) && axios.post("/api/user", {
           firstname: this.editedItem.firstname,
-          lastname: this.editedItem.firstname,
+          lastname: this.editedItem.lastname,
           code: this.editedItem.code,
-          email: this.editedItem.email,
           type: this.editedItem.type,
           point: this.editedItem.point,
           level: this.editedItem.level,
           room: this.editedItem.room,
-          unit: this.editedItem.unit
+          unit: this.editedItem.unit,
+          bdate: this.editedItem.bdate
         });
       }
 
@@ -37986,7 +38129,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm.usernow.admin
+          _vm.usernow.type == "staff" && _vm.usernow.admin
             ? _c(
                 "v-list",
                 { staticClass: "pt-0", attrs: { dense: "" } },
@@ -38022,7 +38165,43 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _vm.usernow.admin != 1
+          _vm.usernow.type == "staff" && _vm.usernow.admin != 1
+            ? _c(
+                "v-list",
+                { staticClass: "pt-0", attrs: { dense: "" } },
+                [
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _vm._l(_vm.itemsStaff, function(item) {
+                    return _c(
+                      "v-list-tile",
+                      { key: item.title, attrs: { href: item.link } },
+                      [
+                        _c(
+                          "v-list-tile-action",
+                          [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-list-tile-content",
+                          [
+                            _c("v-list-tile-title", [
+                              _vm._v(_vm._s(item.title))
+                            ])
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  })
+                ],
+                2
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.usernow.type == "student"
             ? _c(
                 "v-list",
                 { staticClass: "pt-0", attrs: { dense: "" } },
@@ -38132,6 +38311,15 @@ var render = function() {
                           })
                         ],
                         1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-btn",
+                        {
+                          staticClass: "mb-2 txt-title",
+                          attrs: { color: "primary", dark: "" }
+                        },
+                        [_vm._v("New Product")]
                       )
                     ],
                     1
@@ -38220,6 +38408,97 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/reportforuser.vue?vue&type=template&id=16e177de&":
+/*!**********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/page/reportforuser.vue?vue&type=template&id=16e177de& ***!
+  \**********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-layout",
+    { staticClass: "justify-end mt-3 mr-5 mb-3" },
+    [
+      _c(
+        "v-flex",
+        { attrs: { xs9: "", sm11: "" } },
+        [
+          _c(
+            "v-toolbar",
+            { attrs: { flat: "", color: "white" } },
+            [_c("v-toolbar-title", [_c("h2", [_vm._v("รายงานการซื้อ")])])],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-data-table", {
+            staticClass: "elevation-1 txt-title",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.filteredReport,
+              pagination: _vm.pagination
+            },
+            on: {
+              "update:pagination": function($event) {
+                _vm.pagination = $event
+              }
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "items",
+                fn: function(props) {
+                  return [
+                    _c("td", [_vm._v(_vm._s(props.item.product.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(props.item.product.price))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(props.item.created_at))])
+                  ]
+                }
+              },
+              {
+                key: "footer",
+                fn: function() {
+                  return [
+                    _c(
+                      "td",
+                      { attrs: { colspan: _vm.headers.length } },
+                      [
+                        _c("v-btn", { on: { click: _vm.calSum } }, [
+                          _vm._v("ดูยอดรวมรายจ่ายทั้งหมด")
+                        ]),
+                        _vm._v(" "),
+                        _c("strong", { attrs: { id: "price" } })
+                      ],
+                      1
+                    )
+                  ]
+                },
+                proxy: true
+              }
+            ])
+          })
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/transaction.vue?vue&type=template&id=4517c8dc&":
 /*!********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/page/transaction.vue?vue&type=template&id=4517c8dc& ***!
@@ -38263,7 +38542,7 @@ var render = function() {
               _c(
                 "v-stepper-step",
                 { attrs: { complete: _vm.e6 > 1, step: "1" } },
-                [_c("h3", [_vm._v("กรอกรหัสสมาชิก")])]
+                [_c("h3", [_vm._v("กรอกชื่อหรือรหัสสมาชิก")])]
               ),
               _vm._v(" "),
               _c(
@@ -38298,8 +38577,11 @@ var render = function() {
                                   "ชื่อสมาชิก : " +
                                     _vm._s(user.firstname) +
                                     " " +
-                                    _vm._s(user.lastname)
-                                )
+                                    _vm._s(user.lastname) +
+                                    " "
+                                ),
+                                _c("br"),
+                                _vm._v(" รหัสสมาชิก : " + _vm._s(user.code))
                               ]),
                               _vm._v(" "),
                               _c("br"),
@@ -38911,6 +39193,28 @@ var render = function() {
                                             )
                                           },
                                           expression: "editedItem.unit"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "", sm6: "", md4: "" } },
+                                    [
+                                      _c("v-text-field", {
+                                        attrs: { label: "วันเดือนปีเกิด" },
+                                        model: {
+                                          value: _vm.editedItem.bdate,
+                                          callback: function($$v) {
+                                            _vm.$set(
+                                              _vm.editedItem,
+                                              "bdate",
+                                              $$v
+                                            )
+                                          },
+                                          expression: "editedItem.bdate"
                                         }
                                       })
                                     ],
@@ -77224,6 +77528,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('carousel', __webpack_requi
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('product', __webpack_require__(/*! ./page/product.vue */ "./resources/js/page/product.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('user-manage', __webpack_require__(/*! ./page/userManage.vue */ "./resources/js/page/userManage.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('transaction', __webpack_require__(/*! ./page/transaction.vue */ "./resources/js/page/transaction.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('report-user', __webpack_require__(/*! ./page/reportforuser.vue */ "./resources/js/page/reportforuser.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -77565,6 +77870,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_product_vue_vue_type_template_id_6bd4756d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_product_vue_vue_type_template_id_6bd4756d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/page/reportforuser.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/page/reportforuser.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _reportforuser_vue_vue_type_template_id_16e177de___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reportforuser.vue?vue&type=template&id=16e177de& */ "./resources/js/page/reportforuser.vue?vue&type=template&id=16e177de&");
+/* harmony import */ var _reportforuser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./reportforuser.vue?vue&type=script&lang=js& */ "./resources/js/page/reportforuser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _reportforuser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _reportforuser_vue_vue_type_template_id_16e177de___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _reportforuser_vue_vue_type_template_id_16e177de___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/page/reportforuser.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/page/reportforuser.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/page/reportforuser.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_reportforuser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./reportforuser.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/reportforuser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_reportforuser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/page/reportforuser.vue?vue&type=template&id=16e177de&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/page/reportforuser.vue?vue&type=template&id=16e177de& ***!
+  \****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_reportforuser_vue_vue_type_template_id_16e177de___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./reportforuser.vue?vue&type=template&id=16e177de& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/reportforuser.vue?vue&type=template&id=16e177de&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_reportforuser_vue_vue_type_template_id_16e177de___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_reportforuser_vue_vue_type_template_id_16e177de___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

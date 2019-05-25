@@ -61,7 +61,7 @@
                                 autocomplete="unit">
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <v-text-field label="อีเมล์" id="email" type="email"
                                 class="{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
                                 value="{{ old('email') }}" required autocomplete="email">
@@ -70,7 +70,7 @@
                                     <strong>{{ $errors->first('email') }}</strong>
                                 </span>
                                 @endif
-                        </div>
+                        </div> -->
                         <div class="col-md-6">
                             <v-text-field label="รหัสผ่านอย่างน้อย 8 อักขระ" id="password" type="password"
                                 class="{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required

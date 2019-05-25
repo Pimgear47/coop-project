@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstname','lastname','type','code','email','level','room','point','unit', 'password',
+        'firstname','lastname','code','type','email','level','room','point','unit', 'password',
     ];
 
     /**
@@ -36,4 +36,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function Transaction(){
+        return $this->hasMany(Transaction::class,'idstaff');
+    }
 }
