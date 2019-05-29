@@ -12,7 +12,11 @@
           <!-- @keyup.enter="e6 = 2 && mapUser(filteredUser.pop())" -->
           <v-layout v-if="filteredUser.length==1" row wrap>
             <v-flex v-for="user in filteredUser" :key="user.firstname" sm4 mb-2>
-              <h3 class="txt-title">ชื่อสมาชิก : {{user.firstname}} {{user.lastname}} <br> รหัสสมาชิก : {{user.code}}</h3>
+              <h3 class="txt-title">
+                ชื่อสมาชิก : {{user.firstname}} {{user.lastname}}
+                <br>
+                รหัสสมาชิก : {{user.code}}
+              </h3>
               <br>
               <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
               <v-btn class="txt-title" flat @click="clearOne()">Cancel</v-btn>
@@ -39,8 +43,10 @@
             class="elevation-1 txt-title"
           >
             <template v-slot:items="props">
-              <td>{{ props.item[0].name }}</td>
-              <td>{{ props.item[0].price }}</td>
+              <td>{{ props.item.name }}</td>
+              <td>{{ props.item.price }}</td>
+              <td>{{ props.item.count }}</td>
+              <td>{{ props.item.cost }} บาท</td>
               <td class="justify-center layout px-0">
                 <v-icon small @click="deleteItem(props.item)">delete</v-icon>
               </td>
@@ -68,7 +74,7 @@
         <v-stepper-content step="3">
           <h3>สมาชิก : {{this.currentUser.firstname}} {{this.currentUser.lastname}}</h3>
           <h3>ผู้ทำรายการ : {{this.currentStaff.firstname}} {{this.currentStaff.lastname}}</h3>
-          <h3>จำนวนสิ่งของที่ซื้อ {{this.orderProduct.length}} ชิ้น</h3>
+          <h3>จำนวนสิ่งของที่ซื้อ {{this.sumofcount}} ชิ้น</h3>
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
           <br>
           <br>
@@ -90,6 +96,8 @@ export default {
         rowsPerPage: 25
       },
       e6: 1,
+      sumofcount: 0,
+      checkOldSel: true,
       code_user: "",
       code_product: "",
       users: [],
@@ -104,7 +112,9 @@ export default {
           sortable: false,
           value: "name"
         },
-        { text: "ราคา", value: "price" }
+        { text: "ราคา", sortable: false, value: "price" },
+        { text: "จำนวน", value: "count" },
+        { text: "รวมเป็นเงิน", value: "cost" }
       ]
     };
   },
@@ -128,17 +138,51 @@ export default {
     },
     addProduct() {
       if (this.filteredProduct.length == 1) {
-        this.orderProduct.push(this.filteredProduct);
-        this.orderPrice += parseInt(this.filteredProduct[0].price);
-        this.code_product = "";
+        for (var i = 0; i < this.orderProduct.length; i++) {
+          if (this.orderProduct[i].product_code == this.code_product) {
+            //สินค้าซ้ำ
+            //console.log("this is copy of : " + this.orderProduct[i].name);
+            Vue.set(
+              this.orderProduct[i],
+              this.orderProduct[i].count,
+              this.orderProduct[i].count++
+            );
+            this.sumofcount += 1;
+            this.orderProduct[i].cost =
+              this.orderProduct[i].count * this.orderProduct[i].price;
+            this.orderPrice += parseInt(this.filteredProduct[0].price);
+            this.code_product = "";
+            this.checkOldSel = false;
+            break;
+          }
+        }
+        if (this.checkOldSel) {
+          this.filteredProduct[0].count = 1;
+          this.sumofcount += 1;
+          this.filteredProduct[0].cost = this.filteredProduct[0].price;
+          this.orderProduct.push(this.filteredProduct[0]);
+          this.orderPrice += parseInt(this.filteredProduct[0].price);
+          this.code_product = "";
+        }
+        this.checkOldSel = true;
+        //console.log(this.orderProduct);
       }
     },
     deleteItem(item) {
       const index = this.orderProduct.indexOf(item);
-      console.log(item);
       if (confirm("Are you sure you want to delete this item?")) {
-        this.orderProduct.splice(index, 1);
-        this.orderPrice -= item[0].price;
+        if (item.count == 1) {
+          this.orderProduct.splice(index, 1);
+          this.orderPrice -= item.price;
+        } else {
+          Vue.set(
+            this.orderProduct[index],
+            this.orderProduct[index].count,
+            this.orderProduct[index].count--
+          );
+          this.orderProduct[index].cost -= item.price;
+          this.orderPrice -= item.price;
+        }
       }
     },
     clearOne() {
@@ -150,9 +194,10 @@ export default {
       this.orderPrice = 0;
     },
     saveTransaction() {
-      var step;
-      for (step = 0; step < this.orderProduct.length; step++) {
-        this.addstuff(step);
+      for (var step = 0; step < this.orderProduct.length; step++) {
+        for (var i = 1; i <= this.orderProduct[step].count; i++) {
+          this.addstuff(step);
+        }
       }
       this.orderProduct = [];
       this.orderPrice = 0;
@@ -160,9 +205,10 @@ export default {
       this.currentUserId = "";
     },
     addstuff(i) {
-      var currentProduct = this.orderProduct[i].pop();
+      var currentProduct = this.orderProduct[i];
       console.log(currentProduct);
-      axios.post("/api/transaction", {
+      axios
+        .post("/api/transaction", {
           iduser: this.currentUser.id,
           idustaff: this.currentStaff.id,
           idproduct: currentProduct.id
@@ -175,7 +221,7 @@ export default {
   computed: {
     filteredUser: function() {
       return this.users.filter(user => {
-        name = user.firstname +" "+ user.lastname;
+        name = user.firstname + " " + user.lastname;
         return user.code == this.code_user || name.match(this.code_user);
       });
     },

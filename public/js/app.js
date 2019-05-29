@@ -2289,6 +2289,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   data: function data() {
@@ -2297,6 +2303,8 @@ __webpack_require__.r(__webpack_exports__);
         rowsPerPage: 25
       },
       e6: 1,
+      sumofcount: 0,
+      checkOldSel: true,
       code_user: "",
       code_product: "",
       users: [],
@@ -2311,7 +2319,14 @@ __webpack_require__.r(__webpack_exports__);
         value: "name"
       }, {
         text: "ราคา",
+        sortable: false,
         value: "price"
+      }, {
+        text: "จำนวน",
+        value: "count"
+      }, {
+        text: "รวมเป็นเงิน",
+        value: "cost"
       }]
     };
   },
@@ -2339,18 +2354,44 @@ __webpack_require__.r(__webpack_exports__);
     },
     addProduct: function addProduct() {
       if (this.filteredProduct.length == 1) {
-        this.orderProduct.push(this.filteredProduct);
-        this.orderPrice += parseInt(this.filteredProduct[0].price);
-        this.code_product = "";
+        for (var i = 0; i < this.orderProduct.length; i++) {
+          if (this.orderProduct[i].product_code == this.code_product) {
+            //สินค้าซ้ำ
+            //console.log("this is copy of : " + this.orderProduct[i].name);
+            Vue.set(this.orderProduct[i], this.orderProduct[i].count, this.orderProduct[i].count++);
+            this.sumofcount += 1;
+            this.orderProduct[i].cost = this.orderProduct[i].count * this.orderProduct[i].price;
+            this.orderPrice += parseInt(this.filteredProduct[0].price);
+            this.code_product = "";
+            this.checkOldSel = false;
+            break;
+          }
+        }
+
+        if (this.checkOldSel) {
+          this.filteredProduct[0].count = 1;
+          this.sumofcount += 1;
+          this.filteredProduct[0].cost = this.filteredProduct[0].price;
+          this.orderProduct.push(this.filteredProduct[0]);
+          this.orderPrice += parseInt(this.filteredProduct[0].price);
+          this.code_product = "";
+        }
+
+        this.checkOldSel = true; //console.log(this.orderProduct);
       }
     },
     deleteItem: function deleteItem(item) {
       var index = this.orderProduct.indexOf(item);
-      console.log(item);
 
       if (confirm("Are you sure you want to delete this item?")) {
-        this.orderProduct.splice(index, 1);
-        this.orderPrice -= item[0].price;
+        if (item.count == 1) {
+          this.orderProduct.splice(index, 1);
+          this.orderPrice -= item.price;
+        } else {
+          Vue.set(this.orderProduct[index], this.orderProduct[index].count, this.orderProduct[index].count--);
+          this.orderProduct[index].cost -= item.price;
+          this.orderPrice -= item.price;
+        }
       }
     },
     clearOne: function clearOne() {
@@ -2362,10 +2403,10 @@ __webpack_require__.r(__webpack_exports__);
       this.orderPrice = 0;
     },
     saveTransaction: function saveTransaction() {
-      var step;
-
-      for (step = 0; step < this.orderProduct.length; step++) {
-        this.addstuff(step);
+      for (var step = 0; step < this.orderProduct.length; step++) {
+        for (var i = 1; i <= this.orderProduct[step].count; i++) {
+          this.addstuff(step);
+        }
       }
 
       this.orderProduct = [];
@@ -2374,7 +2415,7 @@ __webpack_require__.r(__webpack_exports__);
       this.currentUserId = "";
     },
     addstuff: function addstuff(i) {
-      var currentProduct = this.orderProduct[i].pop();
+      var currentProduct = this.orderProduct[i];
       console.log(currentProduct);
       axios.post("/api/transaction", {
         iduser: this.currentUser.id,
@@ -38574,14 +38615,18 @@ var render = function() {
                             [
                               _c("h3", { staticClass: "txt-title" }, [
                                 _vm._v(
-                                  "ชื่อสมาชิก : " +
+                                  "\n              ชื่อสมาชิก : " +
                                     _vm._s(user.firstname) +
                                     " " +
                                     _vm._s(user.lastname) +
-                                    " "
+                                    "\n              "
                                 ),
                                 _c("br"),
-                                _vm._v(" รหัสสมาชิก : " + _vm._s(user.code))
+                                _vm._v(
+                                  "\n              รหัสสมาชิก : " +
+                                    _vm._s(user.code) +
+                                    "\n            "
+                                )
                               ]),
                               _vm._v(" "),
                               _c("br"),
@@ -38711,12 +38756,14 @@ var render = function() {
                               key: "items",
                               fn: function(props) {
                                 return [
-                                  _c("td", [
-                                    _vm._v(_vm._s(props.item[0].name))
-                                  ]),
+                                  _c("td", [_vm._v(_vm._s(props.item.name))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(props.item.price))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(props.item.count))]),
                                   _vm._v(" "),
                                   _c("td", [
-                                    _vm._v(_vm._s(props.item[0].price))
+                                    _vm._v(_vm._s(props.item.cost) + " บาท")
                                   ]),
                                   _vm._v(" "),
                                   _c(
@@ -38746,7 +38793,7 @@ var render = function() {
                           ],
                           null,
                           false,
-                          2123654143
+                          1600749091
                         )
                       })
                     : _vm._e(),
@@ -38826,9 +38873,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("h3", [
                     _vm._v(
-                      "จำนวนสิ่งของที่ซื้อ " +
-                        _vm._s(this.orderProduct.length) +
-                        " ชิ้น"
+                      "จำนวนสิ่งของที่ซื้อ " + _vm._s(this.sumofcount) + " ชิ้น"
                     )
                   ]),
                   _vm._v(" "),
