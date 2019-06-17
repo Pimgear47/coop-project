@@ -2104,9 +2104,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 //
 //
 //
@@ -2157,7 +2162,8 @@ __webpack_require__.r(__webpack_exports__);
         value: "created_at"
       }],
       reports: [],
-      sumOfPrice: 0
+      price: [],
+      sumPrice: 0
     };
   },
   mounted: function mounted() {
@@ -2168,20 +2174,24 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get("api/reportuser").then(function (response) {
-        _this.reports = response.data;
+        var data = response.data;
+        _this.reports = data;
+        console.log("reports", _this.reports);
+
+        _this.mapPrice();
       }).then();
     },
-    calSum: function calSum() {
-      console.log(this.filteredReport.length);
-      this.check = true;
-      var step;
+    mapPrice: function mapPrice() {
+      console.log("MapPrice");
 
-      for (step = 0; step < this.filteredReport.length; step++) {
-        this.sumOfPrice += this.filteredReport[step].product.price;
+      for (var i = 0; i < this.reports.length; i++) {
+        this.price.push(this.reports[i].product.price);
       }
 
-      console.log(this.sumOfPrice);
-      document.getElementById("price").innerHTML = "รวม&nbsp;" + this.sumOfPrice + "&nbsp;บาท";
+      this.sumPrice = this.price.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      this.check = true;
     }
   },
   computed: {
@@ -2191,6 +2201,19 @@ __webpack_require__.r(__webpack_exports__);
       return this.reports.filter(function (report) {
         return report.iduser == _this2.usernow.id;
       });
+    },
+    total: function total() {
+      var total = [];
+      Object.entries(this.filteredReport).forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            key = _ref2[0],
+            val = _ref2[1];
+
+        total.push(val.product.price);
+      });
+      return total.reduce(function (total, num) {
+        return total + num;
+      }, 0);
     }
   }
 });
@@ -38508,18 +38531,11 @@ var render = function() {
                 key: "footer",
                 fn: function() {
                   return [
-                    _c(
-                      "td",
-                      { attrs: { colspan: _vm.headers.length } },
-                      [
-                        _c("v-btn", { on: { click: _vm.calSum } }, [
-                          _vm._v("ดูยอดรวมรายจ่ายทั้งหมด")
-                        ]),
-                        _vm._v(" "),
-                        _c("strong", { attrs: { id: "price" } })
-                      ],
-                      1
-                    )
+                    _vm.check
+                      ? _c("td", { attrs: { colspan: _vm.headers.length } }, [
+                          _vm._v("รวมเป็นเงิน " + _vm._s(_vm.total) + " บาท")
+                        ])
+                      : _vm._e()
                   ]
                 },
                 proxy: true

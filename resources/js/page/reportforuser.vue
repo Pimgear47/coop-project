@@ -18,10 +18,7 @@
           <td>{{ props.item.created_at }}</td>
         </template>
         <template v-slot:footer>
-          <td :colspan="headers.length">
-            <v-btn @click="calSum">ดูยอดรวมรายจ่ายทั้งหมด</v-btn>
-            <strong id="price"></strong>
-          </td>
+          <td :colspan="headers.length" v-if="check">รวมเป็นเงิน {{total}} บาท</td>
         </template>
       </v-data-table>
     </v-flex>
@@ -43,7 +40,8 @@ export default {
       { text: "วันเวลาที่ทำรายการ", sortable: false, value: "created_at" }
     ],
     reports: [],
-    sumOfPrice: 0
+    price: [],
+    sumPrice: 0
   }),
   mounted() {
     this.getReportData();
@@ -53,19 +51,20 @@ export default {
       axios
         .get("api/reportuser")
         .then(response => {
-          this.reports = response.data;
+          var data = response.data;
+          this.reports = data;
+          console.log("reports", this.reports);
+          this.mapPrice();
         })
         .then();
     },
-    calSum() {
-      console.log(this.filteredReport.length);
-      this.check = true;
-      var step;
-      for (step = 0; step < this.filteredReport.length; step++) {
-        this.sumOfPrice += this.filteredReport[step].product.price;
+    mapPrice() {
+      console.log("MapPrice");
+      for (var i = 0; i < this.reports.length; i++) {
+        this.price.push(this.reports[i].product.price);
       }
-      console.log(this.sumOfPrice);
-      document.getElementById("price").innerHTML = "รวม&nbsp;" + this.sumOfPrice + "&nbsp;บาท";
+      this.sumPrice = this.price.reduce((a, b) => a + b, 0);
+      this.check = true;
     }
   },
   computed: {
@@ -73,6 +72,15 @@ export default {
       return this.reports.filter(report => {
         return report.iduser == this.usernow.id;
       });
+    },
+    total: function() {
+      let total = [];
+      Object.entries(this.filteredReport).forEach(([key, val]) => {
+        total.push(val.product.price);
+      });
+      return total.reduce(function(total, num) {
+        return total + num;
+      }, 0);
     }
   }
 };
