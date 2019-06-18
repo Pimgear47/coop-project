@@ -1925,10 +1925,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   mounted: function mounted() {
     console.log("Component mounted.");
+    console.log(this.usernow);
   },
   data: function data() {
     return {
@@ -2112,6 +2115,19 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+//
 //
 //
 //
@@ -2153,17 +2169,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         sortable: false,
         value: "product.name"
       }, {
+        text: "จำนวน",
+        sortable: false,
+        value: "created_at"
+      }, {
         text: "ราคา",
         sortable: false,
         value: "product.price"
       }, {
-        text: "วันเวลาที่ทำรายการ",
+        text: "รวมเป็นเงิน",
         sortable: false,
-        value: "created_at"
+        value: "product.price*count"
       }],
       reports: [],
       price: [],
-      sumPrice: 0
+      forCountSumPrice: []
     };
   },
   mounted: function mounted() {
@@ -2177,34 +2197,35 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var data = response.data;
         _this.reports = data;
         console.log("reports", _this.reports);
-
-        _this.mapPrice();
       }).then();
-    },
-    mapPrice: function mapPrice() {
-      console.log("MapPrice");
-
-      for (var i = 0; i < this.reports.length; i++) {
-        this.price.push(this.reports[i].product.price);
-      }
-
-      this.sumPrice = this.price.reduce(function (a, b) {
-        return a + b;
-      }, 0);
-      this.check = true;
     }
   },
   computed: {
     filteredReport: function filteredReport() {
       var _this2 = this;
 
-      return this.reports.filter(function (report) {
+      var arrReport = [];
+      arrReport = this.reports.filter(function (report) {
         return report.iduser == _this2.usernow.id;
       });
+      this.forCountSumPrice = arrReport;
+
+      var result = _toConsumableArray(arrReport.reduce(function (mp, o) {
+        var key = JSON.stringify([o.idproduct, o.product]);
+        if (!mp.has(key)) mp.set(key, _objectSpread({}, o, {
+          count: 0
+        }));
+        mp.get(key).count++;
+        return mp;
+      }, new Map()).values());
+
+      this.check = true;
+      return result;
     },
+    productSet: function productSet() {},
     total: function total() {
       var total = [];
-      Object.entries(this.filteredReport).forEach(function (_ref) {
+      Object.entries(this.forCountSumPrice).forEach(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
             key = _ref2[0],
             val = _ref2[1];
@@ -38137,12 +38158,34 @@ var render = function() {
                     { attrs: { avatar: "" } },
                     [
                       _c("v-list-tile-avatar", [
-                        _c("img", {
-                          attrs: {
-                            src:
-                              "https://randomuser.me/api/portraits/men/85.jpg"
-                          }
-                        })
+                        _vm.usernow.type == "student" &&
+                        _vm.usernow.sex == "ชาย"
+                          ? _c("img", {
+                              attrs: {
+                                src:
+                                  "https://sv1.picz.in.th/images/2019/06/18/1xmdjP.png"
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.usernow.type == "student" &&
+                        _vm.usernow.sex == "หญิง"
+                          ? _c("img", {
+                              attrs: {
+                                src:
+                                  "https://sv1.picz.in.th/images/2019/06/18/1xm0vt.png"
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.usernow.type != "student"
+                          ? _c("img", {
+                              attrs: {
+                                src:
+                                  "https://sv1.picz.in.th/images/2019/06/18/1xmW9I.png"
+                              }
+                            })
+                          : _vm._e()
                       ]),
                       _vm._v(" "),
                       _c(
@@ -38521,9 +38564,15 @@ var render = function() {
                   return [
                     _c("td", [_vm._v(_vm._s(props.item.product.name))]),
                     _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(props.item.count))]),
+                    _vm._v(" "),
                     _c("td", [_vm._v(_vm._s(props.item.product.price))]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(props.item.created_at))])
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(props.item.count * props.item.product.price)
+                      )
+                    ])
                   ]
                 }
               },

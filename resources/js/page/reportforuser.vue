@@ -14,8 +14,9 @@
       >
         <template v-slot:items="props">
           <td>{{ props.item.product.name }}</td>
+          <td>{{ props.item.count }}</td>
           <td>{{ props.item.product.price }}</td>
-          <td>{{ props.item.created_at }}</td>
+          <td>{{ props.item.count*props.item.product.price }}</td>
         </template>
         <template v-slot:footer>
           <td :colspan="headers.length" v-if="check">รวมเป็นเงิน {{total}} บาท</td>
@@ -36,12 +37,13 @@ export default {
     search: "",
     headers: [
       { text: "ชื่อ", sortable: false, value: "product.name" },
+      { text: "จำนวน", sortable: false, value: "created_at" },
       { text: "ราคา", sortable: false, value: "product.price" },
-      { text: "วันเวลาที่ทำรายการ", sortable: false, value: "created_at" }
+      { text: "รวมเป็นเงิน", sortable: false, value: "product.price*count" },
     ],
     reports: [],
     price: [],
-    sumPrice: 0
+    forCountSumPrice: [],
   }),
   mounted() {
     this.getReportData();
@@ -54,28 +56,34 @@ export default {
           var data = response.data;
           this.reports = data;
           console.log("reports", this.reports);
-          this.mapPrice();
         })
         .then();
-    },
-    mapPrice() {
-      console.log("MapPrice");
-      for (var i = 0; i < this.reports.length; i++) {
-        this.price.push(this.reports[i].product.price);
-      }
-      this.sumPrice = this.price.reduce((a, b) => a + b, 0);
-      this.check = true;
     }
   },
   computed: {
     filteredReport: function() {
-      return this.reports.filter(report => {
+      var arrReport = [];
+      arrReport = this.reports.filter(report => {
         return report.iduser == this.usernow.id;
       });
+      this.forCountSumPrice = arrReport;
+      const result = [
+        ...arrReport
+          .reduce((mp, o) => {
+            const key = JSON.stringify([o.idproduct, o.product]);
+            if (!mp.has(key)) mp.set(key, { ...o, count: 0 });
+            mp.get(key).count++;
+            return mp;
+          }, new Map())
+          .values()
+      ];
+      this.check = true;
+      return result;
     },
+    productSet: function() {},
     total: function() {
       let total = [];
-      Object.entries(this.filteredReport).forEach(([key, val]) => {
+      Object.entries(this.forCountSumPrice).forEach(([key, val]) => {
         total.push(val.product.price);
       });
       return total.reduce(function(total, num) {

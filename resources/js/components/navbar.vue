@@ -14,7 +14,9 @@
         <v-list class="pa-0">
           <v-list-tile avatar>
             <v-list-tile-avatar>
-              <img src="https://randomuser.me/api/portraits/men/85.jpg">
+              <img v-if="usernow.type=='student' && usernow.sex=='ชาย'" src="https://sv1.picz.in.th/images/2019/06/18/1xmdjP.png">
+              <img v-if="usernow.type=='student' && usernow.sex=='หญิง'" src="https://sv1.picz.in.th/images/2019/06/18/1xm0vt.png">
+              <img v-if="usernow.type!='student'" src="https://sv1.picz.in.th/images/2019/06/18/1xmW9I.png">
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title class="txt-title">{{usernow.firstname}} {{usernow.lastname}}</v-list-tile-title>
@@ -88,6 +90,7 @@ export default {
   props: ["usernow"],
   mounted() {
     console.log("Component mounted.");
+    console.log(this.usernow);
   },
   data () {
     return {
