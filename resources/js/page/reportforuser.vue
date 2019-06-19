@@ -1,27 +1,59 @@
 <template>
   <v-layout class="justify-end mt-3 mr-5 mb-3">
     <v-flex xs9 sm11>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>
-          <h2>รายงานการซื้อ</h2>
-        </v-toolbar-title>
-      </v-toolbar>
-      <v-data-table
-        :headers="headers"
-        :items="filteredReport"
-        :pagination.sync="pagination"
-        class="elevation-1 txt-title"
-      >
-        <template v-slot:items="props">
-          <td>{{ props.item.product.name }}</td>
-          <td>{{ props.item.count }}</td>
-          <td>{{ props.item.product.price }}</td>
-          <td>{{ props.item.count*props.item.product.price }}</td>
-        </template>
-        <template v-slot:footer>
-          <td :colspan="headers.length" v-if="check">รวมเป็นเงิน {{total}} บาท</td>
-        </template>
-      </v-data-table>
+      <v-card>
+        <v-container fluid grid-list-md>
+          <v-card-title>
+            <v-layout row wrap justify-space-between>
+              <h2 class="txt-title mt-2">รายงานการซื้อ</h2>
+              <v-flex xs12 sm5 md3>
+                <v-dialog
+                  ref="dialog"
+                  v-model="modal"
+                  :return-value.sync="date"
+                  persistent
+                  lazy
+                  full-width
+                  width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="date"
+                      label="รายงานประจำเดือน"
+                      prepend-icon="event"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date" type="month" scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                  </v-date-picker>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+          </v-card-title>
+          <v-data-table
+            :headers="headers"
+            :items="filteredReport"
+            :pagination.sync="pagination"
+            class="elevation-1 txt-title"
+          >
+            <template v-slot:items="props">
+              <td>{{ props.item.product.name }}</td>
+              <td>{{ props.item.count }}</td>
+              <td>{{ props.item.product.price }}</td>
+              <td>{{ props.item.count*props.item.product.price }}</td>
+            </template>
+            <template v-slot:footer>
+              <td :colspan="headers.length" v-if="check">
+                <b>รวมเป็นเงิน {{total}} บาท</b>
+              </td>
+            </template>
+          </v-data-table>
+        </v-container>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
@@ -31,19 +63,21 @@ export default {
   props: ["usernow"],
   data: () => ({
     check: false,
+    date: new Date().toISOString().substr(0, 7),
     pagination: {
       rowsPerPage: 10
     },
+    modal: false,
     search: "",
     headers: [
       { text: "ชื่อ", sortable: false, value: "product.name" },
       { text: "จำนวน", sortable: false, value: "created_at" },
       { text: "ราคา", sortable: false, value: "product.price" },
-      { text: "รวมเป็นเงิน", sortable: false, value: "product.price*count" },
+      { text: "รวมเป็นเงิน", sortable: false, value: "product.price*count" }
     ],
     reports: [],
     price: [],
-    forCountSumPrice: [],
+    forCountSumPrice: []
   }),
   mounted() {
     this.getReportData();
@@ -58,13 +92,16 @@ export default {
           console.log("reports", this.reports);
         })
         .then();
+    },
+    getMonth() {
+      console.log(this.date);
     }
   },
   computed: {
     filteredReport: function() {
       var arrReport = [];
       arrReport = this.reports.filter(report => {
-        return report.iduser == this.usernow.id;
+        return report.iduser == this.usernow.id && report.created_at.substr(0, 7) == this.date;
       });
       this.forCountSumPrice = arrReport;
       const result = [
@@ -80,7 +117,6 @@ export default {
       this.check = true;
       return result;
     },
-    productSet: function() {},
     total: function() {
       let total = [];
       Object.entries(this.forCountSumPrice).forEach(([key, val]) => {
@@ -89,7 +125,7 @@ export default {
       return total.reduce(function(total, num) {
         return total + num;
       }, 0);
-    }
+    },
   }
 };
 </script>

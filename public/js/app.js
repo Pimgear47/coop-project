@@ -2155,14 +2155,48 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   data: function data() {
     return {
       check: false,
+      date: new Date().toISOString().substr(0, 7),
       pagination: {
         rowsPerPage: 10
       },
+      modal: false,
       search: "",
       headers: [{
         text: "ชื่อ",
@@ -2198,6 +2232,9 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         _this.reports = data;
         console.log("reports", _this.reports);
       }).then();
+    },
+    getMonth: function getMonth() {
+      console.log(this.date);
     }
   },
   computed: {
@@ -2206,7 +2243,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       var arrReport = [];
       arrReport = this.reports.filter(function (report) {
-        return report.iduser == _this2.usernow.id;
+        return report.iduser == _this2.usernow.id && report.created_at.substr(0, 7) == _this2.date;
       });
       this.forCountSumPrice = arrReport;
 
@@ -2222,7 +2259,6 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       this.check = true;
       return result;
     },
-    productSet: function productSet() {},
     total: function total() {
       var total = [];
       Object.entries(this.forCountSumPrice).forEach(function (_ref) {
@@ -38539,58 +38575,216 @@ var render = function() {
         { attrs: { xs9: "", sm11: "" } },
         [
           _c(
-            "v-toolbar",
-            { attrs: { flat: "", color: "white" } },
-            [_c("v-toolbar-title", [_c("h2", [_vm._v("รายงานการซื้อ")])])],
-            1
-          ),
-          _vm._v(" "),
-          _c("v-data-table", {
-            staticClass: "elevation-1 txt-title",
-            attrs: {
-              headers: _vm.headers,
-              items: _vm.filteredReport,
-              pagination: _vm.pagination
-            },
-            on: {
-              "update:pagination": function($event) {
-                _vm.pagination = $event
-              }
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "items",
-                fn: function(props) {
-                  return [
-                    _c("td", [_vm._v(_vm._s(props.item.product.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(props.item.count))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(props.item.product.price))]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _vm._v(
-                        _vm._s(props.item.count * props.item.product.price)
+            "v-card",
+            [
+              _c(
+                "v-container",
+                { attrs: { fluid: "", "grid-list-md": "" } },
+                [
+                  _c(
+                    "v-card-title",
+                    [
+                      _c(
+                        "v-layout",
+                        {
+                          attrs: {
+                            row: "",
+                            wrap: "",
+                            "justify-space-between": ""
+                          }
+                        },
+                        [
+                          _c("h2", { staticClass: "txt-title mt-2" }, [
+                            _vm._v("รายงานการซื้อ")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", sm5: "", md3: "" } },
+                            [
+                              _c(
+                                "v-dialog",
+                                {
+                                  ref: "dialog",
+                                  attrs: {
+                                    "return-value": _vm.date,
+                                    persistent: "",
+                                    lazy: "",
+                                    "full-width": "",
+                                    width: "290px"
+                                  },
+                                  on: {
+                                    "update:returnValue": function($event) {
+                                      _vm.date = $event
+                                    },
+                                    "update:return-value": function($event) {
+                                      _vm.date = $event
+                                    }
+                                  },
+                                  scopedSlots: _vm._u([
+                                    {
+                                      key: "activator",
+                                      fn: function(ref) {
+                                        var on = ref.on
+                                        return [
+                                          _c(
+                                            "v-text-field",
+                                            _vm._g(
+                                              {
+                                                attrs: {
+                                                  label: "รายงานประจำเดือน",
+                                                  "prepend-icon": "event",
+                                                  readonly: ""
+                                                },
+                                                model: {
+                                                  value: _vm.date,
+                                                  callback: function($$v) {
+                                                    _vm.date = $$v
+                                                  },
+                                                  expression: "date"
+                                                }
+                                              },
+                                              on
+                                            )
+                                          )
+                                        ]
+                                      }
+                                    }
+                                  ]),
+                                  model: {
+                                    value: _vm.modal,
+                                    callback: function($$v) {
+                                      _vm.modal = $$v
+                                    },
+                                    expression: "modal"
+                                  }
+                                },
+                                [
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-date-picker",
+                                    {
+                                      attrs: { type: "month", scrollable: "" },
+                                      model: {
+                                        value: _vm.date,
+                                        callback: function($$v) {
+                                          _vm.date = $$v
+                                        },
+                                        expression: "date"
+                                      }
+                                    },
+                                    [
+                                      _c("v-spacer"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { flat: "", color: "primary" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.modal = false
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Cancel")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { flat: "", color: "primary" },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.$refs.dialog.save(
+                                                _vm.date
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("OK")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
                       )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-data-table", {
+                    staticClass: "elevation-1 txt-title",
+                    attrs: {
+                      headers: _vm.headers,
+                      items: _vm.filteredReport,
+                      pagination: _vm.pagination
+                    },
+                    on: {
+                      "update:pagination": function($event) {
+                        _vm.pagination = $event
+                      }
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "items",
+                        fn: function(props) {
+                          return [
+                            _c("td", [_vm._v(_vm._s(props.item.product.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(props.item.count))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(props.item.product.price))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  props.item.count * props.item.product.price
+                                )
+                              )
+                            ])
+                          ]
+                        }
+                      },
+                      {
+                        key: "footer",
+                        fn: function() {
+                          return [
+                            _vm.check
+                              ? _c(
+                                  "td",
+                                  { attrs: { colspan: _vm.headers.length } },
+                                  [
+                                    _c("b", [
+                                      _vm._v(
+                                        "รวมเป็นเงิน " +
+                                          _vm._s(_vm.total) +
+                                          " บาท"
+                                      )
+                                    ])
+                                  ]
+                                )
+                              : _vm._e()
+                          ]
+                        },
+                        proxy: true
+                      }
                     ])
-                  ]
-                }
-              },
-              {
-                key: "footer",
-                fn: function() {
-                  return [
-                    _vm.check
-                      ? _c("td", { attrs: { colspan: _vm.headers.length } }, [
-                          _vm._v("รวมเป็นเงิน " + _vm._s(_vm.total) + " บาท")
-                        ])
-                      : _vm._e()
-                  ]
-                },
-                proxy: true
-              }
-            ])
-          })
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
         ],
         1
       )
