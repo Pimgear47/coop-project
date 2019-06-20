@@ -30,6 +30,7 @@ Vue.component('product', require('./page/product.vue').default);
 Vue.component('user-manage', require('./page/userManage.vue').default);
 Vue.component('transaction', require('./page/transaction.vue').default);
 Vue.component('report-user', require('./page/reportforuser.vue').default);
+Vue.component('sale-report', require('./page/salereport.vue').default);
 
 
 /**
