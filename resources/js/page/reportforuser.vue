@@ -1,11 +1,13 @@
 <template>
-  <v-layout class="justify-end mt-3 mr-5 mb-3">
+  <v-layout class="justify-end mt-4 mr-5 mb-3">
     <v-flex xs9 sm11>
       <v-card>
         <v-container fluid grid-list-md>
           <v-card-title>
             <v-layout row wrap justify-space-between>
-              <h2 class="txt-title mt-2">รายงานการซื้อ</h2>
+              <h2 class="txt-title mt-0">
+                <v-icon large color="pink">description</v-icon>&nbsp;รายงานการซิื้อ
+              </h2>
               <v-flex xs12 sm5 md3>
                 <v-dialog
                   ref="dialog"
@@ -101,7 +103,10 @@ export default {
     filteredReport: function() {
       var arrReport = [];
       arrReport = this.reports.filter(report => {
-        return report.iduser == this.usernow.id && report.created_at.substr(0, 7) == this.date;
+        return (
+          report.iduser == this.usernow.id &&
+          report.created_at.substr(0, 7) == this.date
+        );
       });
       this.forCountSumPrice = arrReport;
       const result = [
@@ -125,7 +130,7 @@ export default {
       return total.reduce(function(total, num) {
         return total + num;
       }, 0);
-    },
+    }
   }
 };
 </script>

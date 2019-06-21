@@ -2055,6 +2055,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getProductData();
@@ -2127,6 +2129,8 @@ function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
+//
+//
 //
 //
 //
@@ -2316,6 +2320,35 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   data: function data() {
@@ -2388,6 +2421,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -38531,9 +38566,19 @@ var render = function() {
                       attrs: { row: "", wrap: "", "justify-space-between": "" }
                     },
                     [
-                      _c("h2", { staticClass: "txt-title mt-2" }, [
-                        _vm._v("รายการสินค้า")
-                      ]),
+                      _c(
+                        "h2",
+                        { staticClass: "txt-title mt-2" },
+                        [
+                          _c(
+                            "v-icon",
+                            { attrs: { large: "", color: "pink" } },
+                            [_vm._v("shopping_cart")]
+                          ),
+                          _vm._v(" รายการสินค้า\n          ")
+                        ],
+                        1
+                      ),
                       _vm._v(" "),
                       _c(
                         "v-flex",
@@ -38670,7 +38715,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-layout",
-    { staticClass: "justify-end mt-3 mr-5 mb-3" },
+    { staticClass: "justify-end mt-4 mr-5 mb-3" },
     [
       _c(
         "v-flex",
@@ -38696,9 +38741,19 @@ var render = function() {
                           }
                         },
                         [
-                          _c("h2", { staticClass: "txt-title mt-2" }, [
-                            _vm._v("รายงานการซื้อ")
-                          ]),
+                          _c(
+                            "h2",
+                            { staticClass: "txt-title mt-0" },
+                            [
+                              _c(
+                                "v-icon",
+                                { attrs: { large: "", color: "pink" } },
+                                [_vm._v("description")]
+                              ),
+                              _vm._v(" รายงานการซิื้อ\n            ")
+                            ],
+                            1
+                          ),
                           _vm._v(" "),
                           _c(
                             "v-flex",
@@ -38922,66 +38977,215 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-layout",
-    { staticClass: "justify-end mt-3 mr-5 mb-3" },
+    { staticClass: "justify-end mt-4 mr-5 mb-3" },
     [
       _c(
         "v-flex",
         { attrs: { xs9: "", sm11: "" } },
         [
           _c(
-            "v-toolbar",
-            { attrs: { flat: "", color: "white" } },
-            [_c("v-toolbar-title", [_c("h2", [_vm._v("รายงานการซื้อ")])])],
+            "v-card",
+            [
+              _c(
+                "v-container",
+                { attrs: { fluid: "", "grid-list-md": "" } },
+                [
+                  _c(
+                    "v-card-title",
+                    [
+                      _c(
+                        "v-layout",
+                        {
+                          attrs: {
+                            row: "",
+                            wrap: "",
+                            "justify-space-between": ""
+                          }
+                        },
+                        [
+                          _c(
+                            "h2",
+                            { staticClass: "txt-title mt-0" },
+                            [
+                              _c(
+                                "v-icon",
+                                { attrs: { large: "", color: "pink" } },
+                                [_vm._v("description")]
+                              ),
+                              _vm._v(" รายงานยอดขาย\n            ")
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "", sm5: "", md3: "" } },
+                            [
+                              _c(
+                                "v-dialog",
+                                {
+                                  ref: "dialog",
+                                  attrs: {
+                                    "return-value": _vm.date,
+                                    persistent: "",
+                                    lazy: "",
+                                    "full-width": "",
+                                    width: "290px"
+                                  },
+                                  on: {
+                                    "update:returnValue": function($event) {
+                                      _vm.date = $event
+                                    },
+                                    "update:return-value": function($event) {
+                                      _vm.date = $event
+                                    }
+                                  },
+                                  scopedSlots: _vm._u([
+                                    {
+                                      key: "activator",
+                                      fn: function(ref) {
+                                        var on = ref.on
+                                        return [
+                                          _c(
+                                            "v-text-field",
+                                            _vm._g(
+                                              {
+                                                attrs: {
+                                                  label: "รายงานประจำเดือน",
+                                                  "prepend-icon": "event",
+                                                  readonly: ""
+                                                },
+                                                model: {
+                                                  value: _vm.date,
+                                                  callback: function($$v) {
+                                                    _vm.date = $$v
+                                                  },
+                                                  expression: "date"
+                                                }
+                                              },
+                                              on
+                                            )
+                                          )
+                                        ]
+                                      }
+                                    }
+                                  ]),
+                                  model: {
+                                    value: _vm.modal,
+                                    callback: function($$v) {
+                                      _vm.modal = $$v
+                                    },
+                                    expression: "modal"
+                                  }
+                                },
+                                [
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-date-picker",
+                                    {
+                                      attrs: {
+                                        color: "pink accent-3",
+                                        type: "month",
+                                        scrollable: ""
+                                      },
+                                      model: {
+                                        value: _vm.date,
+                                        callback: function($$v) {
+                                          _vm.date = $$v
+                                        },
+                                        expression: "date"
+                                      }
+                                    },
+                                    [
+                                      _c("v-spacer"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { flat: "", color: "primary" },
+                                          on: {
+                                            click: function($event) {
+                                              _vm.modal = false
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("Cancel")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-btn",
+                                        {
+                                          attrs: { flat: "", color: "primary" },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.$refs.dialog.save(
+                                                _vm.date
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("OK")]
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-data-table", {
+                    staticClass: "elevation-1 txt-title",
+                    attrs: {
+                      headers: _vm.headers,
+                      items: _vm.filteredReport,
+                      pagination: _vm.pagination
+                    },
+                    on: {
+                      "update:pagination": function($event) {
+                        _vm.pagination = $event
+                      }
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "items",
+                        fn: function(props) {
+                          return [
+                            _c("td", [_vm._v(_vm._s(props.item.product.name))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(props.item.product.price))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(props.item.created_at))])
+                          ]
+                        }
+                      },
+                      {
+                        key: "footer",
+                        fn: function() {
+                          return [
+                            _c("td", { attrs: { colspan: _vm.headers.length } })
+                          ]
+                        },
+                        proxy: true
+                      }
+                    ])
+                  })
+                ],
+                1
+              )
+            ],
             1
-          ),
-          _vm._v(" "),
-          _c("v-data-table", {
-            staticClass: "elevation-1 txt-title",
-            attrs: {
-              headers: _vm.headers,
-              items: _vm.filteredReport,
-              pagination: _vm.pagination
-            },
-            on: {
-              "update:pagination": function($event) {
-                _vm.pagination = $event
-              }
-            },
-            scopedSlots: _vm._u([
-              {
-                key: "items",
-                fn: function(props) {
-                  return [
-                    _c("td", [_vm._v(_vm._s(props.item.product.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(props.item.product.price))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(props.item.created_at))])
-                  ]
-                }
-              },
-              {
-                key: "footer",
-                fn: function() {
-                  return [
-                    _c(
-                      "td",
-                      { attrs: { colspan: _vm.headers.length } },
-                      [
-                        _c("v-btn", { on: { click: _vm.calSum } }, [
-                          _vm._v("ดูยอดรวมรายจ่ายทั้งหมด")
-                        ]),
-                        _vm._v(" "),
-                        _c("strong", { attrs: { id: "price" } })
-                      ],
-                      1
-                    )
-                  ]
-                },
-                proxy: true
-              }
-            ])
-          })
+          )
         ],
         1
       )
@@ -39013,13 +39217,23 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "v-layout",
-    { staticClass: "justify-end mt-3 mr-5 mb-3" },
+    { staticClass: "justify-end mt-4 mr-5 mb-3" },
     [
       _c(
         "v-flex",
         { attrs: { xs9: "", sm11: "" } },
         [
-          _c("h2", [_vm._v("ทำรายการ")]),
+          _c(
+            "h2",
+            { staticClass: "txt-title mt-2" },
+            [
+              _c("v-icon", { attrs: { large: "", color: "pink" } }, [
+                _vm._v("assignment_turned_in")
+              ]),
+              _vm._v(" ทำรายการ\n    ")
+            ],
+            1
+          ),
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
@@ -39038,7 +39252,7 @@ var render = function() {
             [
               _c(
                 "v-stepper-step",
-                { attrs: { complete: _vm.e6 > 1, step: "1" } },
+                { attrs: { complete: _vm.e6 > 1, step: "1", color: "pink" } },
                 [_c("h3", [_vm._v("กรอกชื่อหรือรหัสสมาชิก")])]
               ),
               _vm._v(" "),
@@ -39127,7 +39341,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-stepper-step",
-                { attrs: { complete: _vm.e6 > 2, step: "2" } },
+                { attrs: { complete: _vm.e6 > 2, step: "2", color: "pink" } },
                 [_c("h3", [_vm._v("รายการสินค้าที่ซื้อ")])]
               ),
               _vm._v(" "),
@@ -39301,7 +39515,7 @@ var render = function() {
               _vm._v(" "),
               _c(
                 "v-stepper-step",
-                { attrs: { complete: _vm.e6 > 3, step: "3" } },
+                { attrs: { complete: _vm.e6 > 3, step: "3", color: "pink" } },
                 [_c("h3", [_vm._v("สรุปรายการ")])]
               ),
               _vm._v(" "),

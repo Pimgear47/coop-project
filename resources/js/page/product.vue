@@ -4,7 +4,9 @@
       <v-card>
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-space-between>
-            <h2 class="txt-title mt-2">รายการสินค้า</h2>
+            <h2 class="txt-title mt-2">
+              <v-icon large color="pink">shopping_cart</v-icon>&nbsp;รายการสินค้า
+            </h2>
             <v-flex xs12 sm5 md3>
               <v-select :items="types" v-model="type" item-text="title" label="ประเภทสินค้า" solo></v-select>
             </v-flex>

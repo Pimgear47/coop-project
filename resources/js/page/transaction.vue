@@ -1,10 +1,12 @@
 <template>
-  <v-layout class="justify-end mt-3 mr-5 mb-3">
+  <v-layout class="justify-end mt-4 mr-5 mb-3">
     <v-flex xs9 sm11>
-      <h2>ทำรายการ</h2>
+      <h2 class="txt-title mt-2">
+        <v-icon large color="pink">assignment_turned_in</v-icon>&nbsp;ทำรายการ
+      </h2>
       <br>
       <v-stepper v-model="e6" vertical>
-        <v-stepper-step :complete="e6 > 1" step="1">
+        <v-stepper-step :complete="e6 > 1" step="1" color="pink">
           <h3>กรอกชื่อหรือรหัสสมาชิก</h3>
         </v-stepper-step>
         <v-stepper-content step="1">
@@ -23,7 +25,7 @@
             </v-flex>
           </v-layout>
         </v-stepper-content>
-        <v-stepper-step :complete="e6 > 2" step="2">
+        <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
         </v-stepper-step>
         <v-stepper-content step="2">
@@ -68,7 +70,7 @@
             @click="e6 = 1,clearTwo()"
           >Cancel</v-btn>
         </v-stepper-content>
-        <v-stepper-step :complete="e6 > 3" step="3">
+        <v-stepper-step :complete="e6 > 3" step="3" color="pink">
           <h3>สรุปรายการ</h3>
         </v-stepper-step>
         <v-stepper-content step="3">
