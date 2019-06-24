@@ -19,10 +19,10 @@
                 รหัสสมาชิก : {{user.code}}
               </h3>
               <br>
+              <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
+              <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">Cancel</v-btn>
             </v-flex>
           </v-layout>
-          <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
-          <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">Cancel</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
@@ -74,7 +74,9 @@
           <h3>สรุปรายการ</h3>
         </v-stepper-step>
         <v-stepper-content step="3">
-          <h3 v-if="this.currentUser!=null">สมาชิก : {{this.currentUser.firstname}} {{this.currentUser.lastname}}</h3>
+          <h3
+            v-if="this.currentUser!=null"
+          >สมาชิก : {{this.currentUser.firstname}} {{this.currentUser.lastname}}</h3>
           <h3>ผู้ทำรายการ : {{this.currentStaff.firstname}} {{this.currentStaff.lastname}}</h3>
           <h3>จำนวนสิ่งของที่ซื้อ {{this.sumofcount}} ชิ้น</h3>
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
@@ -136,10 +138,13 @@ export default {
       });
     },
     mapUser(user) {
-      if (user == null) {
+      console.log(this.code_user);
+      if (this.code_user == "") {
         this.currentUser = null;
+        console.log("this.currentUserIF", this.currentUser);
       } else {
         this.currentUser = user;
+        console.log("this.currentUser", this.currentUser);
       }
     },
     addProduct() {

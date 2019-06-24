@@ -2143,6 +2143,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getProductData();
@@ -2154,6 +2173,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       dialog: false,
+      editid: null,
       products: [],
       types: [// { title: "สินค้าทั้งหมด", value: "" },
       {
@@ -2167,11 +2187,19 @@ __webpack_require__.r(__webpack_exports__);
         value: "clothes"
       }],
       type: "",
+      editedIndex: -1,
       editItem: {
-        typeNew: "",
-        nameNew: "",
-        codeNew: "",
-        priceNew: "",
+        type: "",
+        name: "",
+        code: "",
+        price: "",
+        image: ""
+      },
+      defItem: {
+        type: "",
+        name: "",
+        code: "",
+        price: "",
         image: ""
       },
       noUpload: false
@@ -2199,19 +2227,38 @@ __webpack_require__.r(__webpack_exports__);
       reader.readAsDataURL(file);
       console.log("Check at onimage", this.noUpload);
     },
-    postProductData: function postProductData() {
+    editProduct: function editProduct(id, item) {
+      //console.log("item", item);
+      this.editedIndex = this.filteredProducts.indexOf(item);
+      this.editItem = Object.assign({}, item);
+      console.log("this.editItem", this.editItem);
+      this.dialog = true;
+      this.editid = id;
+    },
+    save: function save() {
       this.$validator.validateAll();
 
-      if (this.checkInput) {
-        axios.post("/api/product", {
-          name: this.editItem.nameNew,
-          image: this.editItem.image,
-          type: this.editItem.typeNew,
-          product_code: this.editItem.codeNew,
-          price: this.editItem.priceNew
+      if (this.editedIndex > -1) {
+        console.log(this.editItem);
+        Object.assign(this.filteredProducts[this.editedIndex], this.editItem) && axios.put("/api/product/" + this.editid, {
+          name: this.editItem.name,
+          // image: this.editItem.image,
+          // type: this.editItem.type,
+          // product_code: this.editItem.code,
+          price: this.editItem.price
         });
-        this.clear();
         this.close();
+      } else {
+        if (this.checkInput) {
+          this.filteredProducts.push(this.editItem) && axios.post("/api/product", {
+            name: this.editItem.name,
+            image: this.editItem.image,
+            type: this.editItem.type,
+            product_code: this.editItem.code,
+            price: this.editItem.price
+          });
+          this.close();
+        }
       }
 
       if (this.editItem.image == "") {
@@ -2223,18 +2270,16 @@ __webpack_require__.r(__webpack_exports__);
       console.log("Check at post", this.noUpload);
     },
     close: function close() {
-      this.clear();
       this.$validator.reset();
       this.dialog = false;
-    },
-    clear: function clear() {
-      var file = document.getElementById("uploadImage");
-      file.value = "";
-      this.editItem.nameNew = "";
-      this.editItem.image = "";
-      this.editItem.typeNew = "";
-      this.editItem.priceNew = "";
-      this.editItem.codeNew = "";
+
+      if (this.image) {
+        var file = document.getElementById("uploadImage");
+        file.value = "";
+      }
+
+      this.editItem = Object.assign({}, this.defItem);
+      this.editedIndex = -1;
       this.noUpload = false;
     }
   },
@@ -2244,6 +2289,12 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
+    formTitle: function formTitle() {
+      return this.editedIndex === -1 ? "เพิ่มสินค้า" : "แก้ไขสินค้า";
+    },
+    formAddOrEdit: function formAddOrEdit() {
+      if (this.editedIndex === -1) return true;else return false;
+    },
     filteredProducts: function filteredProducts() {
       var _this3 = this;
 
@@ -2252,7 +2303,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     checkInput: function checkInput() {
-      if (this.editItem.nameNew && this.editItem.image && this.editItem.typeNew && this.editItem.priceNew && this.editItem.codeNew) {
+      if (this.editItem.name && this.editItem.image && this.editItem.type && this.editItem.price && this.editItem.code) {
         return true;
       } else {
         return false;
@@ -2677,6 +2728,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   data: function data() {
@@ -2732,10 +2785,14 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     mapUser: function mapUser(user) {
-      if (user == null) {
+      console.log(this.code_user);
+
+      if (this.code_user == "") {
         this.currentUser = null;
+        console.log("this.currentUserIF", this.currentUser);
       } else {
         this.currentUser = user;
+        console.log("this.currentUser", this.currentUser);
       }
     },
     addProduct: function addProduct() {
@@ -50637,7 +50694,18 @@ var render = function() {
                                                 {
                                                   staticClass:
                                                     "amber lighten-1 txt-title",
-                                                  attrs: { dark: "", block: "" }
+                                                  attrs: {
+                                                    dark: "",
+                                                    block: ""
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.editProduct(
+                                                        product.id,
+                                                        product
+                                                      )
+                                                    }
+                                                  }
                                                 },
                                                 [_vm._v("แก้ไขข้อมูล")]
                                               )
@@ -50699,7 +50767,9 @@ var render = function() {
             "v-card",
             [
               _c("v-card-title", [
-                _c("h2", { staticClass: "txt-title" }, [_vm._v("เพิ่มสินค้า")])
+                _c("h2", { staticClass: "txt-title" }, [
+                  _vm._v(_vm._s(_vm.formTitle))
+                ])
               ]),
               _vm._v(" "),
               _c(
@@ -50730,14 +50800,15 @@ var render = function() {
                                   label: "ชื่อสินค้า*",
                                   "error-messages": _vm.errors.collect("name"),
                                   "data-vv-name": "name",
-                                  required: ""
+                                  required: "",
+                                  attach: ""
                                 },
                                 model: {
-                                  value: _vm.editItem.nameNew,
+                                  value: _vm.editItem.name,
                                   callback: function($$v) {
-                                    _vm.$set(_vm.editItem, "nameNew", $$v)
+                                    _vm.$set(_vm.editItem, "name", $$v)
                                   },
-                                  expression: "editItem.nameNew"
+                                  expression: "editItem.name"
                                 }
                               })
                             ],
@@ -50761,102 +50832,117 @@ var render = function() {
                                   label: "ราคา*",
                                   "error-messages": _vm.errors.collect("price"),
                                   "data-vv-name": "price",
-                                  required: ""
+                                  required: "",
+                                  attach: ""
                                 },
                                 model: {
-                                  value: _vm.editItem.priceNew,
+                                  value: _vm.editItem.price,
                                   callback: function($$v) {
-                                    _vm.$set(_vm.editItem, "priceNew", $$v)
+                                    _vm.$set(_vm.editItem, "price", $$v)
                                   },
-                                  expression: "editItem.priceNew"
+                                  expression: "editItem.price"
                                 }
                               })
                             ],
                             1
                           ),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "" } },
-                            [
-                              _c("v-text-field", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
+                          _vm.formAddOrEdit
+                            ? _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _vm.formAddOrEdit
+                                    ? _c("v-text-field", {
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          label: "รหัสบาร์โค้ดสินค้า*",
+                                          "error-messages": _vm.errors.collect(
+                                            "code"
+                                          ),
+                                          "data-vv-name": "code",
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.editItem.code,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.editItem, "code", $$v)
+                                          },
+                                          expression: "editItem.code"
+                                        }
+                                      })
+                                    : _vm._e()
                                 ],
-                                attrs: {
-                                  label: "รหัสบาร์โค้ดสินค้า 12 หลัก*",
-                                  "error-messages": _vm.errors.collect("code"),
-                                  "data-vv-name": "code",
-                                  required: ""
-                                },
-                                model: {
-                                  value: _vm.editItem.codeNew,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.editItem, "codeNew", $$v)
-                                  },
-                                  expression: "editItem.codeNew"
-                                }
-                              })
-                            ],
-                            1
-                          ),
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
-                          _c(
-                            "v-flex",
-                            { attrs: { xs12: "" } },
-                            [
-                              _c("v-select", {
-                                directives: [
-                                  {
-                                    name: "validate",
-                                    rawName: "v-validate",
-                                    value: "required",
-                                    expression: "'required'"
-                                  }
+                          _vm.formAddOrEdit
+                            ? _c(
+                                "v-flex",
+                                { attrs: { xs12: "" } },
+                                [
+                                  _c("v-select", {
+                                    directives: [
+                                      {
+                                        name: "validate",
+                                        rawName: "v-validate",
+                                        value: "required",
+                                        expression: "'required'"
+                                      }
+                                    ],
+                                    attrs: {
+                                      items: _vm.types,
+                                      "item-text": "title",
+                                      label: "ประเภทสินค้า*",
+                                      "data-vv-name": "type",
+                                      "error-messages": _vm.errors.collect(
+                                        "type"
+                                      ),
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.editItem.type,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.editItem, "type", $$v)
+                                      },
+                                      expression: "editItem.type"
+                                    }
+                                  })
                                 ],
-                                attrs: {
-                                  items: _vm.types,
-                                  "item-text": "title",
-                                  label: "ประเภทสินค้า*",
-                                  "data-vv-name": "type",
-                                  "error-messages": _vm.errors.collect("type"),
-                                  required: ""
-                                },
-                                model: {
-                                  value: _vm.editItem.typeNew,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.editItem, "typeNew", $$v)
-                                  },
-                                  expression: "editItem.typeNew"
-                                }
-                              })
-                            ],
-                            1
-                          ),
+                                1
+                              )
+                            : _vm._e(),
                           _vm._v(" "),
                           _c("v-flex", { attrs: { xs12: "" } }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "validate",
-                                  rawName: "v-validate",
-                                  value: "image",
-                                  expression: "'image'"
-                                }
-                              ],
-                              attrs: {
-                                id: "uploadImage",
-                                type: "file",
-                                "error-messages": _vm.errors.collect("image"),
-                                "data-vv-as": "image"
-                              },
-                              on: { change: _vm.onImageChange }
-                            }),
+                            _vm.formAddOrEdit
+                              ? _c("input", {
+                                  directives: [
+                                    {
+                                      name: "validate",
+                                      rawName: "v-validate",
+                                      value: "image",
+                                      expression: "'image'"
+                                    }
+                                  ],
+                                  attrs: {
+                                    id: "uploadImage",
+                                    type: "file",
+                                    "error-messages": _vm.errors.collect(
+                                      "image"
+                                    ),
+                                    "data-vv-as": "image"
+                                  },
+                                  on: { change: _vm.onImageChange }
+                                })
+                              : _vm._e(),
                             _vm._v(" "),
                             _vm.noUpload
                               ? _c("p", { staticClass: "no-upload" }, [
@@ -50864,9 +50950,13 @@ var render = function() {
                                 ])
                               : _vm._e(),
                             _vm._v(" "),
-                            this.editItem.image ? _c("br") : _vm._e(),
+                            this.editItem.image && _vm.formAddOrEdit
+                              ? _c("br")
+                              : _vm._e(),
                             _vm._v(" "),
-                            this.editItem.image ? _c("br") : _vm._e(),
+                            this.editItem.image && _vm.formAddOrEdit
+                              ? _c("br")
+                              : _vm._e(),
                             _vm._v(" "),
                             this.editItem.image
                               ? _c("img", {
@@ -50906,7 +50996,7 @@ var render = function() {
                     "v-btn",
                     {
                       attrs: { color: "blue darken-1", flat: "" },
-                      on: { click: _vm.postProductData }
+                      on: { click: _vm.save }
                     },
                     [_vm._v("Save")]
                   )
@@ -51531,41 +51621,42 @@ var render = function() {
                                 )
                               ]),
                               _vm._v(" "),
-                              _c("br")
-                            ]
+                              _c("br"),
+                              _vm._v(" "),
+                              _c(
+                                "v-btn",
+                                {
+                                  staticClass: "txt-title",
+                                  attrs: { color: "primary" },
+                                  on: {
+                                    click: function($event) {
+                                      ;(_vm.e6 = 2), _vm.mapUser(user)
+                                    }
+                                  }
+                                },
+                                [_vm._v("Continue")]
+                              ),
+                              _vm._v(" "),
+                              _vm.code_user != ""
+                                ? _c(
+                                    "v-btn",
+                                    {
+                                      staticClass: "txt-title",
+                                      attrs: { flat: "" },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.clearOne()
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Cancel")]
+                                  )
+                                : _vm._e()
+                            ],
+                            1
                           )
                         }),
                         1
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    {
-                      staticClass: "txt-title",
-                      attrs: { color: "primary" },
-                      on: {
-                        click: function($event) {
-                          ;(_vm.e6 = 2), _vm.mapUser(_vm.user)
-                        }
-                      }
-                    },
-                    [_vm._v("Continue")]
-                  ),
-                  _vm._v(" "),
-                  _vm.code_user != ""
-                    ? _c(
-                        "v-btn",
-                        {
-                          staticClass: "txt-title",
-                          attrs: { flat: "" },
-                          on: {
-                            click: function($event) {
-                              return _vm.clearOne()
-                            }
-                          }
-                        },
-                        [_vm._v("Cancel")]
                       )
                     : _vm._e()
                 ],

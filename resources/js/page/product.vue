@@ -10,7 +10,13 @@
             <v-flex xs12 sm5 md3>
               <v-select :items="types" v-model="type" item-text="title" label="ประเภทสินค้า" solo></v-select>
             </v-flex>
-            <v-btn color="primary" v-if="usernow.admin=='1'" dark class="mb-2 txt-title" @click="dialog = true">New Product</v-btn>
+            <v-btn
+              color="primary"
+              v-if="usernow.admin=='1'"
+              dark
+              class="mb-2 txt-title"
+              @click="dialog = true"
+            >New Product</v-btn>
           </v-layout>
           <v-layout row wrap>
             <v-flex v-for="product in filteredProducts" :key="product.id" sm2>
@@ -26,8 +32,19 @@
                       <h3 class="txt-title">{{product.name}}</h3>
                       <span class="grey--text txt-title">{{product.price}} บาท</span>
                       <v-divider v-if="usernow.admin=='1'"></v-divider>
-                      <v-btn v-if="usernow.admin=='1'" dark block class="amber lighten-1 txt-title">แก้ไขข้อมูล</v-btn>
-                      <v-btn v-if="usernow.admin=='1'" dark block class="deep-orange accent-3 txt-title">ลบสินค้า</v-btn>
+                      <v-btn
+                        v-if="usernow.admin=='1'"
+                        dark
+                        block
+                        class="amber lighten-1 txt-title"
+                        @click="editProduct(product.id,product)"
+                      >แก้ไขข้อมูล</v-btn>
+                      <v-btn
+                        v-if="usernow.admin=='1'"
+                        dark
+                        block
+                        class="deep-orange accent-3 txt-title"
+                      >ลบสินค้า</v-btn>
                     </v-flex>
                   </v-layout>
                 </v-card-title>
@@ -40,46 +57,48 @@
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <h2 class="txt-title">เพิ่มสินค้า</h2>
+          <h2 class="txt-title">{{formTitle}}</h2>
         </v-card-title>
         <v-card-text>
-          <!-- <form @submit="checkForm" enctype="multipart/form-data"> -->
           <v-container grid-list-md>
             <v-layout wrap>
               <v-flex xs12 sm6 md6>
                 <v-text-field
-                  v-model="editItem.nameNew"
+                  v-model="editItem.name"
                   label="ชื่อสินค้า*"
                   v-validate="'required'"
                   :error-messages="errors.collect('name')"
                   data-vv-name="name"
                   required
+                  attach
                 ></v-text-field>
               </v-flex>
               <v-flex xs12 sm6 md6>
                 <v-text-field
-                  v-model="editItem.priceNew"
+                  v-model="editItem.price"
                   label="ราคา*"
                   v-validate="'required'"
                   :error-messages="errors.collect('price')"
                   data-vv-name="price"
                   required
+                  attach
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12>
+              <v-flex xs12 v-if="formAddOrEdit">
                 <v-text-field
-                  v-model="editItem.codeNew"
-                  label="รหัสบาร์โค้ดสินค้า 12 หลัก*"
+                  v-model="editItem.code"
+                  label="รหัสบาร์โค้ดสินค้า*"
                   v-validate="'required'"
+                  v-if="formAddOrEdit"
                   :error-messages="errors.collect('code')"
                   data-vv-name="code"
                   required
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12>
+              <v-flex xs12 v-if="formAddOrEdit">
                 <v-select
                   :items="types"
-                  v-model="editItem.typeNew"
+                  v-model="editItem.type"
                   item-text="title"
                   label="ประเภทสินค้า*"
                   v-validate="'required'"
@@ -96,10 +115,11 @@
                   :error-messages="errors.collect('image')"
                   data-vv-as="image"
                   @change="onImageChange"
+                  v-if="formAddOrEdit"
                 >
                 <p class="no-upload" v-if="noUpload">The image field is required.</p>
-                <br v-if="this.editItem.image">
-                <br v-if="this.editItem.image">
+                <br v-if="this.editItem.image && formAddOrEdit">
+                <br v-if="this.editItem.image && formAddOrEdit">
                 <img
                   :src="editItem.image"
                   v-if="this.editItem.image"
@@ -109,12 +129,11 @@
               </v-flex>
             </v-layout>
           </v-container>
-          <!-- </form> -->
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" flat @click="close">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="postProductData">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -133,6 +152,7 @@ export default {
   data() {
     return {
       dialog: false,
+      editid: null,
       products: [],
       types: [
         // { title: "สินค้าทั้งหมด", value: "" },
@@ -147,11 +167,19 @@ export default {
         }
       ],
       type: "",
+      editedIndex: -1,
       editItem: {
-        typeNew: "",
-        nameNew: "",
-        codeNew: "",
-        priceNew: "",
+        type: "",
+        name: "",
+        code: "",
+        price: "",
+        image: ""
+      },
+      defItem: {
+        type: "",
+        name: "",
+        code: "",
+        price: "",
         image: ""
       },
       noUpload: false
@@ -173,19 +201,41 @@ export default {
       reader.readAsDataURL(file);
       console.log("Check at onimage", this.noUpload);
     },
-    postProductData() {
+    editProduct(id, item) {
+      //console.log("item", item);
+      this.editedIndex = this.filteredProducts.indexOf(item);
+      this.editItem = Object.assign({}, item);
+      console.log("this.editItem", this.editItem);
+      this.dialog = true;
+      this.editid = id;
+    },
+    save() {
       this.$validator.validateAll();
-      if (this.checkInput) {
-        axios.post("/api/product", {
-          name: this.editItem.nameNew,
-          image: this.editItem.image,
-          type: this.editItem.typeNew,
-          product_code: this.editItem.codeNew,
-          price: this.editItem.priceNew
-        });
-        this.clear();
+      if (this.editedIndex > -1) {
+        console.log(this.editItem)
+        Object.assign(this.filteredProducts[this.editedIndex], this.editItem) &&
+          axios.put("/api/product/" + this.editid, {
+            name: this.editItem.name,
+            // image: this.editItem.image,
+            // type: this.editItem.type,
+            // product_code: this.editItem.code,
+            price: this.editItem.price
+          });
         this.close();
+      } else {
+        if (this.checkInput) {
+          this.filteredProducts.push(this.editItem) &&
+            axios.post("/api/product", {
+              name: this.editItem.name,
+              image: this.editItem.image,
+              type: this.editItem.type,
+              product_code: this.editItem.code,
+              price: this.editItem.price
+            });
+          this.close();
+        }
       }
+
       if (this.editItem.image == "") {
         this.noUpload = true;
       } else {
@@ -194,18 +244,14 @@ export default {
       console.log("Check at post", this.noUpload);
     },
     close() {
-      this.clear();
       this.$validator.reset();
       this.dialog = false;
-    },
-    clear() {
-      const file = document.getElementById("uploadImage");
-      file.value = "";
-      this.editItem.nameNew = "";
-      this.editItem.image = "";
-      this.editItem.typeNew = "";
-      this.editItem.priceNew = "";
-      this.editItem.codeNew = "";
+      if (this.image) {
+        const file = document.getElementById("uploadImage");
+        file.value = "";
+      }
+      this.editItem = Object.assign({}, this.defItem);
+      this.editedIndex = -1;
       this.noUpload = false;
     }
   },
@@ -215,6 +261,13 @@ export default {
     }
   },
   computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "เพิ่มสินค้า" : "แก้ไขสินค้า";
+    },
+    formAddOrEdit() {
+      if (this.editedIndex === -1) return true;
+      else return false;
+    },
     filteredProducts: function() {
       return this.products.filter(product => {
         return product.type.match(this.type);
@@ -222,11 +275,11 @@ export default {
     },
     checkInput: function() {
       if (
-        this.editItem.nameNew &&
+        this.editItem.name &&
         this.editItem.image &&
-        this.editItem.typeNew &&
-        this.editItem.priceNew &&
-        this.editItem.codeNew
+        this.editItem.type &&
+        this.editItem.price &&
+        this.editItem.code
       ) {
         return true;
       } else {
