@@ -11,8 +11,7 @@
         </v-stepper-step>
         <v-stepper-content step="1">
           <v-text-field v-model="code_user" label="รหัสสมาชิก"></v-text-field>
-          <!-- @keyup.enter="e6 = 2 && mapUser(filteredUser.pop())" -->
-          <v-layout v-if="filteredUser.length==1" row wrap>
+          <v-layout v-if="filteredUser.length===1 && code_user!=''" row wrap>
             <v-flex v-for="user in filteredUser" :key="user.firstname" sm4 mb-2>
               <h3 class="txt-title">
                 ชื่อสมาชิก : {{user.firstname}} {{user.lastname}}
@@ -20,10 +19,10 @@
                 รหัสสมาชิก : {{user.code}}
               </h3>
               <br>
-              <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
-              <v-btn class="txt-title" flat @click="clearOne()">Cancel</v-btn>
             </v-flex>
           </v-layout>
+          <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
+          <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">Cancel</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
@@ -34,6 +33,7 @@
             <v-flex v-for="product in filteredProduct" :key="product.name" sm4 mb-2>
               <h4 class="txt-title">ชื่อสินค้า : {{product.name}}</h4>
               <h4 class="txt-title">ราคา : {{product.price}} บาท</h4>
+              <img :src="product.image" height="200px">
               <br>
             </v-flex>
           </v-layout>
@@ -74,7 +74,7 @@
           <h3>สรุปรายการ</h3>
         </v-stepper-step>
         <v-stepper-content step="3">
-          <h3>สมาชิก : {{this.currentUser.firstname}} {{this.currentUser.lastname}}</h3>
+          <h3 v-if="this.currentUser!=null">สมาชิก : {{this.currentUser.firstname}} {{this.currentUser.lastname}}</h3>
           <h3>ผู้ทำรายการ : {{this.currentStaff.firstname}} {{this.currentStaff.lastname}}</h3>
           <h3>จำนวนสิ่งของที่ซื้อ {{this.sumofcount}} ชิ้น</h3>
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
@@ -136,7 +136,11 @@ export default {
       });
     },
     mapUser(user) {
-      this.currentUser = user;
+      if (user == null) {
+        this.currentUser = null;
+      } else {
+        this.currentUser = user;
+      }
     },
     addProduct() {
       if (this.filteredProduct.length == 1) {
@@ -209,15 +213,27 @@ export default {
     addstuff(i) {
       var currentProduct = this.orderProduct[i];
       console.log(currentProduct);
-      axios
-        .post("/api/transaction", {
-          iduser: this.currentUser.id,
-          idustaff: this.currentStaff.id,
-          idproduct: currentProduct.id
-        })
-        .catch(error => {
-          console.log(error.message);
-        });
+      if (this.currentUser == null) {
+        axios
+          .post("/api/transaction", {
+            iduser: null,
+            idustaff: this.currentStaff.id,
+            idproduct: currentProduct.id
+          })
+          .catch(error => {
+            console.log(error.message);
+          });
+      } else {
+        axios
+          .post("/api/transaction", {
+            iduser: this.currentUser.id,
+            idustaff: this.currentStaff.id,
+            idproduct: currentProduct.id
+          })
+          .catch(error => {
+            console.log(error.message);
+          });
+      }
     }
   },
   computed: {

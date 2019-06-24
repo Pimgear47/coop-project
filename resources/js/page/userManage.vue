@@ -29,7 +29,8 @@
                     <v-text-field v-model="editedItem.code" label="รหัส"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.email" label="email"></v-text-field>
+                    <v-text-field v-model="editedItem.email" label="email">
+                    </v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editedItem.type" label="สถานะ"></v-text-field>
@@ -201,8 +202,7 @@ export default {
             unit: this.editedItem.unit
           });
       } else {
-        this.users.push(this.editedItem)
-        &&
+        this.users.push(this.editedItem) &&
           axios.post("/api/user", {
             firstname: this.editedItem.firstname,
             lastname: this.editedItem.lastname,
@@ -212,7 +212,7 @@ export default {
             level: this.editedItem.level,
             room: this.editedItem.room,
             unit: this.editedItem.unit,
-            bdate: this.editedItem.bdate,
+            bdate: this.editedItem.bdate
           });
       }
       this.close();

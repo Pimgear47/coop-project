@@ -62,9 +62,11 @@ export default {
   props: ["usernow"],
   data: () => ({
     check: false,
+    date: new Date().toISOString().substr(0, 7),
     pagination: {
       rowsPerPage: 10
     },
+    modal: false,
     search: "",
     headers: [
       { text: "ชื่อ", sortable: false, value: "product.name" },
@@ -80,9 +82,10 @@ export default {
   methods: {
     getReportData() {
       axios
-        .get("api/reportuser")
+        .get("api/transaction")
         .then(response => {
           this.reports = response.data;
+          console.log(this.reports);
         })
         .then();
     },
@@ -100,9 +103,10 @@ export default {
   },
   computed: {
     filteredReport: function() {
-      return this.reports.filter(report => {
-        return report.iduser == this.usernow.id;
-      });
+      // return this.reports.filter(report => {
+      //   return report.iduser == this.usernow.id;
+      // });
+      return this.reports;
     }
   }
 };

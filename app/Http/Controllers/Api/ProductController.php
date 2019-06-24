@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products=Product::orderBy('name','asc')->get();
+        $products = Product::orderBy('name', 'asc')->get();
         return response()->json($products);
     }
 
@@ -42,7 +42,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+        $product->name = $request->get('name');
+        $product->price = $request->get('price');
+        $product->product_code = $request->get('product_code');
+        $product->type = $request->get('type');
+        $product->image = $request->get('image');
+        $product->save();
+        return response()->json($product);
     }
 
     /**

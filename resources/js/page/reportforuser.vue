@@ -67,14 +67,18 @@ export default {
     check: false,
     date: new Date().toISOString().substr(0, 7),
     pagination: {
-      rowsPerPage: 10
+      rowsPerPage: 20
     },
     modal: false,
     search: "",
     headers: [
-      { text: "ชื่อ", sortable: false, value: "product.name" },
-      { text: "จำนวน", sortable: false, value: "created_at" },
-      { text: "ราคา", sortable: false, value: "product.price" },
+      { text: "ชื่อ", sortable: false, value: "product.name"},
+      { text: "จำนวน", sortable: false, value: "count" },
+      {
+        text: "ราคา",
+        sortable: false,
+        value: "product.price"
+      },
       { text: "รวมเป็นเงิน", sortable: false, value: "product.price*count" }
     ],
     reports: [],
