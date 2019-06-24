@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div id="app">
-    <product></product>
+    <product :usernow="{{ Auth::user() }}"></product>
 </div>
 @endsection
