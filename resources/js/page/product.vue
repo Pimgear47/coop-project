@@ -138,6 +138,10 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar class="txt-title" v-model="snackbar" :color="color" :timeout="3000">
+      บันทึกสำเร็จแล้ว
+      <v-btn dark flat @click="snackbar = false"><v-icon>close</v-icon></v-btn>
+    </v-snackbar>
   </v-layout>
 </template>
 
@@ -152,6 +156,8 @@ export default {
   props: ["usernow"],
   data() {
     return {
+      color: "success",
+      snackbar: false,
       dialog: false,
       editid: null,
       products: [],
@@ -168,7 +174,7 @@ export default {
         }
       ],
       type: "",
-      editedIndex: -1,
+      editIndex: -1,
       editItem: {
         type: "",
         name: "",
@@ -204,7 +210,7 @@ export default {
     },
     editProduct(id, item) {
       //console.log("item", item);
-      this.editedIndex = this.products.indexOf(item);
+      this.editIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
       console.log("this.editItem", this.editItem);
       this.dialog = true;
@@ -224,13 +230,14 @@ export default {
     },
     save() {
       this.$validator.validateAll();
-      if (this.editedIndex > -1) {
+      if (this.editIndex > -1) {
         console.log(this.editItem);
-        Object.assign(this.products[this.editedIndex], this.editItem) &&
+        Object.assign(this.products[this.editIndex], this.editItem) &&
           axios.put("/api/product/" + this.editid, {
             name: this.editItem.name,
             price: this.editItem.price
           });
+        this.snackbar = true;
         this.close();
       } else {
         if (this.checkInput) {
@@ -242,26 +249,25 @@ export default {
               product_code: this.editItem.code,
               price: this.editItem.price
             });
+          this.snackbar = true;
           this.close();
         }
       }
-
       if (this.editItem.image == "") {
         this.noUpload = true;
       } else {
         this.noUpload = false;
       }
-      console.log("Check at post", this.noUpload);
     },
     close() {
       this.$validator.reset();
       this.dialog = false;
-      if (this.image) {
-        const file = document.getElementById("uploadImage");
+      this.editIndex = -1;
+      this.editItem = Object.assign({}, this.defItem);
+      const file = document.getElementById("uploadImage");
+      if (file.value) {
         file.value = "";
       }
-      this.editItem = Object.assign({}, this.defItem);
-      this.editedIndex = -1;
       this.noUpload = false;
     }
   },
@@ -272,10 +278,10 @@ export default {
   },
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "เพิ่มสินค้า" : "แก้ไขสินค้า";
+      return this.editIndex === -1 ? "เพิ่มสินค้า" : "แก้ไขสินค้า";
     },
     formAddOrEdit() {
-      if (this.editedIndex === -1) return true;
+      if (this.editIndex === -1) return true;
       else return false;
     },
     productsFil: function() {

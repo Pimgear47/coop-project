@@ -2163,6 +2163,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getProductData();
@@ -2173,6 +2177,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ["usernow"],
   data: function data() {
     return {
+      color: "success",
+      snackbar: false,
       dialog: false,
       editid: null,
       products: [],
@@ -2188,7 +2194,7 @@ __webpack_require__.r(__webpack_exports__);
         value: "clothes"
       }],
       type: "",
-      editedIndex: -1,
+      editIndex: -1,
       editItem: {
         type: "",
         name: "",
@@ -2230,7 +2236,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     editProduct: function editProduct(id, item) {
       //console.log("item", item);
-      this.editedIndex = this.products.indexOf(item);
+      this.editIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
       console.log("this.editItem", this.editItem);
       this.dialog = true;
@@ -2249,12 +2255,13 @@ __webpack_require__.r(__webpack_exports__);
     save: function save() {
       this.$validator.validateAll();
 
-      if (this.editedIndex > -1) {
+      if (this.editIndex > -1) {
         console.log(this.editItem);
-        Object.assign(this.products[this.editedIndex], this.editItem) && axios.put("/api/product/" + this.editid, {
+        Object.assign(this.products[this.editIndex], this.editItem) && axios.put("/api/product/" + this.editid, {
           name: this.editItem.name,
           price: this.editItem.price
         });
+        this.snackbar = true;
         this.close();
       } else {
         if (this.checkInput) {
@@ -2265,6 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
             product_code: this.editItem.code,
             price: this.editItem.price
           });
+          this.snackbar = true;
           this.close();
         }
       }
@@ -2274,20 +2282,18 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.noUpload = false;
       }
-
-      console.log("Check at post", this.noUpload);
     },
     close: function close() {
       this.$validator.reset();
       this.dialog = false;
+      this.editIndex = -1;
+      this.editItem = Object.assign({}, this.defItem);
+      var file = document.getElementById("uploadImage");
 
-      if (this.image) {
-        var file = document.getElementById("uploadImage");
+      if (file.value) {
         file.value = "";
       }
 
-      this.editItem = Object.assign({}, this.defItem);
-      this.editedIndex = -1;
       this.noUpload = false;
     }
   },
@@ -2298,10 +2304,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     formTitle: function formTitle() {
-      return this.editedIndex === -1 ? "เพิ่มสินค้า" : "แก้ไขสินค้า";
+      return this.editIndex === -1 ? "เพิ่มสินค้า" : "แก้ไขสินค้า";
     },
     formAddOrEdit: function formAddOrEdit() {
-      if (this.editedIndex === -1) return true;else return false;
+      if (this.editIndex === -1) return true;else return false;
     },
     productsFil: function productsFil() {
       var _this4 = this;
@@ -51023,6 +51029,38 @@ var render = function() {
                 1
               )
             ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          staticClass: "txt-title",
+          attrs: { color: _vm.color, timeout: 3000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    บันทึกสำเร็จแล้ว\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("close")])],
             1
           )
         ],
