@@ -86,9 +86,6 @@ class ProductController extends Controller
         $product=Product::find($id);
         $product->name = $request->get('name');
         $product->price = $request->get('price');
-        // $product->product_code = $request->get('product_code');
-        // $product->type = $request->get('type');
-        // $product->image = $request->get('image');
         $product->update();
         return response()->json($product);
     }
@@ -101,6 +98,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product=Product::find($id);
+        $product->delete();
+        return response()->json($product);
     }
 }

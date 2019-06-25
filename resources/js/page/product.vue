@@ -19,7 +19,7 @@
             >New Product</v-btn>
           </v-layout>
           <v-layout row wrap>
-            <v-flex v-for="product in filteredProducts" :key="product.id" sm2>
+            <v-flex v-for="product in productsFil" :key="product.id" sm2>
               <v-card>
                 <v-img :src="product.image" height="200px">
                   <v-container fill-height fluid pa-2>
@@ -44,6 +44,7 @@
                         dark
                         block
                         class="deep-orange accent-3 txt-title"
+                        @click="deleteProduct(product.id,product)"
                       >ลบสินค้า</v-btn>
                     </v-flex>
                   </v-layout>
@@ -203,28 +204,37 @@ export default {
     },
     editProduct(id, item) {
       //console.log("item", item);
-      this.editedIndex = this.filteredProducts.indexOf(item);
+      this.editedIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
       console.log("this.editItem", this.editItem);
       this.dialog = true;
       this.editid = id;
     },
+    deleteProduct(id, item) {
+      const index = this.products.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        axios
+          .delete("api/product/" + id)
+          .catch(error => {
+            console.log(error);
+          })
+          .then(response => {
+            this.products.splice(index, 1);
+          });
+    },
     save() {
       this.$validator.validateAll();
       if (this.editedIndex > -1) {
-        console.log(this.editItem)
-        Object.assign(this.filteredProducts[this.editedIndex], this.editItem) &&
+        console.log(this.editItem);
+        Object.assign(this.products[this.editedIndex], this.editItem) &&
           axios.put("/api/product/" + this.editid, {
             name: this.editItem.name,
-            // image: this.editItem.image,
-            // type: this.editItem.type,
-            // product_code: this.editItem.code,
             price: this.editItem.price
           });
         this.close();
       } else {
         if (this.checkInput) {
-          this.filteredProducts.push(this.editItem) &&
+          this.products.push(this.editItem) &&
             axios.post("/api/product", {
               name: this.editItem.name,
               image: this.editItem.image,
@@ -268,7 +278,7 @@ export default {
       if (this.editedIndex === -1) return true;
       else return false;
     },
-    filteredProducts: function() {
+    productsFil: function() {
       return this.products.filter(product => {
         return product.type.match(this.type);
       });

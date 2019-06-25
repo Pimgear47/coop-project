@@ -2162,6 +2162,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getProductData();
@@ -2229,28 +2230,35 @@ __webpack_require__.r(__webpack_exports__);
     },
     editProduct: function editProduct(id, item) {
       //console.log("item", item);
-      this.editedIndex = this.filteredProducts.indexOf(item);
+      this.editedIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
       console.log("this.editItem", this.editItem);
       this.dialog = true;
       this.editid = id;
+    },
+    deleteProduct: function deleteProduct(id, item) {
+      var _this3 = this;
+
+      var index = this.products.indexOf(item);
+      confirm("Are you sure you want to delete this item?") && axios["delete"]("api/product/" + id)["catch"](function (error) {
+        console.log(error);
+      }).then(function (response) {
+        _this3.products.splice(index, 1);
+      });
     },
     save: function save() {
       this.$validator.validateAll();
 
       if (this.editedIndex > -1) {
         console.log(this.editItem);
-        Object.assign(this.filteredProducts[this.editedIndex], this.editItem) && axios.put("/api/product/" + this.editid, {
+        Object.assign(this.products[this.editedIndex], this.editItem) && axios.put("/api/product/" + this.editid, {
           name: this.editItem.name,
-          // image: this.editItem.image,
-          // type: this.editItem.type,
-          // product_code: this.editItem.code,
           price: this.editItem.price
         });
         this.close();
       } else {
         if (this.checkInput) {
-          this.filteredProducts.push(this.editItem) && axios.post("/api/product", {
+          this.products.push(this.editItem) && axios.post("/api/product", {
             name: this.editItem.name,
             image: this.editItem.image,
             type: this.editItem.type,
@@ -2295,11 +2303,11 @@ __webpack_require__.r(__webpack_exports__);
     formAddOrEdit: function formAddOrEdit() {
       if (this.editedIndex === -1) return true;else return false;
     },
-    filteredProducts: function filteredProducts() {
-      var _this3 = this;
+    productsFil: function productsFil() {
+      var _this4 = this;
 
       return this.products.filter(function (product) {
-        return product.type.match(_this3.type);
+        return product.type.match(_this4.type);
       });
     },
     checkInput: function checkInput() {
@@ -50619,7 +50627,7 @@ var render = function() {
                   _c(
                     "v-layout",
                     { attrs: { row: "", wrap: "" } },
-                    _vm._l(_vm.filteredProducts, function(product) {
+                    _vm._l(_vm.productsFil, function(product) {
                       return _c(
                         "v-flex",
                         { key: product.id, attrs: { sm2: "" } },
@@ -50717,7 +50725,18 @@ var render = function() {
                                                 {
                                                   staticClass:
                                                     "deep-orange accent-3 txt-title",
-                                                  attrs: { dark: "", block: "" }
+                                                  attrs: {
+                                                    dark: "",
+                                                    block: ""
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.deleteProduct(
+                                                        product.id,
+                                                        product
+                                                      )
+                                                    }
+                                                  }
                                                 },
                                                 [_vm._v("ลบสินค้า")]
                                               )
