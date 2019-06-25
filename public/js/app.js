@@ -2744,10 +2744,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   data: function data() {
     return {
+      snackbar: false,
+      color: "success",
       pagination: {
         rowsPerPage: 25
       },
@@ -2866,10 +2874,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
+      this.sumofcount = 0;
       this.orderProduct = [];
       this.orderPrice = 0;
       this.code_user = "";
       this.currentUserId = "";
+      this.snackbar = true;
     },
     addstuff: function addstuff(i) {
       var currentProduct = this.orderProduct[i];
@@ -51981,6 +51991,38 @@ var render = function() {
                 1
               )
             ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          staticClass: "txt-title",
+          attrs: { color: _vm.color, timeout: 3000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    ทำรายการสำเร็จ\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("close")])],
             1
           )
         ],

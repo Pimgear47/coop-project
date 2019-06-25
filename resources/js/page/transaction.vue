@@ -88,6 +88,12 @@
         </v-stepper-content>
       </v-stepper>
     </v-flex>
+    <v-snackbar class="txt-title" v-model="snackbar" :color="color" :timeout="3000">
+      ทำรายการสำเร็จ
+      <v-btn dark flat @click="snackbar = false">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-layout>
 </template>
 
@@ -96,6 +102,8 @@ export default {
   props: ["usernow"],
   data() {
     return {
+      snackbar: false,
+      color: "success",
       pagination: {
         rowsPerPage: 25
       },
@@ -210,10 +218,12 @@ export default {
           this.addstuff(step);
         }
       }
+      this.sumofcount = 0;
       this.orderProduct = [];
       this.orderPrice = 0;
       this.code_user = "";
       this.currentUserId = "";
+      this.snackbar = true;
     },
     addstuff(i) {
       var currentProduct = this.orderProduct[i];
