@@ -41,6 +41,7 @@ class TransactionController extends Controller
         $transaction->iduser = $request->get('iduser');
         $transaction->idstaff=$request->get('idustaff');
         $transaction->idproduct=$request->get('idproduct');
+        $transaction->cost=$request->get('cost');
         $transaction->save();
         return response()->json($transaction);
     }

@@ -45,8 +45,8 @@
             <template v-slot:items="props">
               <td>{{ props.item.product.name }}</td>
               <td>{{ props.item.count }}</td>
-              <td>{{ props.item.product.price }}</td>
-              <td>{{ props.item.count*props.item.product.price }}</td>
+              <td>{{ props.item.cost }}</td>
+              <td>{{ props.item.count*props.item.cost }}</td>
             </template>
             <template v-slot:footer>
               <td :colspan="headers.length" v-if="check">
@@ -77,9 +77,9 @@ export default {
       {
         text: "ราคา",
         sortable: false,
-        value: "product.price"
+        value: "cost"
       },
-      { text: "รวมเป็นเงิน", sortable: false, value: "product.price*count" }
+      { text: "รวมเป็นเงิน", sortable: false, value: "cost*count" }
     ],
     reports: [],
     price: [],
@@ -98,6 +98,7 @@ export default {
           console.log("reports", this.reports);
         })
         .then();
+        console.log('this.filteredReport',this.filteredReport)
     },
     getMonth() {
       console.log(this.date);
@@ -116,20 +117,21 @@ export default {
       const result = [
         ...arrReport
           .reduce((mp, o) => {
-            const key = JSON.stringify([o.idproduct, o.product]);
+            const key = JSON.stringify([o.cost, o.product]);
             if (!mp.has(key)) mp.set(key, { ...o, count: 0 });
             mp.get(key).count++;
             return mp;
           }, new Map())
           .values()
       ];
+      console.log('result',result);
       this.check = true;
       return result;
     },
     total: function() {
       let total = [];
       Object.entries(this.forCountSumPrice).forEach(([key, val]) => {
-        total.push(val.product.price);
+        total.push(val.cost);
       });
       return total.reduce(function(total, num) {
         return total + num;

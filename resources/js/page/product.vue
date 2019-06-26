@@ -219,11 +219,12 @@ export default {
     },
     deleteProduct(id, item) {
       const index = this.products.indexOf(item);
+      var falseVar = 'false';
       confirm("Are you sure you want to delete this item?") &&
         axios
-          .delete("api/product/" + id)
-          .catch(error => {
-            console.log(error);
+          .put("api/product/" + id, {
+            Delete: true,
+            availableVal: falseVar
           })
           .then(response => {
             this.products.splice(index, 1);
@@ -287,7 +288,7 @@ export default {
     },
     productsFil: function() {
       return this.products.filter(product => {
-        return product.type.match(this.type) && product.available == "1";
+        return product.type.match(this.type) && product.available == "true";
       });
     },
     checkInput: function() {

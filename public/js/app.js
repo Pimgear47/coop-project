@@ -2247,8 +2247,10 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var index = this.products.indexOf(item);
-      confirm("Are you sure you want to delete this item?") && axios["delete"]("api/product/" + id)["catch"](function (error) {
-        console.log(error);
+      var falseVar = 'false';
+      confirm("Are you sure you want to delete this item?") && axios.put("api/product/" + id, {
+        Delete: true,
+        availableVal: falseVar
       }).then(function (response) {
         _this3.products.splice(index, 1);
       });
@@ -2314,7 +2316,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       return this.products.filter(function (product) {
-        return product.type.match(_this4.type) && product.available == "1";
+        return product.type.match(_this4.type) && product.available == "true";
       });
     },
     checkInput: function checkInput() {
@@ -2442,11 +2444,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }, {
         text: "ราคา",
         sortable: false,
-        value: "product.price"
+        value: "cost"
       }, {
         text: "รวมเป็นเงิน",
         sortable: false,
-        value: "product.price*count"
+        value: "cost*count"
       }],
       reports: [],
       price: [],
@@ -2465,6 +2467,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         _this.reports = data;
         console.log("reports", _this.reports);
       }).then();
+      console.log('this.filteredReport', this.filteredReport);
     },
     getMonth: function getMonth() {
       console.log(this.date);
@@ -2481,7 +2484,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       this.forCountSumPrice = arrReport;
 
       var result = _toConsumableArray(arrReport.reduce(function (mp, o) {
-        var key = JSON.stringify([o.idproduct, o.product]);
+        var key = JSON.stringify([o.cost, o.product]);
         if (!mp.has(key)) mp.set(key, _objectSpread({}, o, {
           count: 0
         }));
@@ -2489,6 +2492,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return mp;
       }, new Map()).values());
 
+      console.log('result', result);
       this.check = true;
       return result;
     },
@@ -2499,7 +2503,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             key = _ref2[0],
             val = _ref2[1];
 
-        total.push(val.product.price);
+        total.push(val.cost);
       });
       return total.reduce(function (total, num) {
         return total + num;
@@ -2623,11 +2627,11 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       }, {
         text: "ราคา",
         sortable: false,
-        value: "product.price"
+        value: "cost"
       }, {
         text: "รวมเป็นเงิน",
         sortable: false,
-        value: "product.price*count"
+        value: "cost*count"
       }],
       reports: [],
       price: [],
@@ -2661,7 +2665,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       this.forCountSumPrice = arrReport;
 
       var result = _toConsumableArray(arrReport.reduce(function (mp, o) {
-        var key = JSON.stringify([o.idproduct, o.product]);
+        var key = JSON.stringify([o.cost, o.product]);
         if (!mp.has(key)) mp.set(key, _objectSpread({}, o, {
           count: 0
         }));
@@ -2679,7 +2683,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
             key = _ref2[0],
             val = _ref2[1];
 
-        total.push(val.product.price);
+        total.push(val.cost);
       });
       return total.reduce(function (total, num) {
         return total + num;
@@ -2931,13 +2935,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     addstuff: function addstuff(i) {
       var currentProduct = this.orderProduct[i];
-      console.log(currentProduct);
+      console.log('CurrentPro', currentProduct);
 
       if (this.currentUser == null) {
         axios.post("/api/transaction", {
           iduser: null,
           idustaff: this.currentStaff.id,
-          idproduct: currentProduct.id
+          idproduct: currentProduct.id,
+          cost: currentProduct.price
         })["catch"](function (error) {
           console.log(error.message);
         });
@@ -2945,7 +2950,8 @@ __webpack_require__.r(__webpack_exports__);
         axios.post("/api/transaction", {
           iduser: this.currentUser.id,
           idustaff: this.currentStaff.id,
-          idproduct: currentProduct.id
+          idproduct: currentProduct.id,
+          cost: currentProduct.price
         })["catch"](function (error) {
           console.log(error.message);
         });
@@ -51405,16 +51411,10 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(props.item.count))]),
                             _vm._v(" "),
-                            _c("td", [
-                              _vm._v(_vm._s(props.item.product.price))
-                            ]),
+                            _c("td", [_vm._v(_vm._s(props.item.cost))]),
                             _vm._v(" "),
                             _c("td", [
-                              _vm._v(
-                                _vm._s(
-                                  props.item.count * props.item.product.price
-                                )
-                              )
+                              _vm._v(_vm._s(props.item.count * props.item.cost))
                             ])
                           ]
                         }
@@ -51667,16 +51667,10 @@ var render = function() {
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(props.item.count))]),
                             _vm._v(" "),
-                            _c("td", [
-                              _vm._v(_vm._s(props.item.product.price))
-                            ]),
+                            _c("td", [_vm._v(_vm._s(props.item.cost))]),
                             _vm._v(" "),
                             _c("td", [
-                              _vm._v(
-                                _vm._s(
-                                  props.item.count * props.item.product.price
-                                )
-                              )
+                              _vm._v(_vm._s(props.item.count * props.item.cost))
                             ])
                           ]
                         }

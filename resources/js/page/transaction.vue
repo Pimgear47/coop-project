@@ -227,13 +227,14 @@ export default {
     },
     addstuff(i) {
       var currentProduct = this.orderProduct[i];
-      console.log(currentProduct);
+      console.log('CurrentPro',currentProduct);
       if (this.currentUser == null) {
         axios
           .post("/api/transaction", {
             iduser: null,
             idustaff: this.currentStaff.id,
-            idproduct: currentProduct.id
+            idproduct: currentProduct.id,
+            cost: currentProduct.price
           })
           .catch(error => {
             console.log(error.message);
@@ -243,7 +244,8 @@ export default {
           .post("/api/transaction", {
             iduser: this.currentUser.id,
             idustaff: this.currentStaff.id,
-            idproduct: currentProduct.id
+            idproduct: currentProduct.id,
+            cost: currentProduct.price
           })
           .catch(error => {
             console.log(error.message);

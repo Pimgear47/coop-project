@@ -83,11 +83,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product=Product::find($id);
-        $product->name = $request->get('name');
-        $product->price = $request->get('price');
-        $product->update();
-        return response()->json($product);
+        if ($request->get('Delete')) {
+            $product = Product::find($id);
+            $product->available = $request->get('availableVal');
+            $product->update();
+            return response()->json($product);
+        } else {
+            $product = Product::find($id);
+            $product->name = $request->get('name');
+            $product->price = $request->get('price');
+            $product->update();
+            return response()->json($product);
+        }
     }
 
     /**
@@ -98,8 +105,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product=Product::find($id);
-        $product->delete();
-        return response()->json($product);
+
     }
 }
