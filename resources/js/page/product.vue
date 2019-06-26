@@ -140,7 +140,9 @@
     </v-dialog>
     <v-snackbar class="txt-title" v-model="snackbar" :color="color" :timeout="3000">
       บันทึกสำเร็จแล้ว
-      <v-btn dark flat @click="snackbar = false"><v-icon>close</v-icon></v-btn>
+      <v-btn dark flat @click="snackbar = false">
+        <v-icon>close</v-icon>
+      </v-btn>
     </v-snackbar>
   </v-layout>
 </template>
@@ -212,7 +214,6 @@ export default {
       //console.log("item", item);
       this.editIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
-      console.log("this.editItem", this.editItem);
       this.dialog = true;
       this.editid = id;
     },
@@ -241,7 +242,7 @@ export default {
         this.close();
       } else {
         if (this.checkInput) {
-          this.products.push(this.editItem) &&
+          this.productsFil.push(this.editItem) &&
             axios.post("/api/product", {
               name: this.editItem.name,
               image: this.editItem.image,
@@ -286,7 +287,7 @@ export default {
     },
     productsFil: function() {
       return this.products.filter(product => {
-        return product.type.match(this.type);
+        return product.type.match(this.type) && product.available == "1";
       });
     },
     checkInput: function() {

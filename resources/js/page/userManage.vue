@@ -20,35 +20,80 @@
               <v-container grid-list-md>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.firstname" label="ชื่อ"></v-text-field>
+                    <v-text-field
+                      v-validate="'required'"
+                      v-model="editItem.firstname"
+                      label="ชื่อ*"
+                      data-vv-name="firstname"
+                      :error-messages="errors.collect('firstname')"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.lastname" label="นามสกุล"></v-text-field>
+                    <v-text-field
+                      v-validate="'required'"
+                      v-model="editItem.lastname"
+                      label="นามสกุล*"
+                      data-vv-name="lastname"
+                      :error-messages="errors.collect('lastname')"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.code" label="รหัส"></v-text-field>
+                    <v-text-field
+                      v-validate="'required'"
+                      v-model="editItem.code"
+                      label="รหัส*"
+                      data-vv-name="code"
+                      :error-messages="errors.collect('code')"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.email" label="email">
-                    </v-text-field>
+                    <v-select
+                      :items="statusTypes"
+                      v-model="editItem.type"
+                      item-text="title"
+                      label="สถานะ*"
+                      v-validate="'required'"
+                      data-vv-name="type"
+                      :error-messages="errors.collect('type')"
+                      required
+                    ></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.type" label="สถานะ"></v-text-field>
+                    <v-text-field
+                      v-model="editItem.level"
+                      v-validate="'required'"
+                      label="ระดับชั้น*"
+                      data-vv-name="level"
+                      :error-messages="errors.collect('level')"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.point" label="คะแนน"></v-text-field>
+                    <v-text-field
+                      v-model="editItem.room"
+                      v-validate="'required'"
+                      label="ห้อง*"
+                      data-vv-name="room"
+                      :error-messages="errors.collect('room')"
+                    ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.level" label="ระดับชั้น"></v-text-field>
+                    <v-text-field v-model="editItem.email" label="email"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.room" label="ห้อง"></v-text-field>
+                    <v-text-field v-model="editItem.point" label="คะแนน"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.unit" label="จำนวนหุ้น"></v-text-field>
+                    <v-text-field v-model="editItem.unit" label="จำนวนหุ้น"></v-text-field>
                   </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editedItem.bdate" label="วันเดือนปีเกิด"></v-text-field>
+                  <v-flex xs12>
+                    <v-text-field
+                      v-if="editIndex=='-1'"
+                      v-model="editItem.bdate"
+                      v-validate="'required'"
+                      label="วันเดือนปีเกิด*"
+                      data-vv-name="bdate"
+                      :error-messages="errors.collect('bdate')"
+                    ></v-text-field>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -79,8 +124,8 @@
           <td>{{ props.item.room }}</td>
           <td>{{ props.item.unit }}</td>
           <td class="justify-center layout px-0">
-            <v-icon small class="mr-2" @click="editItem(props.item.id,props.item)">edit</v-icon>
-            <v-icon small @click="deleteItem(props.item.id,props.item)">delete</v-icon>
+            <v-icon small class="mr-2" @click="editUser(props.item.id,props.item)">edit</v-icon>
+            <v-icon small @click="deleteUser(props.item.id,props.item)">delete</v-icon>
           </td>
         </template>
         <template v-slot:no-results>
@@ -92,18 +137,30 @@
         </template>
       </v-data-table>
     </v-flex>
+    <v-snackbar class="txt-title" v-model="snackbar" :color="color" :timeout="3000">
+      บันทึกสำเร็จแล้ว
+      <v-btn dark flat @click="snackbar = false">
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </v-layout>
 </template>
 
 <script>
 export default {
+  $_veeValidate: {
+    validator: "new"
+  },
   data: () => ({
     pagination: {
       rowsPerPage: 10
     },
+    snackbar: false,
+    color: "success",
     editid: null,
     search: "",
     dialog: false,
+    statusTypes: ["staff", "student"],
     headers: [
       { text: "ชื่อ", sortable: false, value: "firstname" },
       { text: "นามสกุล", sortable: false, value: "lastname" },
@@ -116,8 +173,8 @@ export default {
       { text: "จำนวนหุ้น", value: "unit" }
     ],
     users: [],
-    editedIndex: -1,
-    editedItem: {
+    editIndex: -1,
+    editItem: {
       firstname: "",
       lastname: "",
       code: "",
@@ -142,36 +199,47 @@ export default {
       unit: 0
     }
   }),
-
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New User" : "Edit User";
+      return this.editIndex === -1 ? "เพิ่มสมาชิกใหม่" : "แก้ไขข้อมูลสมาชิก";
+    },
+    checkInput: function() {
+      if (
+        this.editItem.firstname &&
+        this.editItem.lastname &&
+        this.editItem.code &&
+        this.editItem.type &&
+        this.editItem.level &&
+        this.editItem.room &&
+        this.editItem.bdate
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
-
   watch: {
     dialog(val) {
       val || this.close();
     }
   },
-
   created() {
     this.getUserData();
   },
-
   methods: {
     getUserData() {
       axios.get("api/user").then(response => {
         this.users = response.data;
       });
     },
-    editItem(id, item) {
-      this.editedIndex = this.users.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+    editUser(id, item) {
+      this.editIndex = this.users.indexOf(item);
+      this.editItem = Object.assign({}, item);
       this.dialog = true;
       this.editid = id;
     },
-    deleteItem(id, item) {
+    deleteUser(id, item) {
       const index = this.users.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.users.splice(index, 1) &&
@@ -180,42 +248,47 @@ export default {
         });
     },
     close() {
+      this.$validator.reset();
       this.dialog = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
+      this.editItem = Object.assign({}, this.defaultItem);
+      this.editIndex = -1;
     },
     save() {
-      if (this.editedIndex > -1) {
+      this.$validator.validateAll();
+      if (this.editIndex > -1) {
         //กรณีที่เคยมี Edit
-        Object.assign(this.users[this.editedIndex], this.editedItem) &&
+        Object.assign(this.users[this.editIndex], this.editItem) &&
           axios.put("/api/user/" + this.editid, {
-            firstname: this.editedItem.firstname,
-            lastname: this.editedItem.lastname,
-            code: this.editedItem.code,
-            email: this.editedItem.email,
-            type: this.editedItem.type,
-            point: this.editedItem.point,
-            level: this.editedItem.level,
-            room: this.editedItem.room,
-            unit: this.editedItem.unit
+            firstname: this.editItem.firstname,
+            lastname: this.editItem.lastname,
+            code: this.editItem.code,
+            email: this.editItem.email,
+            type: this.editItem.type,
+            point: this.editItem.point,
+            level: this.editItem.level,
+            room: this.editItem.room,
+            unit: this.editItem.unit
           });
+        this.snackbar = true;
+        this.close();
       } else {
-        this.users.push(this.editedItem) &&
-          axios.post("/api/user", {
-            firstname: this.editedItem.firstname,
-            lastname: this.editedItem.lastname,
-            code: this.editedItem.code,
-            type: this.editedItem.type,
-            point: this.editedItem.point,
-            level: this.editedItem.level,
-            room: this.editedItem.room,
-            unit: this.editedItem.unit,
-            bdate: this.editedItem.bdate
-          });
+        if (this.checkInput) {
+          this.users.push(this.editItem) &&
+            axios.post("/api/user", {
+              firstname: this.editItem.firstname,
+              lastname: this.editItem.lastname,
+              code: this.editItem.code,
+              type: this.editItem.type,
+              point: this.editItem.point,
+              level: this.editItem.level,
+              room: this.editItem.room,
+              unit: this.editItem.unit,
+              bdate: this.editItem.bdate
+            });
+          this.snackbar = true;
+          this.close();
+        }
       }
-      this.close();
     }
   }
 };

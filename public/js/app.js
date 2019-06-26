@@ -2167,6 +2167,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getProductData();
@@ -2238,7 +2240,6 @@ __webpack_require__.r(__webpack_exports__);
       //console.log("item", item);
       this.editIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
-      console.log("this.editItem", this.editItem);
       this.dialog = true;
       this.editid = id;
     },
@@ -2265,7 +2266,7 @@ __webpack_require__.r(__webpack_exports__);
         this.close();
       } else {
         if (this.checkInput) {
-          this.products.push(this.editItem) && axios.post("/api/product", {
+          this.productsFil.push(this.editItem) && axios.post("/api/product", {
             name: this.editItem.name,
             image: this.editItem.image,
             type: this.editItem.type,
@@ -2313,7 +2314,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       return this.products.filter(function (product) {
-        return product.type.match(_this4.type);
+        return product.type.match(_this4.type) && product.available == "1";
       });
     },
     checkInput: function checkInput() {
@@ -2518,6 +2519,29 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+//
+//
+//
 //
 //
 //
@@ -2584,7 +2608,7 @@ __webpack_require__.r(__webpack_exports__);
       check: false,
       date: new Date().toISOString().substr(0, 7),
       pagination: {
-        rowsPerPage: 10
+        rowsPerPage: 20
       },
       modal: false,
       search: "",
@@ -2593,16 +2617,21 @@ __webpack_require__.r(__webpack_exports__);
         sortable: false,
         value: "product.name"
       }, {
+        text: "จำนวน",
+        sortable: false,
+        value: "count"
+      }, {
         text: "ราคา",
         sortable: false,
         value: "product.price"
       }, {
-        text: "วันเวลาที่ทำรายการ",
+        text: "รวมเป็นเงิน",
         sortable: false,
-        value: "created_at"
+        value: "product.price*count"
       }],
       reports: [],
-      sumOfPrice: 0
+      price: [],
+      forCountSumPrice: []
     };
   },
   mounted: function mounted() {
@@ -2612,30 +2641,49 @@ __webpack_require__.r(__webpack_exports__);
     getReportData: function getReportData() {
       var _this = this;
 
-      axios.get("api/transaction").then(function (response) {
+      axios.get("api/reportuser").then(function (response) {
         _this.reports = response.data;
         console.log(_this.reports);
       }).then();
     },
-    calSum: function calSum() {
-      console.log(this.filteredReport.length);
-      this.check = true;
-      var step;
-
-      for (step = 0; step < this.filteredReport.length; step++) {
-        this.sumOfPrice += this.filteredReport[step].product.price;
-      }
-
-      console.log(this.sumOfPrice);
-      document.getElementById("price").innerHTML = "รวม&nbsp;" + this.sumOfPrice + "&nbsp;บาท";
+    getMonth: function getMonth() {
+      console.log(this.date);
     }
   },
   computed: {
     filteredReport: function filteredReport() {
-      // return this.reports.filter(report => {
-      //   return report.iduser == this.usernow.id;
-      // });
-      return this.reports;
+      var _this2 = this;
+
+      var arrReport = [];
+      arrReport = this.reports.filter(function (report) {
+        return report.created_at.substr(0, 7) == _this2.date;
+      });
+      this.forCountSumPrice = arrReport;
+
+      var result = _toConsumableArray(arrReport.reduce(function (mp, o) {
+        var key = JSON.stringify([o.idproduct, o.product]);
+        if (!mp.has(key)) mp.set(key, _objectSpread({}, o, {
+          count: 0
+        }));
+        mp.get(key).count++;
+        return mp;
+      }, new Map()).values());
+
+      this.check = true;
+      return result;
+    },
+    total: function total() {
+      var total = [];
+      Object.entries(this.forCountSumPrice).forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            key = _ref2[0],
+            val = _ref2[1];
+
+        total.push(val.product.price);
+      });
+      return total.reduce(function (total, num) {
+        return total + num;
+      }, 0);
     }
   }
 });
@@ -3031,15 +3079,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  $_veeValidate: {
+    validator: "new"
+  },
   data: function data() {
     return {
       pagination: {
         rowsPerPage: 10
       },
+      snackbar: false,
+      color: "success",
       editid: null,
       search: "",
       dialog: false,
+      statusTypes: ["staff", "student"],
       headers: [{
         text: "ชื่อ",
         sortable: false,
@@ -3072,8 +3177,8 @@ __webpack_require__.r(__webpack_exports__);
         value: "unit"
       }],
       users: [],
-      editedIndex: -1,
-      editedItem: {
+      editIndex: -1,
+      editItem: {
         firstname: "",
         lastname: "",
         code: "",
@@ -3101,7 +3206,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     formTitle: function formTitle() {
-      return this.editedIndex === -1 ? "New User" : "Edit User";
+      return this.editIndex === -1 ? "เพิ่มสมาชิกใหม่" : "แก้ไขข้อมูลสมาชิก";
+    },
+    checkInput: function checkInput() {
+      if (this.editItem.firstname && this.editItem.lastname && this.editItem.code && this.editItem.type && this.editItem.level && this.editItem.room && this.editItem.bdate) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
   watch: {
@@ -3120,56 +3232,59 @@ __webpack_require__.r(__webpack_exports__);
         _this.users = response.data;
       });
     },
-    editItem: function editItem(id, item) {
-      this.editedIndex = this.users.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+    editUser: function editUser(id, item) {
+      this.editIndex = this.users.indexOf(item);
+      this.editItem = Object.assign({}, item);
       this.dialog = true;
       this.editid = id;
     },
-    deleteItem: function deleteItem(id, item) {
+    deleteUser: function deleteUser(id, item) {
       var index = this.users.indexOf(item);
       confirm("Are you sure you want to delete this item?") && this.users.splice(index, 1) && axios["delete"]("api/user/" + id)["catch"](function (error) {
         console.log(error);
       });
     },
     close: function close() {
-      var _this2 = this;
-
+      this.$validator.reset();
       this.dialog = false;
-      setTimeout(function () {
-        _this2.editedItem = Object.assign({}, _this2.defaultItem);
-        _this2.editedIndex = -1;
-      }, 300);
+      this.editItem = Object.assign({}, this.defaultItem);
+      this.editIndex = -1;
     },
     save: function save() {
-      if (this.editedIndex > -1) {
-        //กรณีที่เคยมี Edit
-        Object.assign(this.users[this.editedIndex], this.editedItem) && axios.put("/api/user/" + this.editid, {
-          firstname: this.editedItem.firstname,
-          lastname: this.editedItem.lastname,
-          code: this.editedItem.code,
-          email: this.editedItem.email,
-          type: this.editedItem.type,
-          point: this.editedItem.point,
-          level: this.editedItem.level,
-          room: this.editedItem.room,
-          unit: this.editedItem.unit
-        });
-      } else {
-        this.users.push(this.editedItem) && axios.post("/api/user", {
-          firstname: this.editedItem.firstname,
-          lastname: this.editedItem.lastname,
-          code: this.editedItem.code,
-          type: this.editedItem.type,
-          point: this.editedItem.point,
-          level: this.editedItem.level,
-          room: this.editedItem.room,
-          unit: this.editedItem.unit,
-          bdate: this.editedItem.bdate
-        });
-      }
+      this.$validator.validateAll();
 
-      this.close();
+      if (this.editIndex > -1) {
+        //กรณีที่เคยมี Edit
+        Object.assign(this.users[this.editIndex], this.editItem) && axios.put("/api/user/" + this.editid, {
+          firstname: this.editItem.firstname,
+          lastname: this.editItem.lastname,
+          code: this.editItem.code,
+          email: this.editItem.email,
+          type: this.editItem.type,
+          point: this.editItem.point,
+          level: this.editItem.level,
+          room: this.editItem.room,
+          unit: this.editItem.unit
+        });
+        this.snackbar = true;
+        this.close();
+      } else {
+        if (this.checkInput) {
+          this.users.push(this.editItem) && axios.post("/api/user", {
+            firstname: this.editItem.firstname,
+            lastname: this.editItem.lastname,
+            code: this.editItem.code,
+            type: this.editItem.type,
+            point: this.editItem.point,
+            level: this.editItem.level,
+            room: this.editItem.room,
+            unit: this.editItem.unit,
+            bdate: this.editItem.bdate
+          });
+          this.snackbar = true;
+          this.close();
+        }
+      }
     }
   }
 });
@@ -51550,11 +51665,19 @@ var render = function() {
                           return [
                             _c("td", [_vm._v(_vm._s(props.item.product.name))]),
                             _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(props.item.count))]),
+                            _vm._v(" "),
                             _c("td", [
                               _vm._v(_vm._s(props.item.product.price))
                             ]),
                             _vm._v(" "),
-                            _c("td", [_vm._v(_vm._s(props.item.created_at))])
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  props.item.count * props.item.product.price
+                                )
+                              )
+                            ])
                           ]
                         }
                       },
@@ -51562,7 +51685,21 @@ var render = function() {
                         key: "footer",
                         fn: function() {
                           return [
-                            _c("td", { attrs: { colspan: _vm.headers.length } })
+                            _vm.check
+                              ? _c(
+                                  "td",
+                                  { attrs: { colspan: _vm.headers.length } },
+                                  [
+                                    _c("b", [
+                                      _vm._v(
+                                        "รวมเป็นเงิน " +
+                                          _vm._s(_vm.total) +
+                                          " บาท"
+                                      )
+                                    ])
+                                  ]
+                                )
+                              : _vm._e()
                           ]
                         },
                         proxy: true
@@ -52150,17 +52287,31 @@ var render = function() {
                                     { attrs: { xs12: "", sm6: "", md4: "" } },
                                     [
                                       _c("v-text-field", {
-                                        attrs: { label: "ชื่อ" },
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          label: "ชื่อ*",
+                                          "data-vv-name": "firstname",
+                                          "error-messages": _vm.errors.collect(
+                                            "firstname"
+                                          )
+                                        },
                                         model: {
-                                          value: _vm.editedItem.firstname,
+                                          value: _vm.editItem.firstname,
                                           callback: function($$v) {
                                             _vm.$set(
-                                              _vm.editedItem,
+                                              _vm.editItem,
                                               "firstname",
                                               $$v
                                             )
                                           },
-                                          expression: "editedItem.firstname"
+                                          expression: "editItem.firstname"
                                         }
                                       })
                                     ],
@@ -52172,17 +52323,31 @@ var render = function() {
                                     { attrs: { xs12: "", sm6: "", md4: "" } },
                                     [
                                       _c("v-text-field", {
-                                        attrs: { label: "นามสกุล" },
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          label: "นามสกุล*",
+                                          "data-vv-name": "lastname",
+                                          "error-messages": _vm.errors.collect(
+                                            "lastname"
+                                          )
+                                        },
                                         model: {
-                                          value: _vm.editedItem.lastname,
+                                          value: _vm.editItem.lastname,
                                           callback: function($$v) {
                                             _vm.$set(
-                                              _vm.editedItem,
+                                              _vm.editItem,
                                               "lastname",
                                               $$v
                                             )
                                           },
-                                          expression: "editedItem.lastname"
+                                          expression: "editItem.lastname"
                                         }
                                       })
                                     ],
@@ -52194,17 +52359,126 @@ var render = function() {
                                     { attrs: { xs12: "", sm6: "", md4: "" } },
                                     [
                                       _c("v-text-field", {
-                                        attrs: { label: "รหัส" },
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          label: "รหัส*",
+                                          "data-vv-name": "code",
+                                          "error-messages": _vm.errors.collect(
+                                            "code"
+                                          )
+                                        },
                                         model: {
-                                          value: _vm.editedItem.code,
+                                          value: _vm.editItem.code,
                                           callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "code",
-                                              $$v
-                                            )
+                                            _vm.$set(_vm.editItem, "code", $$v)
                                           },
-                                          expression: "editedItem.code"
+                                          expression: "editItem.code"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "", sm6: "", md4: "" } },
+                                    [
+                                      _c("v-select", {
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          items: _vm.statusTypes,
+                                          "item-text": "title",
+                                          label: "สถานะ*",
+                                          "data-vv-name": "type",
+                                          "error-messages": _vm.errors.collect(
+                                            "type"
+                                          ),
+                                          required: ""
+                                        },
+                                        model: {
+                                          value: _vm.editItem.type,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.editItem, "type", $$v)
+                                          },
+                                          expression: "editItem.type"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "", sm6: "", md4: "" } },
+                                    [
+                                      _c("v-text-field", {
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          label: "ระดับชั้น*",
+                                          "data-vv-name": "level",
+                                          "error-messages": _vm.errors.collect(
+                                            "level"
+                                          )
+                                        },
+                                        model: {
+                                          value: _vm.editItem.level,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.editItem, "level", $$v)
+                                          },
+                                          expression: "editItem.level"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-flex",
+                                    { attrs: { xs12: "", sm6: "", md4: "" } },
+                                    [
+                                      _c("v-text-field", {
+                                        directives: [
+                                          {
+                                            name: "validate",
+                                            rawName: "v-validate",
+                                            value: "required",
+                                            expression: "'required'"
+                                          }
+                                        ],
+                                        attrs: {
+                                          label: "ห้อง*",
+                                          "data-vv-name": "room",
+                                          "error-messages": _vm.errors.collect(
+                                            "room"
+                                          )
+                                        },
+                                        model: {
+                                          value: _vm.editItem.room,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.editItem, "room", $$v)
+                                          },
+                                          expression: "editItem.room"
                                         }
                                       })
                                     ],
@@ -52218,37 +52492,11 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: { label: "email" },
                                         model: {
-                                          value: _vm.editedItem.email,
+                                          value: _vm.editItem.email,
                                           callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "email",
-                                              $$v
-                                            )
+                                            _vm.$set(_vm.editItem, "email", $$v)
                                           },
-                                          expression: "editedItem.email"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", sm6: "", md4: "" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: { label: "สถานะ" },
-                                        model: {
-                                          value: _vm.editedItem.type,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "type",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "editedItem.type"
+                                          expression: "editItem.email"
                                         }
                                       })
                                     ],
@@ -52262,59 +52510,11 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: { label: "คะแนน" },
                                         model: {
-                                          value: _vm.editedItem.point,
+                                          value: _vm.editItem.point,
                                           callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "point",
-                                              $$v
-                                            )
+                                            _vm.$set(_vm.editItem, "point", $$v)
                                           },
-                                          expression: "editedItem.point"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", sm6: "", md4: "" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: { label: "ระดับชั้น" },
-                                        model: {
-                                          value: _vm.editedItem.level,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "level",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "editedItem.level"
-                                        }
-                                      })
-                                    ],
-                                    1
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-flex",
-                                    { attrs: { xs12: "", sm6: "", md4: "" } },
-                                    [
-                                      _c("v-text-field", {
-                                        attrs: { label: "ห้อง" },
-                                        model: {
-                                          value: _vm.editedItem.room,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "room",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "editedItem.room"
+                                          expression: "editItem.point"
                                         }
                                       })
                                     ],
@@ -52328,15 +52528,11 @@ var render = function() {
                                       _c("v-text-field", {
                                         attrs: { label: "จำนวนหุ้น" },
                                         model: {
-                                          value: _vm.editedItem.unit,
+                                          value: _vm.editItem.unit,
                                           callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "unit",
-                                              $$v
-                                            )
+                                            _vm.$set(_vm.editItem, "unit", $$v)
                                           },
-                                          expression: "editedItem.unit"
+                                          expression: "editItem.unit"
                                         }
                                       })
                                     ],
@@ -52345,22 +52541,38 @@ var render = function() {
                                   _vm._v(" "),
                                   _c(
                                     "v-flex",
-                                    { attrs: { xs12: "", sm6: "", md4: "" } },
+                                    { attrs: { xs12: "" } },
                                     [
-                                      _c("v-text-field", {
-                                        attrs: { label: "วันเดือนปีเกิด" },
-                                        model: {
-                                          value: _vm.editedItem.bdate,
-                                          callback: function($$v) {
-                                            _vm.$set(
-                                              _vm.editedItem,
-                                              "bdate",
-                                              $$v
-                                            )
-                                          },
-                                          expression: "editedItem.bdate"
-                                        }
-                                      })
+                                      _vm.editIndex == "-1"
+                                        ? _c("v-text-field", {
+                                            directives: [
+                                              {
+                                                name: "validate",
+                                                rawName: "v-validate",
+                                                value: "required",
+                                                expression: "'required'"
+                                              }
+                                            ],
+                                            attrs: {
+                                              label: "วันเดือนปีเกิด*",
+                                              "data-vv-name": "bdate",
+                                              "error-messages": _vm.errors.collect(
+                                                "bdate"
+                                              )
+                                            },
+                                            model: {
+                                              value: _vm.editItem.bdate,
+                                              callback: function($$v) {
+                                                _vm.$set(
+                                                  _vm.editItem,
+                                                  "bdate",
+                                                  $$v
+                                                )
+                                              },
+                                              expression: "editItem.bdate"
+                                            }
+                                          })
+                                        : _vm._e()
                                     ],
                                     1
                                   )
@@ -52456,7 +52668,7 @@ var render = function() {
                             attrs: { small: "" },
                             on: {
                               click: function($event) {
-                                return _vm.editItem(props.item.id, props.item)
+                                return _vm.editUser(props.item.id, props.item)
                               }
                             }
                           },
@@ -52469,7 +52681,7 @@ var render = function() {
                             attrs: { small: "" },
                             on: {
                               click: function($event) {
-                                return _vm.deleteItem(props.item.id, props.item)
+                                return _vm.deleteUser(props.item.id, props.item)
                               }
                             }
                           },
@@ -52504,6 +52716,38 @@ var render = function() {
               }
             ])
           })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          staticClass: "txt-title",
+          attrs: { color: _vm.color, timeout: 3000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    บันทึกสำเร็จแล้ว\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("close")])],
+            1
+          )
         ],
         1
       )

@@ -44,11 +44,14 @@
           >
             <template v-slot:items="props">
               <td>{{ props.item.product.name }}</td>
+              <td>{{ props.item.count }}</td>
               <td>{{ props.item.product.price }}</td>
-              <td>{{ props.item.created_at }}</td>
+              <td>{{ props.item.count*props.item.product.price }}</td>
             </template>
             <template v-slot:footer>
-              <td :colspan="headers.length"></td>
+              <td :colspan="headers.length" v-if="check">
+                <b>รวมเป็นเงิน {{total}} บาท</b>
+              </td>
             </template>
           </v-data-table>
         </v-container>
@@ -64,17 +67,23 @@ export default {
     check: false,
     date: new Date().toISOString().substr(0, 7),
     pagination: {
-      rowsPerPage: 10
+      rowsPerPage: 20
     },
     modal: false,
     search: "",
     headers: [
       { text: "ชื่อ", sortable: false, value: "product.name" },
-      { text: "ราคา", sortable: false, value: "product.price" },
-      { text: "วันเวลาที่ทำรายการ", sortable: false, value: "created_at" }
+      { text: "จำนวน", sortable: false, value: "count" },
+      {
+        text: "ราคา",
+        sortable: false,
+        value: "product.price"
+      },
+      { text: "รวมเป็นเงิน", sortable: false, value: "product.price*count" }
     ],
     reports: [],
-    sumOfPrice: 0
+    price: [],
+    forCountSumPrice: []
   }),
   mounted() {
     this.getReportData();
@@ -82,31 +91,45 @@ export default {
   methods: {
     getReportData() {
       axios
-        .get("api/transaction")
+        .get("api/reportuser")
         .then(response => {
           this.reports = response.data;
           console.log(this.reports);
         })
         .then();
     },
-    calSum() {
-      console.log(this.filteredReport.length);
-      this.check = true;
-      var step;
-      for (step = 0; step < this.filteredReport.length; step++) {
-        this.sumOfPrice += this.filteredReport[step].product.price;
-      }
-      console.log(this.sumOfPrice);
-      document.getElementById("price").innerHTML =
-        "รวม&nbsp;" + this.sumOfPrice + "&nbsp;บาท";
+    getMonth() {
+      console.log(this.date);
     }
   },
   computed: {
     filteredReport: function() {
-      // return this.reports.filter(report => {
-      //   return report.iduser == this.usernow.id;
-      // });
-      return this.reports;
+      var arrReport = [];
+      arrReport = this.reports.filter(report => {
+        return report.created_at.substr(0, 7) == this.date;
+      });
+      this.forCountSumPrice = arrReport;
+      const result = [
+        ...arrReport
+          .reduce((mp, o) => {
+            const key = JSON.stringify([o.idproduct, o.product]);
+            if (!mp.has(key)) mp.set(key, { ...o, count: 0 });
+            mp.get(key).count++;
+            return mp;
+          }, new Map())
+          .values()
+      ];
+      this.check = true;
+      return result;
+    },
+    total: function() {
+      let total = [];
+      Object.entries(this.forCountSumPrice).forEach(([key, val]) => {
+        total.push(val.product.price);
+      });
+      return total.reduce(function(total, num) {
+        return total + num;
+      }, 0);
     }
   }
 };
