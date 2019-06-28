@@ -100,7 +100,7 @@ export default {
         { title: 'รายการสินค้า', icon: 'shopping_cart' , link: '/product' },
         { title: 'ทำรายการ', icon: 'assignment_turned_in' , link: '/transaction' },
         { title: 'ดูรายงานยอดขาย', icon: 'description' , link: '/salereport' },
-        { title: 'ดูรายงานปันผล/เฉลี่ยคืน', icon: 'monetization_on' , link: '#' },
+        { title: 'ดูรายงานปันผล/เฉลี่ยคืน', icon: 'monetization_on' , link: '/dividend-for-admin' },
         { title: 'ปฏิทินกำหนดการ', icon: 'date_range' , link: '#' },
         { title: 'จัดการสมาชิก', icon: 'supervised_user_circle' , link: '/user' },
       ],

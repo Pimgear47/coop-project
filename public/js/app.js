@@ -1955,7 +1955,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         title: 'ดูรายงานปันผล/เฉลี่ยคืน',
         icon: 'monetization_on',
-        link: '#'
+        link: '/dividend-for-admin'
       }, {
         title: 'ปฏิทินกำหนดการ',
         icon: 'date_range',
@@ -2006,6 +2006,119 @@ __webpack_require__.r(__webpack_exports__);
       mini: true,
       right: null
     };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/dividendforadmin.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/page/dividendforadmin.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      pagination: {
+        rowsPerPage: 10
+      },
+      search: "",
+      headers: [{
+        text: "ชื่อ",
+        sortable: false,
+        value: "firstname"
+      }, {
+        text: "นามสกุล",
+        sortable: false,
+        value: "lastname"
+      }, {
+        text: "สถานะ",
+        sortable: false,
+        value: "type"
+      }, // { text: "ระดับชั้น", value: "level" },
+      // { text: "ห้อง", value: "room" },
+      {
+        text: "จำนวนหุ้น",
+        value: "unit"
+      }, {
+        text: "ปันผล(บาท)",
+        value: "dividend"
+      }, {
+        text: "เฉลี่ยคืน(บาท)",
+        value: "avg"
+      }, {
+        text: "รวมเป็นเงิน(บาท)",
+        value: "total"
+      }],
+      users: []
+    };
+  },
+  computed: {
+    filteredusers: function filteredusers() {
+      return this.users.filter(function (user) {
+        return user.type != "staff";
+      });
+    }
+  },
+  created: function created() {
+    this.getUserData();
+  },
+  methods: {
+    getUserData: function getUserData() {
+      var _this = this;
+
+      axios.get("api/user").then(function (response) {
+        _this.users = response.data;
+      });
+    }
   }
 });
 
@@ -2988,6 +3101,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -50669,6 +50784,168 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/dividendforadmin.vue?vue&type=template&id=4157ca87&":
+/*!*************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/page/dividendforadmin.vue?vue&type=template&id=4157ca87& ***!
+  \*************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "v-layout",
+    { staticClass: "justify-end mt-3 mr-5 mb-3" },
+    [
+      _c(
+        "v-flex",
+        { attrs: { xs9: "", sm11: "" } },
+        [
+          _c(
+            "v-toolbar",
+            { attrs: { flat: "", color: "white" } },
+            [
+              _c("v-toolbar-title", [
+                _c(
+                  "h3",
+                  [
+                    _c("v-icon", { attrs: { large: "", color: "pink" } }, [
+                      _vm._v("monetization_on")
+                    ]),
+                    _vm._v(" รายงานปันผลและเฉลี่ยคืน\n        ")
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("v-divider", {
+                staticClass: "mx-2",
+                attrs: { inset: "", vertical: "" }
+              }),
+              _vm._v(" "),
+              _c("v-spacer"),
+              _vm._v(" "),
+              _c("v-text-field", {
+                attrs: {
+                  "append-icon": "search",
+                  label: "Search",
+                  "single-line": ""
+                },
+                model: {
+                  value: _vm.search,
+                  callback: function($$v) {
+                    _vm.search = $$v
+                  },
+                  expression: "search"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c("v-data-table", {
+            staticClass: "elevation-1 txt-title",
+            attrs: {
+              headers: _vm.headers,
+              items: _vm.filteredusers,
+              search: _vm.search,
+              pagination: _vm.pagination
+            },
+            on: {
+              "update:pagination": function($event) {
+                _vm.pagination = $event
+              }
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "items",
+                fn: function(props) {
+                  return [
+                    _c("td", [_vm._v(_vm._s(props.item.firstname))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(props.item.lastname))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(props.item.type))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(props.item.unit))])
+                  ]
+                }
+              },
+              {
+                key: "no-results",
+                fn: function() {
+                  return [
+                    _c(
+                      "v-alert",
+                      {
+                        attrs: { value: true, color: "error", icon: "warning" }
+                      },
+                      [
+                        _vm._v(
+                          'Your search for "' +
+                            _vm._s(_vm.search) +
+                            '" found no results.'
+                        )
+                      ]
+                    )
+                  ]
+                },
+                proxy: true
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-snackbar",
+        {
+          staticClass: "txt-title",
+          attrs: { color: _vm.color, timeout: 3000 },
+          model: {
+            value: _vm.snackbar,
+            callback: function($$v) {
+              _vm.snackbar = $$v
+            },
+            expression: "snackbar"
+          }
+        },
+        [
+          _vm._v("\n    บันทึกสำเร็จแล้ว\n    "),
+          _c(
+            "v-btn",
+            {
+              attrs: { dark: "", flat: "" },
+              on: {
+                click: function($event) {
+                  _vm.snackbar = false
+                }
+              }
+            },
+            [_c("v-icon", [_vm._v("close")])],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/product.vue?vue&type=template&id=6bd4756d&":
 /*!****************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/page/product.vue?vue&type=template&id=6bd4756d& ***!
@@ -52197,7 +52474,18 @@ var render = function() {
             "v-toolbar",
             { attrs: { flat: "", color: "white" } },
             [
-              _c("v-toolbar-title", [_c("h2", [_vm._v("สมาชิกในระบบ")])]),
+              _c("v-toolbar-title", [
+                _c(
+                  "h3",
+                  [
+                    _c("v-icon", { attrs: { large: "", color: "pink" } }, [
+                      _vm._v("supervised_user_circle")
+                    ]),
+                    _vm._v(" สมาชิกในระบบ\n        ")
+                  ],
+                  1
+                )
+              ]),
               _vm._v(" "),
               _c("v-divider", {
                 staticClass: "mx-2",
@@ -90900,6 +91188,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('user-manage', __webpack_re
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('transaction', __webpack_require__(/*! ./page/transaction.vue */ "./resources/js/page/transaction.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('report-user', __webpack_require__(/*! ./page/reportforuser.vue */ "./resources/js/page/reportforuser.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('sale-report', __webpack_require__(/*! ./page/salereport.vue */ "./resources/js/page/salereport.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('dividend-for-admin', __webpack_require__(/*! ./page/dividendforadmin.vue */ "./resources/js/page/dividendforadmin.vue")["default"]);
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app'
 });
@@ -91166,6 +91455,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_navbar_vue_vue_type_template_id_11e733ca___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_navbar_vue_vue_type_template_id_11e733ca___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/page/dividendforadmin.vue":
+/*!************************************************!*\
+  !*** ./resources/js/page/dividendforadmin.vue ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _dividendforadmin_vue_vue_type_template_id_4157ca87___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dividendforadmin.vue?vue&type=template&id=4157ca87& */ "./resources/js/page/dividendforadmin.vue?vue&type=template&id=4157ca87&");
+/* harmony import */ var _dividendforadmin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dividendforadmin.vue?vue&type=script&lang=js& */ "./resources/js/page/dividendforadmin.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _dividendforadmin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _dividendforadmin_vue_vue_type_template_id_4157ca87___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _dividendforadmin_vue_vue_type_template_id_4157ca87___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/page/dividendforadmin.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/page/dividendforadmin.vue?vue&type=script&lang=js&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/page/dividendforadmin.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_dividendforadmin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./dividendforadmin.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/dividendforadmin.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_dividendforadmin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/page/dividendforadmin.vue?vue&type=template&id=4157ca87&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/page/dividendforadmin.vue?vue&type=template&id=4157ca87& ***!
+  \*******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dividendforadmin_vue_vue_type_template_id_4157ca87___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./dividendforadmin.vue?vue&type=template&id=4157ca87& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/page/dividendforadmin.vue?vue&type=template&id=4157ca87&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dividendforadmin_vue_vue_type_template_id_4157ca87___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dividendforadmin_vue_vue_type_template_id_4157ca87___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

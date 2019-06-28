@@ -3,7 +3,9 @@
     <v-flex xs9 sm11>
       <v-toolbar flat color="white">
         <v-toolbar-title>
-          <h2>สมาชิกในระบบ</h2>
+          <h3>
+            <v-icon large color="pink">supervised_user_circle</v-icon>&nbsp;สมาชิกในระบบ
+          </h3>
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
         <v-spacer></v-spacer>

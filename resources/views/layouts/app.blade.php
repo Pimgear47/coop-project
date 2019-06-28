@@ -31,9 +31,9 @@
             <v-toolbar-items class="hidden-sm-and-down">
                 @guest
                 <v-btn class="txt-title" href="/login" flat>LOGIN</v-btn>
-                @if (Route::has('register'))
+                <!-- @if (Route::has('register'))
                 <v-btn class="txt-title" href="/register" flat>REGISTER</v-btn>
-                @endif
+                @endif -->
                 @else
                 <v-btn class="txt-title" href="#" flat>{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-btn>
                 <v-btn class="txt-title" flat href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -54,11 +54,11 @@
                             <v-list-tile-content>
                                 <v-list-tile href="/login">LOGIN</v-list-tile>
                             </v-list-tile-content>
-                            @if (Route::has('register'))
+                            <!-- @if (Route::has('register'))
                             <v-list-tile-content>
                                 <v-list-tile href="/register">REGISTER</v-list-tile>
                             </v-list-tile-content>
-                            @endif
+                            @endif -->
                             @else
                             <v-list-tile-title class="txt-title" href="#">{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-list-tile-title>
                             <v-list-tile-title class="txt-title" href="{{ route('logout') }}" onclick="event.preventDefault();

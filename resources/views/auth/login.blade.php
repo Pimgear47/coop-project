@@ -46,8 +46,8 @@
                                     <div class="col-md-8 offset-md-4 mb-5 pb-4">
                                         <v-btn block class="txt-title" type="submit" color="primary">
                                             {{ __('เข้าสู่ระบบ') }}</v-btn>
-                                        <v-btn block class="txt-title" href="/register" color="primary">
-                                            {{ __('สมัครสมาชิก') }}</v-btn>
+                                        <!-- <v-btn block class="txt-title" href="/register" color="primary">
+                                            {{ __('สมัครสมาชิก') }}</v-btn> -->
                                         <!-- <v-btn block class="txt-title" href="#" color="primary">
                                             {{ __('เข้าสู่ระบบสถานะเจ้าหน้าที่') }}</v-btn> -->
                                         <!-- @if (Route::has('password.request'))
