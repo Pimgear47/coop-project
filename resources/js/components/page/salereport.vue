@@ -67,19 +67,19 @@ export default {
     check: false,
     date: new Date().toISOString().substr(0, 7),
     pagination: {
-      rowsPerPage: 20
+      rowsPerPage: -1
     },
     modal: false,
     search: "",
     headers: [
       { text: "ชื่อ", sortable: false, value: "product.name" },
-      { text: "จำนวน", sortable: false, value: "count" },
+      { text: "จำนวน (ชิ้น)", sortable: false, value: "count" },
       {
-        text: "ราคา",
+        text: "ราคา (บาท)",
         sortable: false,
         value: "cost"
       },
-      { text: "รวมเป็นเงิน", sortable: false, value: "cost*count" }
+      { text: "รวมเป็นเงิน (บาท)", sortable: false, value: "cost*count" }
     ],
     reports: [],
     price: [],
@@ -98,9 +98,6 @@ export default {
         })
         .then();
     },
-    getMonth() {
-      console.log(this.date);
-    }
   },
   computed: {
     filteredReport: function() {

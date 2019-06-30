@@ -218,6 +218,13 @@ export default {
           this.addstuff(step);
         }
       }
+      axios
+        .put("/api/user/" + this.currentUser.id, {
+          total: this.currentUser.total + this.orderPrice
+        })
+        .catch(error => {
+          console.log(error.message);
+        });
       this.sumofcount = 0;
       this.orderProduct = [];
       this.orderPrice = 0;
@@ -227,7 +234,7 @@ export default {
     },
     addstuff(i) {
       var currentProduct = this.orderProduct[i];
-      console.log('CurrentPro',currentProduct);
+      console.log("CurrentPro", currentProduct);
       if (this.currentUser == null) {
         axios
           .post("/api/transaction", {

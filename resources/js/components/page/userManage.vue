@@ -79,9 +79,6 @@
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field v-model="editItem.email" label="email"></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
                     <v-text-field v-model="editItem.point" label="คะแนน"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
@@ -119,7 +116,6 @@
           <td>{{ props.item.firstname }}</td>
           <td>{{ props.item.lastname }}</td>
           <td>{{ props.item.code }}</td>
-          <td>{{ props.item.email }}</td>
           <td>{{ props.item.type }}</td>
           <td>{{ props.item.point }}</td>
           <td>{{ props.item.level }}</td>
@@ -180,7 +176,6 @@ export default {
       firstname: "",
       lastname: "",
       code: "",
-      email: "",
       type: "",
       point: 0,
       level: null,
@@ -192,7 +187,6 @@ export default {
       firstname: "",
       lastname: "",
       code: "",
-      email: "",
       type: "",
       point: 0,
       level: null,
@@ -264,7 +258,6 @@ export default {
             firstname: this.editItem.firstname,
             lastname: this.editItem.lastname,
             code: this.editItem.code,
-            email: this.editItem.email,
             type: this.editItem.type,
             point: this.editItem.point,
             level: this.editItem.level,

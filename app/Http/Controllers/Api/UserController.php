@@ -46,7 +46,6 @@ class UserController extends Controller
         $user->firstname = $request->get('firstname');
         $user->lastname=$request->get('lastname');
         $user->code=$request->get('code');
-        $user->email=$request->get('email');
         $user->type=$request->get('type');
         $user->point=$request->get('point');
         $user->level=$request->get('level');
@@ -88,18 +87,24 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user=User::find($id);
-        $user->firstname = $request->get('firstname');
-        $user->lastname=$request->get('lastname');
-        $user->code=$request->get('code');
-        $user->email=$request->get('email');
-        $user->type=$request->get('type');
-        $user->point=$request->get('point');
-        $user->level=$request->get('level');
-        $user->room=$request->get('room');
-        $user->unit=$request->get('unit');
-        $user->update();
-        return response()->json($user);
+        if($request->get('total')){
+            $user=User::find($id);
+            $user->total=$request->get('total');
+            $user->update();
+            return response()->json($user);
+        }else{
+            $user=User::find($id);
+            $user->firstname = $request->get('firstname');
+            $user->lastname=$request->get('lastname');
+            $user->code=$request->get('code');
+            $user->type=$request->get('type');
+            $user->point=$request->get('point');
+            $user->level=$request->get('level');
+            $user->room=$request->get('room');
+            $user->unit=$request->get('unit');
+            $user->update();
+            return response()->json($user);
+        }
     }
 
     /**
