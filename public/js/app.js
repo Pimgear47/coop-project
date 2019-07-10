@@ -1920,88 +1920,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["usernow"],
   mounted: function mounted() {
     console.log("Component mounted.");
     console.log(this.usernow);
+    console.log(location.pathname);
   },
   data: function data() {
     return {
       drawer: true,
       itemsAdmin: [{
-        title: 'หน้าแรก',
-        icon: 'dashboard',
-        link: '/'
+        title: "หน้าแรก",
+        icon: "dashboard",
+        link: "/"
       }, {
-        title: 'รายการสินค้า',
-        icon: 'shopping_cart',
-        link: '/product'
+        title: "รายการสินค้า",
+        icon: "shopping_cart",
+        link: "/product"
       }, {
-        title: 'ทำรายการ',
-        icon: 'assignment_turned_in',
-        link: '/transaction'
+        title: "ทำรายการ",
+        icon: "assignment_turned_in",
+        link: "/transaction"
       }, {
-        title: 'ดูรายงานยอดขาย',
-        icon: 'description',
-        link: '/salereport'
+        title: "ดูรายงานยอดขาย",
+        icon: "description",
+        link: "/salereport"
       }, {
-        title: 'ดูรายงานปันผล/เฉลี่ยคืน',
-        icon: 'monetization_on',
-        link: '/dividend-for-admin'
+        title: "ดูรายงานปันผล/เฉลี่ยคืน",
+        icon: "monetization_on",
+        link: "/dividend-for-admin"
       }, {
-        title: 'ปฏิทินกำหนดการ',
-        icon: 'date_range',
-        link: '#'
+        title: "ปฏิทินกำหนดการ",
+        icon: "date_range",
+        link: "#"
       }, {
-        title: 'จัดการสมาชิก',
-        icon: 'supervised_user_circle',
-        link: '/user'
+        title: "จัดการสมาชิก",
+        icon: "supervised_user_circle",
+        link: "/user"
       }],
       itemsStaff: [{
-        title: 'หน้าแรก',
-        icon: 'dashboard',
-        link: '/'
+        title: "หน้าแรก",
+        icon: "dashboard",
+        link: "/"
       }, {
-        title: 'รายการสินค้า',
-        icon: 'shopping_cart',
-        link: '/product'
+        title: "รายการสินค้า",
+        icon: "shopping_cart",
+        link: "/product"
       }, {
-        title: 'ทำรายการ',
-        icon: 'assignment_turned_in',
-        link: '/transaction'
+        title: "ทำรายการ",
+        icon: "assignment_turned_in",
+        link: "/transaction"
       }, {
-        title: 'ปฏิทินกำหนดการ',
-        icon: 'date_range',
-        link: '#'
+        title: "ปฏิทินกำหนดการ",
+        icon: "date_range",
+        link: "#"
       }],
       itemsUser: [{
-        title: 'หน้าแรก',
-        icon: 'dashboard',
-        link: '/'
+        title: "หน้าแรก",
+        icon: "dashboard",
+        link: "/"
       }, {
-        title: 'รายการสินค้า',
-        icon: 'shopping_cart',
-        link: '/product'
+        title: "รายการสินค้า",
+        icon: "shopping_cart",
+        link: "/product"
       }, {
-        title: 'ดูรายงานการซื้อ',
-        icon: 'description',
-        link: '/reportuser'
+        title: "ดูรายงานการซื้อ",
+        icon: "description",
+        link: "/reportuser"
       }, {
-        title: 'ดูยอดปันผล/เฉลี่ยคืน',
-        icon: 'monetization_on',
-        link: '#'
+        title: "ดูยอดปันผล/เฉลี่ยคืน",
+        icon: "monetization_on",
+        link: "#"
       }, {
-        title: 'ปฏิทินกำหนดการ',
-        icon: 'date_range',
-        link: '#'
+        title: "ปฏิทินกำหนดการ",
+        icon: "date_range",
+        link: "#"
       }],
       mini: true,
       right: null
@@ -50740,16 +50734,22 @@ var render = function() {
                       [
                         _c(
                           "v-list-tile-action",
-                          [_c("v-icon", [_vm._v(_vm._s(item.icon))])],
+                          [
+                            _c(
+                              "v-icon",
+                              { attrs: { color: item.link == 3 ? "red" : "" } },
+                              [_vm._v(_vm._s(item.icon))]
+                            )
+                          ],
                           1
                         ),
                         _vm._v(" "),
                         _c(
                           "v-list-tile-content",
                           [
-                            _c("v-list-tile-title", [
-                              _vm._v(_vm._s(item.title))
-                            ])
+                            _c("v-list-tile-title", {
+                              domProps: { textContent: _vm._s(item.title) }
+                            })
                           ],
                           1
                         )
