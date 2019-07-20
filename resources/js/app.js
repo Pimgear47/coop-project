@@ -13,6 +13,7 @@ Vue.component('navbar', require('./components/navbar.vue').default);
 Vue.component('carousel', require('./components/carousel.vue').default);
 
 Vue.component('date-show', require('./components/elements/dateShow.vue').default);
+Vue.component('year-education', require('./components/elements/yearEducation.vue').default);
 
 Vue.component('product', require('./components/page/product.vue').default);
 Vue.component('user-manage', require('./components/page/staff/userManage.vue').default);

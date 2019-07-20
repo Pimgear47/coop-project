@@ -9,6 +9,8 @@
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
         <date-show></date-show>
+        <v-spacer></v-spacer>
+        <year-education></year-education>
       </v-toolbar>
       <v-layout class="justify-end">
         <v-spacer></v-spacer>
@@ -106,7 +108,7 @@ export default {
       return total.reduce(function(total, num) {
         return total + num;
       }, 0);
-    },
+    }
   },
   created() {
     this.getUserData();

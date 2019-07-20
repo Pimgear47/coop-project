@@ -11,7 +11,7 @@
         <date-show></date-show>
         <v-spacer>
         </v-spacer>
-        <h3>ประจำปีการศึกษา</h3>
+        <year-education></year-education>
       </v-toolbar>
       <v-data-table
         :headers="headers"
