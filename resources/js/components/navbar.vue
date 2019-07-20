@@ -155,7 +155,7 @@ export default {
         {
           title: "ดูยอดปันผล/เฉลี่ยคืน",
           icon: "monetization_on",
-          link: "#"
+          link: "/dividend-for-user"
         },
         {
           title: "ปฏิทินกำหนดการ",

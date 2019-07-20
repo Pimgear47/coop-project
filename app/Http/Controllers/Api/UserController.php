@@ -48,8 +48,7 @@ class UserController extends Controller
         $user->code=$request->get('code');
         $user->type=$request->get('type');
         $user->point=$request->get('point');
-        $user->level=$request->get('level');
-        $user->room=$request->get('room');
+        $user->education=$request->get('education');
         $user->unit=$request->get('unit');
         $user->password = bcrypt($request->get('bdate'));
         $user->save();
@@ -99,8 +98,7 @@ class UserController extends Controller
             $user->code=$request->get('code');
             $user->type=$request->get('type');
             $user->point=$request->get('point');
-            $user->level=$request->get('level');
-            $user->room=$request->get('room');
+            $user->education=$request->get('education');
             $user->unit=$request->get('unit');
             $user->update();
             return response()->json($user);

@@ -16,7 +16,7 @@
               dark
               class="mb-2 txt-title"
               @click="dialog = true"
-            >New Product</v-btn>
+            >เพิ่มสินค้า</v-btn>
           </v-layout>
           <v-layout row wrap>
             <v-flex v-for="product in productsFil" :key="product.id" sm2>
@@ -117,16 +117,16 @@
                   data-vv-as="image"
                   @change="onImageChange"
                   v-if="formAddOrEdit"
-                >
+                />
                 <p class="no-upload" v-if="noUpload">The image field is required.</p>
-                <br v-if="this.editItem.image && formAddOrEdit">
-                <br v-if="this.editItem.image && formAddOrEdit">
+                <br v-if="this.editItem.image && formAddOrEdit" />
+                <br v-if="this.editItem.image && formAddOrEdit" />
                 <img
                   :src="editItem.image"
                   v-if="this.editItem.image"
                   class="img-responsive"
                   height="120"
-                >
+                />
               </v-flex>
             </v-layout>
           </v-container>
@@ -164,15 +164,14 @@ export default {
       editid: null,
       products: [],
       types: [
-        // { title: "สินค้าทั้งหมด", value: "" },
         { title: "อาหาร/เครื่องดื่ม", value: "food" },
-        {
-          title: "อุปกรณ์เครื่องเขียน",
-          value: "stationary"
-        },
         {
           title: "เสื้อผ้า/เครื่องแต่งกาย/ชุดเครื่องนอน",
           value: "clothes"
+        },
+        {
+          title: "อุปกรณ์เครื่องเขียน",
+          value: "stationary"
         }
       ],
       type: "",
@@ -211,7 +210,6 @@ export default {
       console.log("Check at onimage", this.noUpload);
     },
     editProduct(id, item) {
-      //console.log("item", item);
       this.editIndex = this.products.indexOf(item);
       this.editItem = Object.assign({}, item);
       this.dialog = true;
@@ -219,7 +217,7 @@ export default {
     },
     deleteProduct(id, item) {
       const index = this.products.indexOf(item);
-      var falseVar = 'false';
+      var falseVar = "false";
       confirm("Are you sure you want to delete this item?") &&
         axios
           .put("api/product/" + id, {
@@ -242,15 +240,25 @@ export default {
         this.snackbar = true;
         this.close();
       } else {
+        console.log(this.editItem);
         if (this.checkInput) {
           this.productsFil.push(this.editItem) &&
-            axios.post("/api/product", {
-              name: this.editItem.name,
-              image: this.editItem.image,
-              type: this.editItem.type,
-              product_code: this.editItem.code,
-              price: this.editItem.price
-            });
+            axios
+              .post("/api/product", {
+                name: this.editItem.name,
+                image: this.editItem.image,
+                type: this.editItem.type,
+                product_code: this.editItem.code,
+                price: this.editItem.price
+              })
+              .then(
+                response => {
+                  console.log(response);
+                },
+                error => {
+                  console.log(error);
+                }
+              );
           this.snackbar = true;
           this.close();
         }

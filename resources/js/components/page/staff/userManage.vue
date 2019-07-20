@@ -62,20 +62,11 @@
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-text-field
-                      v-model="editItem.level"
+                      v-model="editItem.education"
                       v-validate="'required'"
                       label="ระดับชั้น*"
-                      data-vv-name="level"
-                      :error-messages="errors.collect('level')"
-                    ></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6 md4>
-                    <v-text-field
-                      v-model="editItem.room"
-                      v-validate="'required'"
-                      label="ห้อง*"
-                      data-vv-name="room"
-                      :error-messages="errors.collect('room')"
+                      data-vv-name="education"
+                      :error-messages="errors.collect('education')"
                     ></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
@@ -116,10 +107,10 @@
           <td>{{ props.item.firstname }}</td>
           <td>{{ props.item.lastname }}</td>
           <td>{{ props.item.code }}</td>
+          <td>{{ props.item.email }}</td>
           <td>{{ props.item.type }}</td>
           <td>{{ props.item.point }}</td>
-          <td>{{ props.item.level }}</td>
-          <td>{{ props.item.room }}</td>
+          <td>{{ props.item.education }}</td>
           <td>{{ props.item.unit }}</td>
           <td class="justify-center layout px-0">
             <v-icon small class="mr-2" @click="editUser(props.item.id,props.item)">edit</v-icon>
@@ -166,8 +157,7 @@ export default {
       { text: "Email", sortable: false, value: "email" },
       { text: "สถานะ", value: "type" },
       { text: "คะแนน", value: "point" },
-      { text: "ระดับชั้น", value: "level" },
-      { text: "ห้อง", value: "room" },
+      { text: "ระดับชั้น", value: "education" },
       { text: "จำนวนหุ้น", value: "unit" }
     ],
     users: [],
@@ -178,8 +168,7 @@ export default {
       code: "",
       type: "",
       point: 0,
-      level: null,
-      room: null,
+      education: null,
       bdate: null,
       unit: 0
     },
@@ -189,8 +178,7 @@ export default {
       code: "",
       type: "",
       point: 0,
-      level: null,
-      room: null,
+      education: null,
       bdate: null,
       unit: 0
     }
@@ -205,8 +193,7 @@ export default {
         this.editItem.lastname &&
         this.editItem.code &&
         this.editItem.type &&
-        this.editItem.level &&
-        this.editItem.room &&
+        this.editItem.education &&
         this.editItem.bdate
       ) {
         return true;
@@ -260,8 +247,7 @@ export default {
             code: this.editItem.code,
             type: this.editItem.type,
             point: this.editItem.point,
-            level: this.editItem.level,
-            room: this.editItem.room,
+            education: this.editItem.education,
             unit: this.editItem.unit
           });
         this.snackbar = true;
@@ -275,8 +261,7 @@ export default {
               code: this.editItem.code,
               type: this.editItem.type,
               point: this.editItem.point,
-              level: this.editItem.level,
-              room: this.editItem.room,
+              education: this.editItem.education,
               unit: this.editItem.unit,
               bdate: this.editItem.bdate
             });

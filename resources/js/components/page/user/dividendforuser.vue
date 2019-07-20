@@ -9,16 +9,10 @@
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
         <date-show></date-show>
+        <v-spacer>
+        </v-spacer>
+        <h3>ประจำปีการศึกษา</h3>
       </v-toolbar>
-      <v-layout class="justify-end">
-        <v-spacer></v-spacer>
-        <v-flex xs12 sm5 md3>
-          <v-select :items="select" v-model="selected" item-text="title" label="เลือกดูระดับชั้น"></v-select>
-        </v-flex>&nbsp;&nbsp;
-        <v-flex xs12 sm5 md3>
-          <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
-        </v-flex>
-      </v-layout>
       <v-data-table
         :headers="headers"
         :items="filteredusers"
