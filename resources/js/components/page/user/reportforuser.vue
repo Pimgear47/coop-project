@@ -100,9 +100,6 @@ export default {
         .then();
         console.log('this.filteredReport',this.filteredReport)
     },
-    getMonth() {
-      console.log(this.date);
-    }
   },
   computed: {
     filteredReport: function() {

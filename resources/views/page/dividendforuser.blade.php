@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
 <div id="app">
-    <dividend-for-user></dividend-for-user>
+    @if(auth()->check())
+        <dividend-for-user :usernow="{{ Auth::user() }}"></dividend-for-user>
+    @endif
 </div>
 @endsection

@@ -24,8 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "apexcharts": "^3.8.3",
         "pdfmake": "^0.1.57",
         "vee-validate": "^2.2.11",
+        "vue-apexcharts": "^1.4.0",
         "vue-router": "^3.0.6",
         "vuetify": "^1.5.12"
     }
