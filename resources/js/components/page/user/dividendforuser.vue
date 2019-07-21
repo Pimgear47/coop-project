@@ -13,36 +13,7 @@
         </v-spacer>
         <year-education></year-education>
       </v-toolbar>
-      <v-data-table
-        :headers="headers"
-        :items="filteredusers"
-        :search="search"
-        :pagination.sync="pagination"
-        class="elevation-1 txt-title"
-      >
-        <template v-slot:items="props">
-          <td>{{ props.item.firstname }}</td>
-          <td>{{ props.item.lastname }}</td>
-          <td>{{ props.item.type }}</td>
-          <td>{{ props.item.unit }}</td>
-          <td>{{ props.item.unit*10*0.1 }}</td>
-          <td>{{ props.item.total }}</td>
-          <td>{{ props.item.total * 0.02}}</td>
-          <td>{{ (props.item.unit*10*0.1)+(props.item.total*0.02)}}</td>
-        </template>
-        <template v-slot:footer>
-          <td :colspan="headers.length" v-if="check">
-            <b>รวมเป็นเงินที่ต้องเตรียมสำหรับจ่าย {{totalSum}} บาท</b>
-          </td>
-        </template>
-        <template v-if="search!=''" v-slot:no-results>
-          <v-alert
-            :value="true"
-            color="error"
-            icon="warning"
-          >Your search for "{{ search }}" found no results.</v-alert>
-        </template>
-      </v-data-table>
+      
     </v-flex>
   </v-layout>
 </template>
