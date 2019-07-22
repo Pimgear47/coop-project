@@ -1,35 +1,49 @@
 <template>
-  <v-layout class="justify-end mt-1 mr-5 mb-3">
+  <v-layout class="justify-end mt-4 mr-5 mb-3">
     <v-flex xs9 sm11>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>
-          <h3>
-            <v-icon large color="pink">monetization_on</v-icon>&nbsp;รายงานปันผลและเฉลี่ยคืน
-          </h3>
-        </v-toolbar-title>
-        <v-divider class="mx-2" inset vertical></v-divider>
-        <date-show></date-show>
-        <v-spacer></v-spacer>
-        <year-education></year-education>
-      </v-toolbar>
-      <v-layout row wrap>
-        <v-flex xs12 sm5 md4>
-          <v-data-table
-            :items="monthReport"
-            class="elevation-1 txt-title"
-            hide-actions
-            hide-headers
-          >
-            <template v-slot:items="props">
-              <td class="text-xs-center">{{ props.item.title }}</td>
-              <td class="text-xs-center">{{ props.item.data }} บาท</td>
-            </template>
-          </v-data-table>
-        </v-flex>
-        <v-flex xs12 sm5 md8>
-          <apexchart type="line" height="350" :options="chartOptions" :series="series" />
-        </v-flex>
-      </v-layout>
+      <v-card>
+        <v-toolbar flat color="white">
+          <v-toolbar-title>
+            <h3>
+              <v-icon large color="pink">monetization_on</v-icon>&nbsp;รายงานปันผลและเฉลี่ยคืน
+            </h3>
+          </v-toolbar-title>
+          <v-divider class="mx-2" inset vertical></v-divider>
+          <date-show></date-show>
+          <v-spacer></v-spacer>
+          <year-education></year-education>
+        </v-toolbar>
+        <v-container grid-list-xl text-xs-center>
+          <v-layout justify-space-between row wrap>
+            <v-flex xs12 sm5 md4>
+              <v-data-table
+                :items="monthReport"
+                class="elevation-1 txt-title"
+                hide-actions
+                hide-headers
+              >
+                <template v-slot:items="props">
+                  <td class="text-xs-center">{{ props.item.title }} {{yearEd(props.item.id)}}</td>
+                  <td class="text-xs-center">{{ props.item.data }} บาท</td>
+                </template>
+              </v-data-table>
+            </v-flex>
+            <v-flex xs12 sm5 md8>
+              <apexchart type="line" height="415" :options="chartOptions" :series="series" />
+              <v-container grid-list-xl text-xs-center>
+                <v-layout row wrap>
+                  <v-flex xs12 sm5 md6>
+                    <show-dividend text="ยอดปันผลจากหุ้น(บาท)" value="50"></show-dividend>
+                  </v-flex>
+                  <v-flex xs12 sm5 md6>
+                    <show-dividend text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)" value="200"></show-dividend>
+                  </v-flex>
+                </v-layout>
+              </v-container>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
@@ -38,17 +52,8 @@
 export default {
   props: ["usernow"],
   data: () => ({
-    headers: [
-      { text: "เดือน", sortable: false, value: "firstname" },
-      { text: "ยอดใช้จ่าย(บาท)", sortable: false, value: "lastname" }
-    ],
+    date: new Date(),
     reports: [],
-    series: [
-      {
-        name: "Likes",
-        data: [4, 3, 10, 9, 15, 29, 15, 22, 11, 32, 8, 23]
-      }
-    ],
     chartOptions: {
       chart: {
         type: "line",
@@ -66,20 +71,19 @@ export default {
         curve: "smooth"
       },
       xaxis: {
-        type: "datetime",
         categories: [
-          "2018-01",
-          "2018-02",
-          "2018-03",
-          "2018-04",
-          "2018-05",
-          "2018-06",
-          "2018-07",
-          "2018-08",
-          "2018-09",
-          "2018-10",
-          "2018-11",
-          "2018-12"
+          "พฤษภาคม",
+          "มิถุนายน",
+          "กรกฎาคม",
+          "สิงหาคม",
+          "กันยายน",
+          "ตุลาคม",
+          "พฤษจิกายน",
+          "ธันวาคม",
+          "มกราคม",
+          "กุมภาพันธ์",
+          "มีนาคม",
+          "เมษายน"
         ]
       },
       title: {
@@ -108,14 +112,11 @@ export default {
         colors: ["#FFA41B"],
         strokeColor: "#fff",
         strokeWidth: 2,
-
         hover: {
           size: 7
         }
       },
       yaxis: {
-        min: 0,
-        max: 40,
         title: {
           text: "ยอดใช้จ่าย"
         }
@@ -123,6 +124,19 @@ export default {
     }
   }),
   computed: {
+    series: function() {
+      var series = [
+        {
+          name: "ยอดใช้จ่าย",
+          data: []
+        }
+      ];
+      let self = this;
+      for (var i = 0; i < this.monthReport.length; i++) {
+        series[0].data.push(this.monthReport[i].data);
+      }
+      return series;
+    },
     filteredReport: function() {
       var arrReport = [];
       arrReport = this.reports.filter(report => {
@@ -219,6 +233,14 @@ export default {
     this.getReportData();
   },
   methods: {
+    yearEd(id) {
+      var month = parseInt(id);
+      if (month >= 5) {
+        return this.date.getFullYear() + 543;
+      } else {
+        return this.date.getFullYear() + 544;
+      }
+    },
     getReportData() {
       axios.get("api/reportuser").then(response => {
         this.reports = response.data;
@@ -227,3 +249,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.text-center {
+  text-align: center;
+}
+</style>

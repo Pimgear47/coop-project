@@ -17,6 +17,7 @@ Vue.component('carousel', require('./components/carousel.vue').default);
 
 Vue.component('date-show', require('./components/elements/dateShow.vue').default);
 Vue.component('year-education', require('./components/elements/yearEducation.vue').default);
+Vue.component('show-dividend', require('./components/elements/showDividend.vue').default);
 
 Vue.component('product', require('./components/page/product.vue').default);
 Vue.component('user-manage', require('./components/page/staff/userManage.vue').default);
@@ -25,7 +26,6 @@ Vue.component('report-user', require('./components/page/user/reportforuser.vue')
 Vue.component('sale-report', require('./components/page/staff/salereport.vue').default);
 Vue.component('dividend-for-admin', require('./components/page/staff/dividendforadmin.vue').default);
 Vue.component('dividend-for-user', require('./components/page/user/dividendforuser.vue').default);
-
 
 const app = new Vue({
     el: '#app',

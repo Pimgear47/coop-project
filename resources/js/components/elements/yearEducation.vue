@@ -10,7 +10,7 @@ export default {
   computed: {
     year() {
         console.log(this.date.getMonth()+1);
-        if((this.date.getMonth()+1)>5){
+        if((this.date.getMonth()+1)>=5){
             return (this.date.getFullYear())+543;
         }else{
             return (this.date.getFullYear()-1)+543;
