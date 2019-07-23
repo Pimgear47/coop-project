@@ -29,14 +29,14 @@
               </v-data-table>
             </v-flex>
             <v-flex xs12 sm5 md8>
-              <apexchart type="line" height="415" :options="chartOptions" :series="series" />
+              <apexchart type="line" height="408" :options="chartOptions" :series="series" />
               <v-container grid-list-xl text-xs-center>
                 <v-layout row wrap>
                   <v-flex xs12 sm5 md6>
-                    <show-dividend text="ยอดปันผลจากหุ้น(บาท)" value="50"></show-dividend>
+                    <show-dividend text="ยอดปันผลจากหุ้น(บาท)" :value="usernow.unit"></show-dividend>
                   </v-flex>
                   <v-flex xs12 sm5 md6>
-                    <show-dividend text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)" value="200"></show-dividend>
+                    <show-dividend text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)" :value="this.totalPaid*0.02"></show-dividend>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -137,6 +137,13 @@ export default {
       }
       return series;
     },
+    totalPaid: function() {
+      var totalPaid = 0;
+      for (var i = 0; i < this.filteredReport.length; i++) {
+        totalPaid += this.filteredReport[i].count * this.filteredReport[i].cost;
+      }
+      return totalPaid;
+    },
     filteredReport: function() {
       var arrReport = [];
       arrReport = this.reports.filter(report => {
@@ -224,6 +231,8 @@ export default {
       for (var i = 0; i < this.filteredReport.length; i++) {
         var idenID = this.filteredReport[i].created_at.substr(5, 2);
         month.find(x => x.id === idenID).data +=
+          this.filteredReport[i].count * this.filteredReport[i].cost;
+        this.totalPaid +=
           this.filteredReport[i].count * this.filteredReport[i].cost;
       }
       return month;

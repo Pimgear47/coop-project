@@ -30824,8 +30824,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['text', 'value']
+  props: ["text", "value"]
 });
 
 /***/ }),
@@ -32439,6 +32441,15 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
       return series;
     },
+    totalPaid: function totalPaid() {
+      var totalPaid = 0;
+
+      for (var i = 0; i < this.filteredReport.length; i++) {
+        totalPaid += this.filteredReport[i].count * this.filteredReport[i].cost;
+      }
+
+      return totalPaid;
+    },
     filteredReport: function filteredReport() {
       var _this = this;
 
@@ -32514,6 +32525,7 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         month.find(function (x) {
           return x.id === idenID;
         }).data += this.filteredReport[i].count * this.filteredReport[i].cost;
+        this.totalPaid += this.filteredReport[i].count * this.filteredReport[i].cost;
       }
 
       return month;
@@ -80186,7 +80198,11 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("v-card-text", [_vm._v(_vm._s(_vm.value))])
+      _c("v-card-text", [
+        _c("h3", { staticClass: "txt-title text-md-center" }, [
+          _vm._v(_vm._s(_vm.value))
+        ])
+      ])
     ],
     1
   )
@@ -82612,7 +82628,7 @@ var render = function() {
                           _c("apexchart", {
                             attrs: {
                               type: "line",
-                              height: "415",
+                              height: "408",
                               options: _vm.chartOptions,
                               series: _vm.series
                             }
@@ -82638,7 +82654,7 @@ var render = function() {
                                       _c("show-dividend", {
                                         attrs: {
                                           text: "ยอดปันผลจากหุ้น(บาท)",
-                                          value: "50"
+                                          value: _vm.usernow.unit
                                         }
                                       })
                                     ],
@@ -82652,7 +82668,7 @@ var render = function() {
                                       _c("show-dividend", {
                                         attrs: {
                                           text: "ยอดเฉลี่ยคืนจากการซื้อ(บาท)",
-                                          value: "200"
+                                          value: this.totalPaid * 0.02
                                         }
                                       })
                                     ],

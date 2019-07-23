@@ -23,7 +23,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" class="Hello">
         <v-toolbar color="pink accent-3" dark permanent fixed>
             <v-toolbar-title class="txt-title action-container"><img src="/images/elements/logo.png"
                     height="60">ระบบสหกรณ์ร้านค้า</v-toolbar-title>
@@ -80,3 +80,9 @@
 </body>
 
 </html>
+
+<style scope>
+.Hello div.application--wrap{
+    background-color: white;
+}
+</style>
