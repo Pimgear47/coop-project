@@ -26,3 +26,4 @@ Route::resource('reportuser','ReportUserController');
 Route::resource('salereport','SaleReportController');
 Route::resource('dividend-for-admin','DividendAdminController');
 Route::resource('dividend-for-user','DividendUserController');
+Route::resource('event','EventController');

@@ -36,24 +36,37 @@
               </v-flex>
             </v-layout>
           </v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="filteredReport"
-            :pagination.sync="pagination"
-            class="elevation-1 txt-title"
-          >
-            <template v-slot:items="props">
-              <td>{{ props.item.product.name }}</td>
-              <td>{{ props.item.count }}</td>
-              <td>{{ props.item.cost }}</td>
-              <td>{{ props.item.count*props.item.cost }}</td>
-            </template>
-            <template v-slot:footer>
-              <td :colspan="headers.length" v-if="check">
-                <b>รวมเป็นเงิน {{total}} บาท</b>
-              </td>
-            </template>
-          </v-data-table>
+          <v-layout row wrap>
+            <v-flex xs9 sm11 md5>
+              <v-data-table
+                :headers="headers"
+                :items="filteredReport"
+                :pagination.sync="pagination"
+                class="elevation-1 txt-title"
+              >
+                <template v-slot:items="props">
+                  <td>{{ props.item.product.name }}</td>
+                  <td>{{ props.item.count }}</td>
+                  <td>{{ props.item.cost }}</td>
+                  <td>{{ props.item.count*props.item.cost }}</td>
+                </template>
+                <template v-slot:footer>
+                  <td :colspan="headers.length" v-if="check">
+                    <b>รวมเป็นเงิน {{total}} บาท</b>
+                  </td>
+                </template>
+              </v-data-table>
+            </v-flex>
+            <v-flex xs9 sm11 md7>
+              <v-card>
+                <v-card-title>
+                  <h3 class="txt-title">กราฟวิเคราะห์ยอดซื้อ(บาท)</h3>
+                </v-card-title>
+                <apexchart type="donut" height="454" :options="chartOptions" :series="series" />
+                <br />
+              </v-card>
+            </v-flex>
+          </v-layout>
         </v-container>
       </v-card>
     </v-flex>
@@ -67,12 +80,12 @@ export default {
     check: false,
     date: new Date().toISOString().substr(0, 7),
     pagination: {
-      rowsPerPage: 20
+      rowsPerPage: 7
     },
     modal: false,
     search: "",
     headers: [
-      { text: "ชื่อ", sortable: false, value: "product.name"},
+      { text: "ชื่อ", sortable: false, value: "product.name" },
       { text: "จำนวน", sortable: false, value: "count" },
       {
         text: "ราคา",
@@ -83,7 +96,30 @@ export default {
     ],
     reports: [],
     price: [],
-    forCountSumPrice: []
+    forCountSumPrice: [],
+    chartOptions: {
+      chart: {
+        type: "donut"
+      },
+      labels: [
+        "อาหาร/เครื่องดื่ม",
+        "เสื้อผ้า/เครื่องแต่งกาย/ชุดเครื่องนอน",
+        "อุปกรณ์เครื่องเขียน"
+      ],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    },
   }),
   mounted() {
     this.getReportData();
@@ -98,10 +134,26 @@ export default {
           console.log("reports", this.reports);
         })
         .then();
-        console.log('this.filteredReport',this.filteredReport)
-    },
+      console.log("this.filteredReport", this.filteredReport);
+    }
   },
   computed: {
+    series: function() {
+      var series = [0, 0, 0];
+      for (var i = 0; i < this.filteredReport.length; i++) {
+        if (this.filteredReport[i].product.type == "food") {
+          series[0] +=
+            this.filteredReport[i].count * this.filteredReport[i].cost;
+        } else if (this.filteredReport[i].product.type == "clothes") {
+          series[1] +=
+            this.filteredReport[i].count * this.filteredReport[i].cost;
+        } else {
+          series[2] +=
+            this.filteredReport[i].count * this.filteredReport[i].cost;
+        }
+      }
+      return series;
+    },
     filteredReport: function() {
       var arrReport = [];
       arrReport = this.reports.filter(report => {
@@ -121,7 +173,7 @@ export default {
           }, new Map())
           .values()
       ];
-      console.log('result',result);
+      console.log("result", result);
       this.check = true;
       return result;
     },

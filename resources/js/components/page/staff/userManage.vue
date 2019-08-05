@@ -142,7 +142,7 @@ export default {
   },
   data: () => ({
     pagination: {
-      rowsPerPage: 10
+      rowsPerPage: 12
     },
     snackbar: false,
     color: "success",

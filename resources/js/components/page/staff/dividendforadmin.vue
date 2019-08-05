@@ -33,10 +33,10 @@
           <td>{{ props.item.lastname }}</td>
           <td>{{ props.item.type }}</td>
           <td>{{ props.item.unit }}</td>
-          <td>{{ props.item.unit*10*0.1 }}</td>
+          <td>{{ Math.round(props.item.unit*10*0.1) }}</td>
           <td>{{ props.item.total }}</td>
-          <td>{{ props.item.total * 0.02}}</td>
-          <td>{{ (props.item.unit*10*0.1)+(props.item.total*0.02)}}</td>
+          <td>{{ Math.round(props.item.total * 0.02)}}</td>
+          <td>{{ (Math.round(props.item.unit*10*0.1)+Math.round(props.item.total*0.02))}}</td>
         </template>
         <template v-slot:footer>
           <td :colspan="headers.length" v-if="check">
@@ -103,7 +103,7 @@ export default {
     totalSum: function() {
       let total = [];
       Object.entries(this.forCountSumPrice).forEach(([key, val]) => {
-        total.push(val.unit * 10 * 0.1 + val.total * 0.23);
+        total.push(Math.round(val.unit * 10 * 0.1) + Math.round(val.total * 0.02));
       });
       return total.reduce(function(total, num) {
         return total + num;

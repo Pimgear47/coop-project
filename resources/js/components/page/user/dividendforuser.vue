@@ -33,10 +33,10 @@
               <v-container grid-list-xl text-xs-center>
                 <v-layout row wrap>
                   <v-flex xs12 sm5 md6>
-                    <show-dividend text="ยอดปันผลจากหุ้น(บาท)" :value="usernow.unit"></show-dividend>
+                    <show-dividend text="ยอดปันผลจากหุ้น(บาท)" :value="Math.round(usernow.unit)"></show-dividend>
                   </v-flex>
                   <v-flex xs12 sm5 md6>
-                    <show-dividend text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)" :value="this.totalPaid*0.02"></show-dividend>
+                    <show-dividend text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)" :value="Math.round(this.totalPaid*0.02)"></show-dividend>
                   </v-flex>
                 </v-layout>
               </v-container>

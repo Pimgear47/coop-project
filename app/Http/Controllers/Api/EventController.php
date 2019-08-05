@@ -2,26 +2,22 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Event;
 use App\Http\Controllers\Controller;
-use App\Product;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
 
     public function index()
     {
-        $events = Product::orderBy('name', 'asc')->get();
-        return response()->json($products);
+        $events = Event::orderBy('date', 'asc')->get();
+        return response()->json($events);
     }
 
     /**
@@ -42,14 +38,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Product();
-        $product->name = $request->get('name');
-        $product->price = $request->get('price');
-        $product->product_code = $request->get('product_code');
-        $product->type = $request->get('type');
-        $product->image = $request->get('image');
-        $product->save();
-        return response()->json($product);
+        $event = new Event();
+        $event->title = $request->get('title');
+        $event->details = $request->get('details');
+        $event->date = $request->get('date');
+        $event->save();
+        return response()->json($event);
     }
 
     /**
@@ -71,7 +65,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -83,18 +77,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->get('Delete')) {
-            $product = Product::find($id);
-            $product->available = $request->get('availableVal');
-            $product->update();
-            return response()->json($product);
-        } else {
-            $product = Product::find($id);
-            $product->name = $request->get('name');
-            $product->price = $request->get('price');
-            $product->update();
-            return response()->json($product);
-        }
+        $event = Event::find($id);
+        $event->title = $request->get('title');
+        $event->details = $request->get('details');
+        $event->date = $request->get('date');
+        $event->update();
+        return response()->json($event);
     }
 
     /**
@@ -105,6 +93,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-
+        $event=Event::find($id);
+        $event->delete();
+        return response()->json($event);
     }
 }

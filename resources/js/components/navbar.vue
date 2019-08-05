@@ -82,7 +82,6 @@
 export default {
   props: ["usernow"],
   mounted() {
-    console.log("Component mounted.");
     console.log(this.usernow);
     console.log(location.pathname);
   },
@@ -114,7 +113,7 @@ export default {
         {
           title: "ปฏิทินกำหนดการ",
           icon: "date_range",
-          link: "#"
+          link: "/event"
         },
         {
           title: "จัดการสมาชิก",
@@ -137,7 +136,7 @@ export default {
         {
           title: "ปฏิทินกำหนดการ",
           icon: "date_range",
-          link: "#"
+          link: "/event"
         }
       ],
       itemsUser: [
@@ -160,7 +159,7 @@ export default {
         {
           title: "ปฏิทินกำหนดการ",
           icon: "date_range",
-          link: "#"
+          link: "/event"
         }
       ],
       mini: true,

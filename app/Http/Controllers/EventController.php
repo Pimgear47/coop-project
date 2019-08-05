@@ -1,27 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Product;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index()
     {
-        $events = Product::orderBy('name', 'asc')->get();
-        return response()->json($products);
+        return view('page/event');
     }
 
     /**
@@ -42,14 +40,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $product = new Product();
-        $product->name = $request->get('name');
-        $product->price = $request->get('price');
-        $product->product_code = $request->get('product_code');
-        $product->type = $request->get('type');
-        $product->image = $request->get('image');
-        $product->save();
-        return response()->json($product);
+        //
     }
 
     /**
@@ -83,18 +74,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->get('Delete')) {
-            $product = Product::find($id);
-            $product->available = $request->get('availableVal');
-            $product->update();
-            return response()->json($product);
-        } else {
-            $product = Product::find($id);
-            $product->name = $request->get('name');
-            $product->price = $request->get('price');
-            $product->update();
-            return response()->json($product);
-        }
+        //
     }
 
     /**
@@ -105,6 +85,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-
+        //
     }
 }
