@@ -62,7 +62,7 @@
                 <v-card-title>
                   <h3 class="txt-title">กราฟวิเคราะห์จำนวนขาย(ชิ้น)</h3>
                 </v-card-title>
-                <apexchart type="donut" height="454" :options="chartOptions" :series="series" />
+                <apexchart type="donut" height="503" :options="chartOptions" :series="series" />
                 <br />
               </v-card>
             </v-flex>

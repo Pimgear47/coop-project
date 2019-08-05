@@ -20,7 +20,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $events = Product::orderBy('name', 'asc')->get();
+        $products = Product::orderBy('name', 'asc')->get();
         return response()->json($products);
     }
 

@@ -82887,7 +82887,7 @@ var render = function() {
                               _c("apexchart", {
                                 attrs: {
                                   type: "donut",
-                                  height: "454",
+                                  height: "503",
                                   options: _vm.chartOptions,
                                   series: _vm.series
                                 }
@@ -84483,7 +84483,7 @@ var render = function() {
                               _c("apexchart", {
                                 attrs: {
                                   type: "donut",
-                                  height: "454",
+                                  height: "503",
                                   options: _vm.chartOptions,
                                   series: _vm.series
                                 }
