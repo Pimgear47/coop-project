@@ -18,7 +18,6 @@ Vue.component('carousel', require('./components/carousel.vue').default);
 Vue.component('date-show', require('./components/elements/dateShow.vue').default);
 Vue.component('year-education', require('./components/elements/yearEducation.vue').default);
 Vue.component('show-dividend', require('./components/elements/showDividend.vue').default);
-Vue.component('MY-show', require('./components/elements/monthYearShow.vue').default);
 
 Vue.component('product', require('./components/page/product.vue').default);
 Vue.component('event', require('./components/page/event.vue').default);

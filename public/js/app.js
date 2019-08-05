@@ -30806,47 +30806,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/elements/monthYearShow.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/elements/monthYearShow.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {
-      date: new Date()
-    };
-  },
-  computed: {
-    dateDisplay: function dateDisplay() {
-      var month = new Array();
-      month[0] = "มกราคม";
-      month[1] = "กุมภาพันธ์";
-      month[2] = "มีนาคม";
-      month[3] = "เมษายน";
-      month[4] = "พฤษภาคม";
-      month[5] = "มิถุนายน";
-      month[6] = "กรกฎาคม";
-      month[7] = "สิงหาคม";
-      month[8] = "กันยายน";
-      month[9] = "ตุลาคม";
-      month[10] = "พฤษจิกายน";
-      month[11] = "ธันวาคม";
-      return month[this.date.getMonth()] + " " + (this.date.getFullYear() + 543);
-    }
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/elements/showDividend.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/elements/showDividend.vue?vue&type=script&lang=js& ***!
@@ -80790,30 +80749,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/elements/monthYearShow.vue?vue&type=template&id=57396926&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/elements/monthYearShow.vue?vue&type=template&id=57396926& ***!
-  \*************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("h3", [_vm._v(_vm._s(_vm.dateDisplay))])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/elements/showDividend.vue?vue&type=template&id=558ae8e9&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/elements/showDividend.vue?vue&type=template&id=558ae8e9& ***!
@@ -122779,7 +122714,6 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('carousel', __webpack_requi
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('date-show', __webpack_require__(/*! ./components/elements/dateShow.vue */ "./resources/js/components/elements/dateShow.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('year-education', __webpack_require__(/*! ./components/elements/yearEducation.vue */ "./resources/js/components/elements/yearEducation.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('show-dividend', __webpack_require__(/*! ./components/elements/showDividend.vue */ "./resources/js/components/elements/showDividend.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('MY-show', __webpack_require__(/*! ./components/elements/monthYearShow.vue */ "./resources/js/components/elements/monthYearShow.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('product', __webpack_require__(/*! ./components/page/product.vue */ "./resources/js/components/page/product.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('event', __webpack_require__(/*! ./components/page/event.vue */ "./resources/js/components/page/event.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('user-manage', __webpack_require__(/*! ./components/page/staff/userManage.vue */ "./resources/js/components/page/staff/userManage.vue")["default"]);
@@ -123054,75 +122988,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dateShow_vue_vue_type_template_id_416251a8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_dateShow_vue_vue_type_template_id_416251a8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/elements/monthYearShow.vue":
-/*!************************************************************!*\
-  !*** ./resources/js/components/elements/monthYearShow.vue ***!
-  \************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _monthYearShow_vue_vue_type_template_id_57396926___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./monthYearShow.vue?vue&type=template&id=57396926& */ "./resources/js/components/elements/monthYearShow.vue?vue&type=template&id=57396926&");
-/* harmony import */ var _monthYearShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./monthYearShow.vue?vue&type=script&lang=js& */ "./resources/js/components/elements/monthYearShow.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _monthYearShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _monthYearShow_vue_vue_type_template_id_57396926___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _monthYearShow_vue_vue_type_template_id_57396926___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/elements/monthYearShow.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/elements/monthYearShow.vue?vue&type=script&lang=js&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/components/elements/monthYearShow.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_monthYearShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./monthYearShow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/elements/monthYearShow.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_monthYearShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/elements/monthYearShow.vue?vue&type=template&id=57396926&":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/elements/monthYearShow.vue?vue&type=template&id=57396926& ***!
-  \*******************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_monthYearShow_vue_vue_type_template_id_57396926___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./monthYearShow.vue?vue&type=template&id=57396926& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/elements/monthYearShow.vue?vue&type=template&id=57396926&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_monthYearShow_vue_vue_type_template_id_57396926___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_monthYearShow_vue_vue_type_template_id_57396926___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
