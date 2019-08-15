@@ -4,25 +4,29 @@
       <h2 class="txt-title mt-2">
         <v-icon large color="pink">assignment_turned_in</v-icon>&nbsp;ทำรายการ
       </h2>
-      <br>
+      <br />
       <v-stepper v-model="e6" vertical>
         <v-stepper-step :complete="e6 > 1" step="1" color="pink">
           <h3>กรอกชื่อหรือรหัสสมาชิก</h3>
         </v-stepper-step>
         <v-stepper-content step="1">
-          <v-text-field v-model="code_user" label="รหัสสมาชิก"></v-text-field>
+          <v-text-field
+            @keyup.enter="e6 = 2 , mapUser(filteredUser)"
+            v-model="code_user"
+            label="รหัสสมาชิก"
+          ></v-text-field>
           <v-layout v-if="filteredUser.length===1 && code_user!=''" row wrap>
             <v-flex v-for="user in filteredUser" :key="user.firstname" sm4 mb-2>
               <h3 class="txt-title">
                 ชื่อสมาชิก : {{user.firstname}} {{user.lastname}}
-                <br>
+                <br />
                 รหัสสมาชิก : {{user.code}}
               </h3>
-              <br>
-              <v-btn class="txt-title" color="primary" @click="e6 = 2,mapUser(user)">Continue</v-btn>
-              <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">Cancel</v-btn>
+              <br />
             </v-flex>
           </v-layout>
+          <v-btn class="txt-title" color="primary" @click="e6 = 2 , mapUser(filteredUser)">Continue</v-btn>
+          <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">Cancel</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
@@ -33,8 +37,8 @@
             <v-flex v-for="product in filteredProduct" :key="product.name" sm4 mb-2>
               <h4 class="txt-title">ชื่อสินค้า : {{product.name}}</h4>
               <h4 class="txt-title">ราคา : {{product.price}} บาท</h4>
-              <img :src="product.image" height="200px">
-              <br>
+              <img :src="product.image" height="200px" />
+              <br />
             </v-flex>
           </v-layout>
           <v-data-table
@@ -54,9 +58,9 @@
               </td>
             </template>
           </v-data-table>
-          <br>
+          <br />
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
-          <br>
+          <br />
           <v-btn
             v-if="this.orderProduct.length!=0"
             class="txt-title"
@@ -80,10 +84,10 @@
           <h3>ผู้ทำรายการ : {{this.currentStaff.firstname}} {{this.currentStaff.lastname}}</h3>
           <h3>จำนวนสิ่งของที่ซื้อ {{this.sumofcount}} ชิ้น</h3>
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
-          <br>
-          <br>
+          <br />
+          <br />
           <v-btn class="txt-title" color="primary" @click="e6 = 1,saveTransaction()">Continue</v-btn>
-          <v-btn class="txt-title" color="primary">Receipt?</v-btn>
+          <v-btn class="txt-title" color="primary" @click="receipt()">Receipt?</v-btn>
           <v-btn class="txt-title" flat @click="e6 = 2">Cancel</v-btn>
         </v-stepper-content>
       </v-stepper>
@@ -98,6 +102,7 @@
 </template>
 
 <script>
+import pdfbill from "./pdfReport/pdfbill";
 export default {
   props: ["usernow"],
   data() {
@@ -151,7 +156,7 @@ export default {
         this.currentUser = null;
         console.log("this.currentUserIF", this.currentUser);
       } else {
-        this.currentUser = user;
+        this.currentUser = user[0];
         console.log("this.currentUser", this.currentUser);
       }
     },
@@ -258,6 +263,9 @@ export default {
             console.log(error.message);
           });
       }
+    },
+    receipt() {
+      pdfbill.pdfMaker(this.currentUser, this.orderProduct, this.orderPrice);
     }
   },
   computed: {

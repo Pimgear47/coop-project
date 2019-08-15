@@ -25,7 +25,12 @@
     },
     "dependencies": {
         "apexcharts": "^3.8.3",
+        "async": "^3.1.0",
+        "comma-number": "^2.0.1",
+        "gulp": "^4.0.2",
+        "moment": "^2.24.0",
         "pdfmake": "^0.1.57",
+        "thai-baht-text": "^1.0.7",
         "vee-validate": "^2.2.11",
         "vue-apexcharts": "^1.4.0",
         "vue-router": "^3.0.6",
