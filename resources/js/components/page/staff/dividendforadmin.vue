@@ -13,6 +13,7 @@
         <year-education></year-education>
       </v-toolbar>
       <v-layout class="justify-end">
+        <v-btn color="primary" @click="report()">พิมพ์รายงานปันผลและเฉลี่ยคืน</v-btn>
         <v-spacer></v-spacer>
         <v-flex xs12 sm5 md3>
           <v-select :items="select" v-model="selected" item-text="title" label="เลือกดูระดับชั้น"></v-select>
@@ -103,7 +104,9 @@ export default {
     totalSum: function() {
       let total = [];
       Object.entries(this.forCountSumPrice).forEach(([key, val]) => {
-        total.push(Math.round(val.unit * 10 * 0.1) + Math.round(val.total * 0.02));
+        total.push(
+          Math.round(val.unit * 10 * 0.1) + Math.round(val.total * 0.02)
+        );
       });
       return total.reduce(function(total, num) {
         return total + num;

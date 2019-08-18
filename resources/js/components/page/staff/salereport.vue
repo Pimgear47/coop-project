@@ -8,31 +8,34 @@
               <h2 class="txt-title mt-0">
                 <v-icon large color="pink">description</v-icon>&nbsp;รายงานยอดขาย
               </h2>
-              <v-flex xs12 sm5 md3>
-                <v-dialog
-                  ref="dialog"
-                  v-model="modal"
-                  :return-value.sync="date"
-                  persistent
-                  lazy
-                  full-width
-                  width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="date"
-                      label="รายงานประจำเดือน"
-                      prepend-icon="event"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="date" color="pink accent-3" type="month" scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
-                    <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
-                  </v-date-picker>
-                </v-dialog>
+              <v-flex xs12 sm5 md4>
+                <v-layout row wrap>
+                  <v-dialog
+                    ref="dialog"
+                    v-model="modal"
+                    :return-value.sync="date"
+                    persistent
+                    lazy
+                    full-width
+                    width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="date"
+                        label="รายงานประจำเดือน"
+                        prepend-icon="event"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" color="pink accent-3" type="month" scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="modal = false">Cancel</v-btn>
+                      <v-btn flat color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+                    </v-date-picker>
+                  </v-dialog>
+                  <v-btn color="primary" @click="reportPdf()">พิมพ์รายงาน</v-btn>
+                </v-layout>
               </v-flex>
             </v-layout>
           </v-card-title>
@@ -95,6 +98,7 @@
 </template>
 
 <script>
+import pdfsalereport from "./pdfReport/pdfsalereport";
 var colors = [
   "#008FFB",
   "#00E396",
@@ -173,6 +177,9 @@ export default {
           console.log(this.reports);
         })
         .then();
+    },
+    reportPdf() {
+      pdfsalereport.pdfMaker(this.filteredReport,this.total,this.date);
     }
   },
   computed: {
@@ -238,7 +245,7 @@ export default {
               fontSize: "14px"
             }
           }
-        },
+        }
       };
       if (this.sortDataSet.length > 5) {
         for (var i = 0; i < 5; i++) {
