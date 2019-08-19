@@ -1,9 +1,10 @@
 <template>
-  <h3>ประจำปีการศึกษา {{year}}</h3>
+  <h3>{{text}}{{year}}</h3>
 </template>
 
 <script>
 export default {
+  props: ['text'],
   data: () => ({
     date: new Date()
   }),

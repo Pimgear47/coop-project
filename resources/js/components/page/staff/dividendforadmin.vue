@@ -10,10 +10,10 @@
         <v-divider class="mx-2" inset vertical></v-divider>
         <date-show></date-show>
         <v-spacer></v-spacer>
-        <year-education></year-education>
+        <year-education text="ประจำปีการศึกษา "></year-education>
       </v-toolbar>
       <v-layout class="justify-end">
-        <v-btn color="primary" @click="report()">พิมพ์รายงานปันผลและเฉลี่ยคืน</v-btn>
+        <v-btn color="primary" @click="reportPdf()">พิมพ์รายงานปันผลและเฉลี่ยคืน</v-btn>
         <v-spacer></v-spacer>
         <v-flex xs12 sm5 md3>
           <v-select :items="select" v-model="selected" item-text="title" label="เลือกดูระดับชั้น"></v-select>
@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import pdfdividend from "./pdfReport/pdfdividend";
+var groupArray = require("group-array");
 export default {
   data: () => ({
     pagination: {
@@ -127,6 +129,17 @@ export default {
         this.reports = response.data;
         console.log(this.reports);
       });
+    },
+    reportPdf() {
+      let input = groupArray(this.filteredusers, "education");
+      var output = [], item;
+      for (var name in input) {
+        item = {};
+        item.name = name;
+        item.data= input[name];
+        output.push(item);
+      }
+      pdfdividend.pdfMaker(output, this.totalSum);
     }
   }
 };
