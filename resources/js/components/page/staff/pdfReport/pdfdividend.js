@@ -191,11 +191,6 @@ async function pdfMaker(dataForReport, total) {
                 ]
             },
             margin: [0, 8],
-            // id: function() {
-            //     if (index_of_P != 0) {
-            //         return 'closingParagraph';
-            //     }
-            // },
             pageBreak: "after"
         }
 
@@ -217,13 +212,6 @@ async function pdfMaker(dataForReport, total) {
         defaultStyle: {
             font: 'THSarabunNew'
         },
-        // pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
-        //     //check if signature part is completely on the last page, add pagebreak if not
-        //     if (currentNode.id === 'closingParagraph' && currentNode.pageNumbers.length != 1) {
-        //         return true;
-        //     }
-        //     return false;
-        // },
         pageSize: 'A4',
         pageOrientation: 'portrait',
         pageMargins: [20, 30, 20, 20],
