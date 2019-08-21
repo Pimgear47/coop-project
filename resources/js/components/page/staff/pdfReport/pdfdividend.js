@@ -51,7 +51,7 @@ async function pdfMaker(dataForReport, total) {
     text_buttom = [{ text: 'พิมพ์วันที่ : ' + date + ' ' + monthName[month] + ' ' + (year + 543), fontSize: 15, }]
 
     content = [text_top, text_buttom]
-    for (let i = 0; i < dataForReport.length; i++) {
+    for (let j = 0; j < dataForReport.length; j++) {
         price_tb = [{
                 text: 'ลำดับ',
                 fontSize: 15,
@@ -101,7 +101,8 @@ async function pdfMaker(dataForReport, total) {
                 alignment: 'center'
             }
         ]
-        let name_title = { text: dataForReport[i].name, fontSize: 15, }
+        let index_of_P = j
+        let name_title = { text: dataForReport[j].name, fontSize: 15, }
         let items_number = ' '
         let order_code = ' '
         let order_name = ' '
@@ -112,8 +113,8 @@ async function pdfMaker(dataForReport, total) {
         let order_sum = ' '
         let calSum = 0
         let nametitle = ''
-        for (let index = 0; index < dataForReport[i].data.length; index++) {
-            const element = dataForReport[i].data[index];
+        for (let index = 0; index < dataForReport[j].data.length; index++) {
+            const element = dataForReport[j].data[index];
             if (element.sex == "ชาย") {
                 nametitle = 'เด็กชาย'
             } else {
@@ -170,6 +171,7 @@ async function pdfMaker(dataForReport, total) {
                 fontSize: 15,
             }
         ]
+        console.log('index_of_P', index_of_P)
         table_bill = {
             style: 'bill',
             table: {
@@ -189,6 +191,12 @@ async function pdfMaker(dataForReport, total) {
                 ]
             },
             margin: [0, 8],
+            // id: function() {
+            //     if (index_of_P != 0) {
+            //         return 'closingParagraph';
+            //     }
+            // },
+            pageBreak: "after"
         }
 
         let col = [name_title, table_bill, {
@@ -204,12 +212,18 @@ async function pdfMaker(dataForReport, total) {
 
     }
 
-
     var doc = {
         content: content,
         defaultStyle: {
             font: 'THSarabunNew'
         },
+        // pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
+        //     //check if signature part is completely on the last page, add pagebreak if not
+        //     if (currentNode.id === 'closingParagraph' && currentNode.pageNumbers.length != 1) {
+        //         return true;
+        //     }
+        //     return false;
+        // },
         pageSize: 'A4',
         pageOrientation: 'portrait',
         pageMargins: [20, 30, 20, 20],
