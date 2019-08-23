@@ -21,6 +21,7 @@ Vue.component('show-dividend', require('./components/elements/showDividend.vue')
 
 Vue.component('product', require('./components/page/product.vue').default);
 Vue.component('event', require('./components/page/event.vue').default);
+Vue.component('profile', require('./components/page/profile.vue').default);
 Vue.component('user-manage', require('./components/page/staff/userManage.vue').default);
 Vue.component('transaction', require('./components/page/staff/transaction.vue').default);
 Vue.component('report-user', require('./components/page/user/reportforuser.vue').default);

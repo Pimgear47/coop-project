@@ -89,7 +89,7 @@ export default {
     return {
       drawer: true,
       itemsAdmin: [
-        { title: "หน้าแรก", icon: "dashboard", link: "/" },
+        // { title: "หน้าแรก", icon: "dashboard", link: "/" },
         {
           title: "รายการสินค้า",
           icon: "shopping_cart",
@@ -122,7 +122,7 @@ export default {
         }
       ],
       itemsStaff: [
-        { title: "หน้าแรก", icon: "dashboard", link: "/" },
+        // { title: "หน้าแรก", icon: "dashboard", link: "/" },
         {
           title: "รายการสินค้า",
           icon: "shopping_cart",
@@ -140,7 +140,7 @@ export default {
         }
       ],
       itemsUser: [
-        { title: "หน้าแรก", icon: "dashboard", link: "/" },
+        // { title: "หน้าแรก", icon: "dashboard", link: "/" },
         {
           title: "รายการสินค้า",
           icon: "shopping_cart",

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users=User::orderBy('firstname','asc')->get();
+        $users = User::orderBy('firstname', 'asc')->get();
         return response()->json($users);
     }
 
@@ -42,14 +42,14 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user=new User();
+        $user = new User();
         $user->firstname = $request->get('firstname');
-        $user->lastname=$request->get('lastname');
-        $user->code=$request->get('code');
-        $user->type=$request->get('type');
-        $user->point=$request->get('point');
-        $user->education=$request->get('education');
-        $user->unit=$request->get('unit');
+        $user->lastname = $request->get('lastname');
+        $user->code = $request->get('code');
+        $user->type = $request->get('type');
+        $user->point = $request->get('point');
+        $user->education = $request->get('education');
+        $user->unit = $request->get('unit');
         $user->password = bcrypt($request->get('bdate'));
         $user->save();
         return response()->json($user);
@@ -86,20 +86,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request->get('total')){
-            $user=User::find($id);
-            $user->total=$request->get('total');
+        if ($request->get('total')) {
+            $user = User::find($id);
+            $user->total = $request->get('total');
             $user->update();
             return response()->json($user);
-        }else{
-            $user=User::find($id);
+        } else if ($request->get('email')) {
+            $user = User::find($id);
+            $user->email = $request->get('email');
+            $user->update();
+            return response()->json($user);
+        } else {
+            $user = User::find($id);
             $user->firstname = $request->get('firstname');
-            $user->lastname=$request->get('lastname');
-            $user->code=$request->get('code');
-            $user->type=$request->get('type');
-            $user->point=$request->get('point');
-            $user->education=$request->get('education');
-            $user->unit=$request->get('unit');
+            $user->lastname = $request->get('lastname');
+            $user->code = $request->get('code');
+            $user->type = $request->get('type');
+            $user->point = $request->get('point');
+            $user->education = $request->get('education');
+            $user->unit = $request->get('unit');
             $user->update();
             return response()->json($user);
         }
@@ -113,7 +118,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user=User::find($id);
+        $user = User::find($id);
         $user->delete();
         return response()->json($user);
     }

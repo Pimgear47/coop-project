@@ -35,10 +35,16 @@
                 <v-btn class="txt-title" href="/register" flat>REGISTER</v-btn>
                 @endif -->
                 @else
-                <v-btn class="txt-title" href="#" flat>{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-btn>
+
+                    @if(auth()->check() && (auth::user()->type == 'staff'))
+                    <v-btn class="txt-title" href="#" flat><v-icon>perm_identity</v-icon>&nbsp{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-btn>
+                    @else
+                    <v-btn class="txt-title" href="/profile" flat><v-icon>perm_identity</v-icon>&nbsp{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-btn>
+                    @endif
+                
                 <v-btn class="txt-title" flat href="{{ route('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
-                    LOGOUT
+                    <v-icon>power_settings_new</v-icon>&nbsp LOGOUT
                 </v-btn>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
@@ -60,10 +66,16 @@
                             </v-list-tile-content>
                             @endif -->
                             @else
-                            <v-list-tile-title class="txt-title" href="#">{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-list-tile-title>
+
+                                @if(auth()->check() && (auth::user()->type == 'staff'))
+                                <v-list-tile-title class="txt-title" href="#"><v-icon>perm_identity</v-icon>&nbsp{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-list-tile-title>
+                                @else
+                                <v-list-tile-title class="txt-title" href="/profile"><v-icon>perm_identity</v-icon>&nbsp{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-list-tile-title>
+                                @endif
+                            
                             <v-list-tile-title class="txt-title" href="{{ route('logout') }}" onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
-                                LOGOUT
+                            <v-icon>power_settings_new</v-icon>&nbsp LOGOUT
                             </v-list-tile-title>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
