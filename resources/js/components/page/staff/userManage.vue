@@ -16,7 +16,7 @@
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
+              <h2 class="txt-title">{{ formTitle }}</h2>
             </v-card-title>
             <v-card-text>
               <v-container grid-list-md>
@@ -38,6 +38,18 @@
                       data-vv-name="lastname"
                       :error-messages="errors.collect('lastname')"
                     ></v-text-field>
+                  </v-flex>
+                  <v-flex xs12 sm6 md4>
+                    <v-select
+                      :items="statusSex"
+                      v-model="editItem.sex"
+                      item-text="title"
+                      label="เพศ*"
+                      v-validate="'required'"
+                      data-vv-name="sex"
+                      :error-messages="errors.collect('sex')"
+                      required
+                    ></v-select>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-text-field
@@ -95,6 +107,53 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog v-model="dialog2" max-width="900px">
+          <template v-slot:activator="{ on }">
+            <v-btn color="success" dark class="mb-2 txt-title" v-on="on">
+              Upload&nbsp;
+              <img
+                width="30"
+                src="http://icons.iconarchive.com/icons/papirus-team/papirus-apps/256/ms-excel-icon.png"
+              />
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <h2 class="txt-title">Upload from CVS file</h2>
+            </v-card-title>
+            <v-card-text>
+              <v-layout wrap>
+                <label for="csv_file" class="control-label col-sm-3 text-right">CSV file to import</label>
+                <input
+                  hidden
+                  type="file"
+                  id="csv_file"
+                  name="csv_file"
+                  class="form-control"
+                  @change="loadCSV($event)"
+                />
+                <table v-if="parse_csv">
+                  <thead>
+                    <tr>
+                      <th v-for="key in parse_header">
+                        {{ key | capitalize }}
+                        <span class="arrow"></span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tr v-for="csv in parse_csv">
+                    <td v-for="key in parse_header">{{csv[key]}}</td>
+                  </tr>
+                </table>
+              </v-layout>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" flat @click="close2">Cancel</v-btn>
+              <v-btn color="blue darken-1" flat @click="saveDataSet">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-toolbar>
       <v-data-table
         :headers="headers"
@@ -126,6 +185,7 @@
         </template>
       </v-data-table>
     </v-flex>
+
     <v-snackbar class="txt-title" v-model="snackbar" :color="color" :timeout="3000">
       บันทึกสำเร็จแล้ว
       <v-btn dark flat @click="snackbar = false">
@@ -141,6 +201,10 @@ export default {
     validator: "new"
   },
   data: () => ({
+    parse_header: [],
+    parse_csv: [],
+    sortOrders: {},
+    sortKey: "",
     pagination: {
       rowsPerPage: 12
     },
@@ -149,7 +213,9 @@ export default {
     editid: null,
     search: "",
     dialog: false,
+    dialog2: false,
     statusTypes: ["staff", "student"],
+    statusSex: ["ชาย", "หญิง"],
     headers: [
       { text: "ชื่อ", sortable: false, value: "firstname" },
       { text: "นามสกุล", sortable: false, value: "lastname" },
@@ -167,6 +233,7 @@ export default {
       lastname: "",
       code: "",
       type: "",
+      sex: "",
       point: 0,
       education: null,
       bdate: null,
@@ -177,12 +244,18 @@ export default {
       lastname: "",
       code: "",
       type: "",
+      sex: "",
       point: 0,
       education: null,
       bdate: null,
       unit: 0
     }
   }),
+  filters: {
+    capitalize: function(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  },
   computed: {
     formTitle() {
       return this.editIndex === -1 ? "เพิ่มสมาชิกใหม่" : "แก้ไขข้อมูลสมาชิก";
@@ -193,6 +266,7 @@ export default {
         this.editItem.lastname &&
         this.editItem.code &&
         this.editItem.type &&
+        this.editItem.sex &&
         this.editItem.education &&
         this.editItem.bdate
       ) {
@@ -236,6 +310,17 @@ export default {
       this.editItem = Object.assign({}, this.defaultItem);
       this.editIndex = -1;
     },
+    close2() {
+      this.parse_csv = [];
+      this.parse_header = [];
+      this.sortOrders = {};
+      this.sortKey = "";
+      let file = document.getElementById("csv_file");
+      if (file.value) {
+        file.value = "";
+      }
+      this.dialog2 = false;
+    },
     save() {
       this.$validator.validateAll();
       if (this.editIndex > -1) {
@@ -246,6 +331,7 @@ export default {
             lastname: this.editItem.lastname,
             code: this.editItem.code,
             type: this.editItem.type,
+            sex: this.editItem.sex,
             point: this.editItem.point,
             education: this.editItem.education,
             unit: this.editItem.unit
@@ -260,6 +346,7 @@ export default {
               lastname: this.editItem.lastname,
               code: this.editItem.code,
               type: this.editItem.type,
+              sex: this.editItem.sex,
               point: this.editItem.point,
               education: this.editItem.education,
               unit: this.editItem.unit,
@@ -269,7 +356,92 @@ export default {
           this.close();
         }
       }
+    },
+    csvJSON(csv) {
+      var vm = this;
+      var lines = csv.split("\n");
+      var result = [];
+      var headers = lines[0].split(",");
+      vm.parse_header = lines[0].split(",");
+      lines[0].split(",").forEach(function(key) {
+        vm.sortOrders[key] = 1;
+      });
+      lines.map(function(line, indexLine) {
+        if (indexLine < 1) return; // Jump header line
+        var obj = {};
+        var currentline = line.split(",");
+        headers.map(function(header, indexHeader) {
+          obj[header] = currentline[indexHeader];
+        });
+        result.push(obj);
+      });
+      result.pop(); // remove the last item because undefined values
+      return result; // JavaScript object
+    },
+    loadCSV(e) {
+      var vm = this;
+      if (window.FileReader) {
+        var reader = new FileReader();
+        reader.readAsText(e.target.files[0]);
+        // Handle errors load
+        reader.onload = function(event) {
+          var csv = event.target.result;
+          vm.parse_csv = vm.csvJSON(csv);
+        };
+        reader.onerror = function(evt) {
+          if (evt.target.error.name == "NotReadableError") {
+            alert("Canno't read file !");
+          }
+        };
+      } else {
+        alert("FileReader are not supported in this browser.");
+      }
+    },
+    saveDataSet() {
+      console.log(this.parse_csv);
+      for (var i = 0; i < this.parse_csv.length; i++) {
+        this.editItem.firstname = this.parse_csv[i].firstname;
+        this.editItem.lastname = this.parse_csv[i].lastname;
+        this.editItem.code = this.parse_csv[i].code;
+        this.editItem.type = "student";
+        this.editItem.sex = this.parse_csv[i].sex;
+        this.editItem.education = this.parse_csv[i].education;
+        this.editItem.bdate = this.parse_csv[i].birthDate;
+        this.users.push(this.editItem) &
+          axios.post("/api/user", {
+            firstname: this.parse_csv[i].firstname,
+            lastname: this.parse_csv[i].lastname,
+            code: this.parse_csv[i].code,
+            education: this.parse_csv[i].education,
+            bdate: this.parse_csv[i].birthDate,
+            sex: this.parse_csv[i].sex,
+            type: "student",
+            point: 0,
+            unit: 0
+          });
+        this.editItem = Object.assign({}, this.defaultItem);
+      }
+      this.snackbar = true;
+      this.close2();
     }
   }
 };
 </script>
+
+
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+</style>

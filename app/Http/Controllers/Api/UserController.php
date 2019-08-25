@@ -47,6 +47,7 @@ class UserController extends Controller
         $user->lastname = $request->get('lastname');
         $user->code = $request->get('code');
         $user->type = $request->get('type');
+        $user->sex = $request->get('sex');
         $user->point = $request->get('point');
         $user->education = $request->get('education');
         $user->unit = $request->get('unit');
@@ -102,6 +103,7 @@ class UserController extends Controller
             $user->lastname = $request->get('lastname');
             $user->code = $request->get('code');
             $user->type = $request->get('type');
+            $user->sex = $request->get('sex');
             $user->point = $request->get('point');
             $user->education = $request->get('education');
             $user->unit = $request->get('unit');
