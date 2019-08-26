@@ -10,13 +10,22 @@
             <v-flex xs12 sm5 md3>
               <v-select :items="types" v-model="type" item-text="title" label="ประเภทสินค้า" solo></v-select>
             </v-flex>
-            <v-btn
-              color="primary"
-              v-if="usernow.admin=='1'"
-              dark
-              class="mb-2 txt-title"
-              @click="dialog = true"
-            >เพิ่มสินค้า</v-btn>
+            <v-flex xs12 sm5 md3>
+              <v-btn
+                color="primary"
+                v-if="usernow.admin=='1'"
+                dark
+                class="mb-2 txt-title"
+                @click="dialog = true"
+              >เพิ่มสินค้า</v-btn>
+              <v-btn
+                color="success"
+                v-if="usernow.admin=='1'"
+                dark
+                class="mb-2 txt-title"
+                @click="barcodePdf"
+              >พิมพ์ Barcode สินค้า</v-btn>
+            </v-flex>
           </v-layout>
           <v-layout row wrap>
             <v-flex v-for="product in productsFil" :key="product.id" sm2>
@@ -85,14 +94,13 @@
                   attach
                 ></v-text-field>
               </v-flex>
-              <v-flex xs12 v-if="formAddOrEdit">
+              <v-flex xs12>
                 <v-text-field
-                  v-model="editItem.code"
+                  v-model="editItem.product_code"
                   label="รหัสบาร์โค้ดสินค้า*"
                   v-validate="'required'"
-                  v-if="formAddOrEdit"
-                  :error-messages="errors.collect('code')"
-                  data-vv-name="code"
+                  :error-messages="errors.collect('product_code')"
+                  data-vv-name="product_code"
                   required
                 ></v-text-field>
               </v-flex>
@@ -148,6 +156,9 @@
 </template>
 
 <script>
+import barcode from "./pdfReport/barcode";
+import barcodetest from "./pdfReport/barcodetest";
+var groupArray = require("group-array");
 export default {
   mounted() {
     this.getProductData();
@@ -179,14 +190,14 @@ export default {
       editItem: {
         type: "",
         name: "",
-        code: "",
+        product_code: "",
         price: "",
         image: ""
       },
       defItem: {
         type: "",
         name: "",
-        code: "",
+        product_code: "",
         price: "",
         image: ""
       },
@@ -194,6 +205,17 @@ export default {
     };
   },
   methods: {
+    barcodePdf() {
+      let input = groupArray(this.productsFil, "type");
+      var output = [], item;
+      for (var type in input) {
+        item = {};
+        item.type = type;
+        item.data= input[type];
+        output.push(item);
+      }
+      barcode.pdfMaker(output);
+    },
     getProductData() {
       axios.get("api/product").then(response => {
         this.products = response.data;
@@ -248,7 +270,7 @@ export default {
                 name: this.editItem.name,
                 image: this.editItem.image,
                 type: this.editItem.type,
-                product_code: this.editItem.code,
+                product_code: this.editItem.product_code,
                 price: this.editItem.price
               })
               .then(
@@ -305,7 +327,7 @@ export default {
         this.editItem.image &&
         this.editItem.type &&
         this.editItem.price &&
-        this.editItem.code
+        this.editItem.product_code
       ) {
         return true;
       } else {

@@ -101,7 +101,6 @@ async function pdfMaker(dataForReport, total) {
                 alignment: 'center'
             }
         ]
-        let index_of_P = j
         let name_title = { text: dataForReport[j].name, fontSize: 15, }
         let items_number = ' '
         let order_code = ' '
@@ -171,7 +170,6 @@ async function pdfMaker(dataForReport, total) {
                 fontSize: 15,
             }
         ]
-        console.log('index_of_P', index_of_P)
         table_bill = {
             style: 'bill',
             table: {
@@ -219,22 +217,6 @@ async function pdfMaker(dataForReport, total) {
     pdfMake.createPdf(doc).open()
 }
 
-const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-function sortBuild(data, x) {
-    let temp = []
-    data.forEach(element => {
-        if (element.buildingName == x) {
-            temp.push(element)
-        }
-    });
-    return temp
-}
-
-
 export default {
     pdfMaker,
-    numberWithCommas
 }

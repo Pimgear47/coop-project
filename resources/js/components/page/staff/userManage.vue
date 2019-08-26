@@ -119,7 +119,7 @@
           </template>
           <v-card>
             <v-card-title>
-              <h2 class="txt-title">Upload from CVS file</h2>
+              <h2 class="txt-title">Upload from CSV file</h2>
             </v-card-title>
             <v-card-text>
               <v-layout wrap>
@@ -135,14 +135,14 @@
                 <table v-if="parse_csv">
                   <thead>
                     <tr>
-                      <th v-for="key in parse_header">
+                      <th v-for="key in parse_header" :key="key">
                         {{ key | capitalize }}
                         <span class="arrow"></span>
                       </th>
                     </tr>
                   </thead>
-                  <tr v-for="csv in parse_csv">
-                    <td v-for="key in parse_header">{{csv[key]}}</td>
+                  <tr v-for="csv in parse_csv" :key="csv">
+                    <td v-for="key in parse_header" :key="key">{{csv[key]}}</td>
                   </tr>
                 </table>
               </v-layout>
@@ -429,7 +429,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
 table {
   border-collapse: collapse;
   width: 100%;

@@ -164,22 +164,7 @@ async function pdfMaker(filteredReport, total, dateTime) {
     pdfMake.createPdf(doc).open()
 }
 
-const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-function sortBuild(data, x) {
-    let temp = []
-    data.forEach(element => {
-        if (element.buildingName == x) {
-            temp.push(element)
-        }
-    });
-    return temp
-}
-
 
 export default {
     pdfMaker,
-    numberWithCommas
 }

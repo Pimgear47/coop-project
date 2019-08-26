@@ -148,7 +148,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="editItem.date"
-                      label="Picker in menu"
+                      label="เลือกวันเดือนปี*"
                       prepend-icon="event"
                       v-validate="'required'"
                       :error-messages="errors.collect('date')"
@@ -164,6 +164,9 @@
                     <v-btn flat color="primary" @click="$refs.menu.save(editItem.date)">OK</v-btn>
                   </v-date-picker>
                 </v-menu>
+              </v-flex>
+              <v-flex xs12 sm12 md12>
+                <v-checkbox v-model="checkNoti" label="แจ้งเตือนผ่านอีเมล์ให้แก่สมาชิก"></v-checkbox>
               </v-flex>
             </v-layout>
           </v-container>
@@ -202,6 +205,7 @@ export default {
       date: new Date().toISOString().substr(0, 10),
       modal: false,
       menu: false,
+      checkNoti: false,
       events: [],
       color: "success",
       snackbar: false,
@@ -225,9 +229,9 @@ export default {
     open(event) {
       alert(event.title);
     },
-    goTo(date){
+    goTo(date) {
       var newStart = date.substr(0, 7) + "-01";
-      this.start = newStart
+      this.start = newStart;
     },
     getEventData() {
       axios.get("api/event").then(response => {
@@ -253,7 +257,6 @@ export default {
       console.log();
       this.$validator.validateAll(this.editItem);
       if (this.editIndex > -1) {
-        console.log("EDIT@@@");
         Object.assign(this.events[this.editIndex], this.editItem) &&
           axios.put("/api/event/" + this.editid, {
             title: this.editItem.title,
@@ -279,6 +282,14 @@ export default {
                   console.log(error);
                 }
               );
+          if (this.checkNoti) {
+            console.log("SENT!!!");
+            var mail =
+              "mailto:p.madhero@gmail.com?subject=New Mail&body=Mail text body";
+            var mlink = document.createElement("a");
+            mlink.setAttribute("href", mail);
+            mlink.click();
+          }
           this.snackbar = true;
           this.close();
         }
@@ -289,7 +300,7 @@ export default {
       this.dialog = false;
       this.editIndex = -1;
       this.editItem = Object.assign({}, this.defItem);
-    }
+    },
   },
   watch: {
     dialog(val) {

@@ -29,6 +29,7 @@
         "comma-number": "^2.0.1",
         "group-array": "^1.0.0",
         "gulp": "^4.0.2",
+        "jsbarcode": "^3.11.0",
         "moment": "^2.24.0",
         "pdfmake": "^0.1.57",
         "thai-baht-text": "^1.0.7",
