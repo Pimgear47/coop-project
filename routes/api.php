@@ -22,3 +22,5 @@ Route::resource('user','Api\UserController');
 Route::resource('transaction','Api\TransactionController');
 Route::resource('reportuser','Api\ReportUserController');
 Route::resource('event','Api\EventController');
+
+Route::resource('emailNoti','Api\EmailNotiController');

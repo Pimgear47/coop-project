@@ -28,3 +28,6 @@ Route::resource('dividend-for-admin','DividendAdminController');
 Route::resource('dividend-for-user','DividendUserController');
 Route::resource('event','EventController');
 Route::resource('profile','ProfileController');
+
+
+Route::get('send-main', 'HomeController@sendMail');

@@ -15,6 +15,7 @@
               class="mb-2 txt-title"
               @click="dialog = true"
             >เพิ่มกำหนดการ</v-btn>
+            <v-btn color="blue darken-1" flat @click="test">Save</v-btn>
           </v-layout>
           <v-layout row wrap>
             <v-flex xs12 sm3>
@@ -191,6 +192,7 @@
 export default {
   mounted() {
     this.getEventData();
+    this.getUserData();
     console.log("events", this.events);
   },
   $_veeValidate: {
@@ -222,10 +224,16 @@ export default {
         title: "",
         details: "",
         date: ""
-      }
+      },
+      users: []
     };
   },
   methods: {
+    getUserData() {
+      axios.get("api/user").then(response => {
+        this.users = response.data;
+      });
+    },
     open(event) {
       alert(event.title);
     },
@@ -252,6 +260,32 @@ export default {
         axios.delete("api/event/" + id).catch(error => {
           console.log(error);
         });
+    },
+    sendMail(email, firstname, lastname) {
+      let fullname = firstname + " " + lastname;
+      axios
+        .post("/api/emailNoti", {
+          email: email,
+          name: fullname,
+          event_title: this.editItem.title
+        })
+        .then(
+          response => {
+            console.log(response);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    },
+    test() {
+      for (let index = 0; index < this.filteredusers.length; index++) {
+        this.sendMail(
+          this.filteredusers[index].email,
+          this.filteredusers[index].firstname,
+          this.filteredusers[index].lastname
+        );
+      }
     },
     save() {
       console.log();
@@ -283,12 +317,19 @@ export default {
                 }
               );
           if (this.checkNoti) {
-            console.log("SENT!!!");
-            var mail =
-              "mailto:p.madhero@gmail.com?subject=New Mail&body=Mail text body";
-            var mlink = document.createElement("a");
-            mlink.setAttribute("href", mail);
-            mlink.click();
+            // console.log("SENT!!!");
+            // var mail =
+            //   "mailto:p.madhero@gmail.com?subject=New Mail&body=Mail text body";
+            // var mlink = document.createElement("a");
+            // mlink.setAttribute("href", mail);
+            // mlink.click();
+            for (let index = 0; index < this.filteredusers.length; index++) {
+              this.sendMail(
+                this.filteredusers[index].email,
+                this.filteredusers[index].firstname,
+                this.filteredusers[index].lastname
+              );
+            }
           }
           this.snackbar = true;
           this.close();
@@ -300,7 +341,7 @@ export default {
       this.dialog = false;
       this.editIndex = -1;
       this.editItem = Object.assign({}, this.defItem);
-    },
+    }
   },
   watch: {
     dialog(val) {
@@ -331,6 +372,12 @@ export default {
       return this.events.filter(event => {
         return event.date >= this.date;
       });
+    },
+    filteredusers() {
+      var arr = this.users.filter(user => {
+        return user.type != "staff" && user.email;
+      });
+      return arr;
     }
   }
 };

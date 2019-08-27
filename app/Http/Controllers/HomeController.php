@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
+use Mail; 
 
 class HomeController extends Controller
 {
@@ -24,5 +23,15 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function sendMail()
+    {
+        $data['title'] = "Test it from HDTutu.com";
+        Mail::send('emails.email', $data, function ($message) {
+            $message->to('kunjanaphorn_boonmak@cmu.ac.th', 'กัญจนพร บุญมาก')
+                    ->subject('HDTuto.com Mail');
+        });
+        dd("Mail Sent successfully");
     }
 }
