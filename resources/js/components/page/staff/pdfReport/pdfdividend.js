@@ -48,7 +48,7 @@ async function pdfMaker(dataForReport, total) {
 
 
     text_top = [{ text: 'รายงานสรุปยอดเงินปันผลสมาชิก ประจำปีปันผล ' + parseInt(yearEd), fontSize: 18, alignment: 'center', bold: true, margin: [0, 6], }]
-    text_buttom = [{ text: 'พิมพ์วันที่ : ' + date + ' ' + monthName[month] + ' ' + (year + 543), fontSize: 15, }]
+    text_buttom = [{ text: 'พิมพ์วันที่ : ' + date + ' ' + monthName[month] + ' ' + (year + 543), fontSize: 17 }]
 
     content = [text_top, text_buttom]
     for (let j = 0; j < dataForReport.length; j++) {
@@ -101,7 +101,7 @@ async function pdfMaker(dataForReport, total) {
                 alignment: 'center'
             }
         ]
-        let name_title = { text: dataForReport[j].name, fontSize: 15, }
+        let name_title = { text: 'ชั้น' + dataForReport[j].name, fontSize: 17 }
         let items_number = ' '
         let order_code = ' '
         let order_name = ' '
@@ -132,48 +132,48 @@ async function pdfMaker(dataForReport, total) {
         price_tb_2 = [{
                 text: items_number,
                 alignment: 'center',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: order_code,
                 alignment: 'center',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: order_name,
                 alignment: 'left',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: commaNumber(order_count),
                 alignment: 'right',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: commaNumber(order_total),
                 alignment: 'right',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: commaNumber(order_calUnit),
                 alignment: 'right',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: commaNumber(order_calTotal),
                 alignment: 'right',
-                fontSize: 15,
+                fontSize: 17
             },
             {
                 text: commaNumber(order_sum),
                 alignment: 'right',
-                fontSize: 15,
+                fontSize: 17
             }
         ]
         table_bill = {
             style: 'bill',
             table: {
-                widths: [32, 50, '*', 50, 50, 50, 50, 50],
+                widths: [32, 50, '*', 45, 45, 40, 43, 45],
                 body: [
                     price_tb,
                     price_tb_2, [

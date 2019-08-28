@@ -32,6 +32,7 @@
         <template v-slot:items="props">
           <td>{{ props.item.firstname }}</td>
           <td>{{ props.item.lastname }}</td>
+          <td>{{ props.item.code }}</td>
           <td>{{ props.item.type }}</td>
           <td>{{ props.item.unit }}</td>
           <td>{{ Math.round(props.item.unit*10*0.1) }}</td>
@@ -62,13 +63,14 @@ var groupArray = require("group-array");
 export default {
   data: () => ({
     pagination: {
-      rowsPerPage: 10
+      rowsPerPage: 20
     },
     check: false,
     search: "",
     headers: [
       { text: "ชื่อ", sortable: false, value: "firstname" },
       { text: "นามสกุล", sortable: false, value: "lastname" },
+      { text: "รหัส", sortable: false, value: "code" },
       { text: "สถานะ", sortable: false, value: "type" },
       { text: "จำนวนหุ้น", value: "unit" },
       { text: "ปันผล(บาท)", value: "dividend" },
@@ -82,14 +84,19 @@ export default {
       "ประถมศึกษาปีที่ 1/3",
       "ประถมศึกษาปีที่ 2/1",
       "ประถมศึกษาปีที่ 2/2",
+      "ประถมศึกษาปีที่ 2/3",
       "ประถมศึกษาปีที่ 3/1",
       "ประถมศึกษาปีที่ 3/2",
+      "ประถมศึกษาปีที่ 3/3",
       "ประถมศึกษาปีที่ 4/1",
       "ประถมศึกษาปีที่ 4/2",
+      "ประถมศึกษาปีที่ 4/3",
       "ประถมศึกษาปีที่ 5/1",
       "ประถมศึกษาปีที่ 5/2",
+      "ประถมศึกษาปีที่ 5/3",
       "ประถมศึกษาปีที่ 6/1",
-      "ประถมศึกษาปีที่ 6/2"
+      "ประถมศึกษาปีที่ 6/2",
+      "ประถมศึกษาปีที่ 6/3"
     ],
     selected: "",
     users: [],
@@ -133,13 +140,15 @@ export default {
     },
     reportPdf() {
       let input = groupArray(this.filteredusers, "education");
-      var output = [], item;
+      var output = [],
+        item;
       for (var name in input) {
         item = {};
         item.name = name;
-        item.data= input[name];
+        item.data = input[name];
         output.push(item);
       }
+      output.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
       pdfdividend.pdfMaker(output, this.totalSum);
     }
   }

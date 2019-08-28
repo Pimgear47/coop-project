@@ -135,7 +135,7 @@
                 <table v-if="parse_csv">
                   <thead>
                     <tr>
-                      <th v-for="key in parse_header" :key="key">
+                      <th v-for="key in parse_header">
                         {{ key | capitalize }}
                         <span class="arrow"></span>
                       </th>
