@@ -12,6 +12,7 @@
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
+        "canvas-barcode": "^1.0.1",
         "cross-env": "^5.1",
         "jquery": "^3.2",
         "laravel-mix": "^4.0.7",
@@ -29,6 +30,7 @@
         "child_process": "^1.0.2",
         "comma-number": "^2.0.1",
         "dns": "^0.2.2",
+        "ean13-lib": "0.0.3",
         "fs": "0.0.1-security",
         "group-array": "^1.0.0",
         "gulp": "^4.0.2",

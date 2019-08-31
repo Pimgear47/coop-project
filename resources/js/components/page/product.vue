@@ -159,6 +159,7 @@
 import barcode from "./pdfReport/barcode";
 import barcodetest from "./pdfReport/barcodetest";
 var groupArray = require("group-array");
+import { Ean13Utils } from "ean13-lib";
 export default {
   mounted() {
     this.getProductData();
@@ -207,11 +208,12 @@ export default {
   methods: {
     barcodePdf() {
       let input = groupArray(this.productsFil, "type");
-      var output = [], item;
+      var output = [],
+        item;
       for (var type in input) {
         item = {};
         item.type = type;
-        item.data= input[type];
+        item.data = input[type];
         output.push(item);
       }
       barcode.pdfMaker(output);
@@ -264,25 +266,23 @@ export default {
       } else {
         console.log(this.editItem);
         if (this.checkInput) {
-          this.productsFil.push(this.editItem) &&
-            axios
-              .post("/api/product", {
-                name: this.editItem.name,
-                image: this.editItem.image,
-                type: this.editItem.type,
-                product_code: this.editItem.product_code,
-                price: this.editItem.price
-              })
-              .then(
-                response => {
-                  console.log(response);
-                },
-                error => {
-                  console.log(error);
-                }
-              );
-          this.snackbar = true;
-          this.close();
+          const result = Ean13Utils.validate(this.editItem.product_code);
+          if (this.editItem.product_code.length == 13 && result) {
+            this.addProduct(); //save product by axios
+            this.snackbar = true;
+            this.close();
+          } else if (this.editItem.product_code.length == 12 && !result) {
+            const result = Ean13Utils.calculateCheckDigit(
+              this.editItem.product_code
+            );
+            console.log("Trueeee", result);
+            this.editItem.product_code = this.editItem.product_code + result;
+            this.addProduct();
+            this.snackbar = true;
+            this.close();
+          } else {
+            alert('คุณกรอกรหัสบาร์โค้ดไม่ถูกต้อง กรุณากรอกใหม่')
+          }
         }
       }
       if (this.editItem.image == "") {
@@ -290,6 +290,25 @@ export default {
       } else {
         this.noUpload = false;
       }
+    },
+    addProduct() {
+      this.productsFil.push(this.editItem) &&
+        axios
+          .post("/api/product", {
+            name: this.editItem.name,
+            image: this.editItem.image,
+            type: this.editItem.type,
+            product_code: this.editItem.product_code,
+            price: this.editItem.price
+          })
+          .then(
+            response => {
+              console.log(response);
+            },
+            error => {
+              console.log(error);
+            }
+          );
     },
     close() {
       this.$validator.reset();

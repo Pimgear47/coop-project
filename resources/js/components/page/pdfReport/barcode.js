@@ -3,7 +3,6 @@ import pdfFonts from 'pdfmake/build/vfs_fonts'
 import * as moment from 'moment'
 var JsBarcode = require('jsbarcode')
 
-
 async function pdfMaker(productsFil) {
 
     console.log('productsFil', productsFil)
@@ -33,7 +32,7 @@ async function pdfMaker(productsFil) {
     let text_buttom
     let table_product
     let type = ""
-    text_buttom = [{ text: 'พิมพ์วันที่ : ' + date + ' ' + monthName[month] + ' ' + (year + 543), fontSize: 15, alignment: 'right' }]
+    text_buttom = [{ text: 'พิมพ์วันที่ : ' + date + ' ' + monthName[month] + ' ' + (year + 543), fontSize: 12, alignment: 'right' }]
 
     content = [text_buttom]
 
@@ -46,7 +45,7 @@ async function pdfMaker(productsFil) {
         } else {
             type = 'เสื้อผ้า/เครื่องแต่งกาย/ชุดเครื่องนอน'
         }
-        let name_title = { text: type, fontSize: 22 }
+        let name_title = { text: type, fontSize: 16 }
         let col = [name_title]
         let coll = []
         for (let index = 0; index < productsFil[j].data.length; index++) {
@@ -63,7 +62,7 @@ async function pdfMaker(productsFil) {
                             alignment: 'center',
                         }, {
                             text: productsFil[j].data[index].name,
-                            fontSize: 20,
+                            fontSize: 16,
                             alignment: 'center',
                             border: [true, true, true, false],
                         }],
@@ -71,12 +70,12 @@ async function pdfMaker(productsFil) {
                             text: 'ราคา ' + productsFil[j].data[index].price + ' บาท',
                             alignment: 'center',
                             border: [true, false, true, false],
-                            fontSize: 18,
+                            fontSize: 16,
                         }],
                         ['', {
                             image: textToBase64Barcode(productsFil[j].data[index].product_code),
                             alignment: 'center',
-                            width: 180,
+                            width: 100,
                             border: [true, false, true, true],
                         }]
                     ],
@@ -101,7 +100,7 @@ async function pdfMaker(productsFil) {
         },
         pageSize: 'A4',
         pageOrientation: 'portrait',
-        pageMargins: [20, 30, 20, 20],
+        pageMargins: [30, 20, 20, 10],
     }
     pdfMake.createPdf(doc).open()
 }
@@ -109,7 +108,7 @@ async function pdfMaker(productsFil) {
 
 function textToBase64Barcode(text) {
     var canvas = document.createElement("canvas");
-    JsBarcode(canvas, text, { format: "CODE39", displayValue: false });
+    JsBarcode(canvas, text, { format: "EAN13", displayValue: true });
     return canvas.toDataURL("image/png");
 }
 
