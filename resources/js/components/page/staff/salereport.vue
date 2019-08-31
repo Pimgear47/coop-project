@@ -127,6 +127,10 @@ export default {
       {
         title: "อุปกรณ์เครื่องเขียน",
         value: "stationary"
+      },
+      {
+        title: "อื่นๆ",
+        value: "other"
       }
     ],
     modal: false,
@@ -148,7 +152,8 @@ export default {
       labels: [
         "อาหาร/เครื่องดื่ม",
         "เสื้อผ้า/เครื่องแต่งกาย/ชุดเครื่องนอน",
-        "อุปกรณ์เครื่องเขียน"
+        "อุปกรณ์เครื่องเขียน",
+        "อื่นๆ"
       ],
       responsive: [
         {
@@ -179,19 +184,21 @@ export default {
         .then();
     },
     reportPdf() {
-      pdfsalereport.pdfMaker(this.filteredReport,this.total,this.date);
+      pdfsalereport.pdfMaker(this.filteredReport, this.total, this.date);
     }
   },
   computed: {
     series: function() {
-      var series = [0, 0, 0];
+      var series = [0, 0, 0, 0];
       for (var i = 0; i < this.filteredReport.length; i++) {
         if (this.filteredReport[i].product.type == "food") {
           series[0] += this.filteredReport[i].count;
         } else if (this.filteredReport[i].product.type == "clothes") {
           series[1] += this.filteredReport[i].count;
-        } else {
+        } else if (this.filteredReport[i].product.type == "stationary") {
           series[2] += this.filteredReport[i].count;
+        } else {
+          series[3] += this.filteredReport[i].count;
         }
       }
       return series;

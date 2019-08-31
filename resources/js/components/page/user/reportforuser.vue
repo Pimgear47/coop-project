@@ -104,7 +104,8 @@ export default {
       labels: [
         "อาหาร/เครื่องดื่ม",
         "เสื้อผ้า/เครื่องแต่งกาย/ชุดเครื่องนอน",
-        "อุปกรณ์เครื่องเขียน"
+        "อุปกรณ์เครื่องเขียน",
+        "อื่นๆ"
       ],
       responsive: [
         {
@@ -119,7 +120,7 @@ export default {
           }
         }
       ]
-    },
+    }
   }),
   mounted() {
     this.getReportData();
@@ -139,7 +140,7 @@ export default {
   },
   computed: {
     series: function() {
-      var series = [0, 0, 0];
+      var series = [0, 0, 0, 0];
       for (var i = 0; i < this.filteredReport.length; i++) {
         if (this.filteredReport[i].product.type == "food") {
           series[0] +=
@@ -147,8 +148,11 @@ export default {
         } else if (this.filteredReport[i].product.type == "clothes") {
           series[1] +=
             this.filteredReport[i].count * this.filteredReport[i].cost;
-        } else {
+        } else if (this.filteredReport[i].product.type == "stationary") {
           series[2] +=
+            this.filteredReport[i].count * this.filteredReport[i].cost;
+        } else {
+          series[3] +=
             this.filteredReport[i].count * this.filteredReport[i].cost;
         }
       }

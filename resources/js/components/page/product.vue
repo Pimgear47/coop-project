@@ -184,6 +184,10 @@ export default {
         {
           title: "อุปกรณ์เครื่องเขียน",
           value: "stationary"
+        },
+        {
+          title: "อื่นๆ",
+          value: "other"
         }
       ],
       type: "",

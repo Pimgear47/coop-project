@@ -31,11 +31,7 @@
             <v-toolbar-items class="hidden-sm-and-down">
                 @guest
                 <v-btn class="txt-title" href="/login" flat>LOGIN</v-btn>
-                <!-- @if (Route::has('register'))
-                <v-btn class="txt-title" href="/register" flat>REGISTER</v-btn>
-                @endif -->
                 @else
-
                     @if(auth()->check() && (auth::user()->type == 'staff'))
                     <v-btn class="txt-title" href="#" flat><v-icon>perm_identity</v-icon>&nbsp{{ Auth::user()->firstname }}&nbsp{{ Auth::user()->lastname }}</v-btn>
                     @else
