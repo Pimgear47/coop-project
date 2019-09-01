@@ -42,8 +42,10 @@ async function pdfMaker(productsFil) {
             type = 'อุปกรณ์เครื่องเขียน'
         } else if (productsFil[j].type == 'food') {
             type = 'อาหาร/เครื่องดื่ม'
-        } else {
+        } else if (productsFil[j].type == 'clothes') {
             type = 'เสื้อผ้า/เครื่องแต่งกาย/ชุดเครื่องนอน'
+        } else {
+            type = 'อื่นๆ'
         }
         let name_title = { text: type, fontSize: 16 }
         let col = [name_title]

@@ -15,7 +15,6 @@
               class="mb-2 txt-title"
               @click="dialog = true"
             >เพิ่มกำหนดการ</v-btn>
-            <v-btn color="blue darken-1" flat @click="test">Save</v-btn>
           </v-layout>
           <v-layout row wrap>
             <v-flex xs12 sm3>

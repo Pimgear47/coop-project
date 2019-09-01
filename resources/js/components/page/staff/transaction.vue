@@ -194,19 +194,17 @@ export default {
     },
     deleteItem(item) {
       const index = this.orderProduct.indexOf(item);
-      if (confirm("Are you sure you want to delete this item?")) {
-        if (item.count == 1) {
-          this.orderProduct.splice(index, 1);
-          this.orderPrice -= item.price;
-        } else {
-          Vue.set(
-            this.orderProduct[index],
-            this.orderProduct[index].count,
-            this.orderProduct[index].count--
-          );
-          this.orderProduct[index].cost -= item.price;
-          this.orderPrice -= item.price;
-        }
+      if (item.count == 1) {
+        this.orderProduct.splice(index, 1);
+        this.orderPrice -= item.price;
+      } else {
+        Vue.set(
+          this.orderProduct[index],
+          this.orderProduct[index].count,
+          this.orderProduct[index].count--
+        );
+        this.orderProduct[index].cost -= item.price;
+        this.orderPrice -= item.price;
       }
     },
     clearOne() {
