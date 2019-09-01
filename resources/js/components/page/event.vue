@@ -5,7 +5,7 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap class="mb-1">
             <h2 class="txt-title mt-2">
-              <v-icon large color="pink">date_range</v-icon>&nbsp;ปฏิทินกำหนดการ
+              <v-icon large color="pink">date_range</v-icon>&nbsp;ปฏิทินกำหนดการ 
             </h2>
             <v-spacer></v-spacer>
             <v-btn

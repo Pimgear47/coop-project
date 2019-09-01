@@ -11,7 +11,7 @@
           <v-divider class="mx-2" inset vertical></v-divider>
           <date-show></date-show>
           <v-spacer></v-spacer>
-          <year-education></year-education>
+          <year-education text="ประจำปีการศึกษา "></year-education>
         </v-toolbar>
         <v-container grid-list-xl text-xs-center>
           <v-layout justify-space-between row wrap>
