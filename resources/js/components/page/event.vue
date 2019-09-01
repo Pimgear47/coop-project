@@ -277,15 +277,6 @@ export default {
           }
         );
     },
-    test() {
-      for (let index = 0; index < this.filteredusers.length; index++) {
-        this.sendMail(
-          this.filteredusers[index].email,
-          this.filteredusers[index].firstname,
-          this.filteredusers[index].lastname
-        );
-      }
-    },
     save() {
       console.log();
       this.$validator.validateAll(this.editItem);
