@@ -5,7 +5,7 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap class="mb-1">
             <h2 class="txt-title mt-2">
-              <v-icon large color="pink">date_range</v-icon>&nbsp;ปฏิทินกำหนดการ 
+              <v-icon large color="pink">date_range</v-icon>&nbsp;ปฏิทินกำหนดการ ({{pageShow}})
             </h2>
             <v-spacer></v-spacer>
             <v-btn
@@ -368,6 +368,17 @@ export default {
         return user.type != "staff" && user.email;
       });
       return arr;
+    },
+    pageShow(){
+      if(this.usernow.type == 'staff'){
+        if(this.usernow.admin == 1){
+          return 'A5'
+        }else{
+          return 'S3'
+        }
+      }else{
+        return 'U5'
+      }
     }
   }
 };

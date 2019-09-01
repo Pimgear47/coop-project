@@ -12,7 +12,7 @@
                     <v-card tile flat height="100%">
                         <v-card-title>
                             <img src="https://data.bopp-obec.info/emis/pic_school/1056320084.jpg" alt="" width="20%">
-                            &nbsp &nbsp<h2 class="txt-thS">ระบบสหกรณ์ร้านค้า<br />
+                            &nbsp &nbsp<h2 class="txt-thS">ระบบสหกรณ์ร้านค้า (C1)<br />
                                 โรงเรียนอนุบาลเชียงคำ (วัดพระธาตุสบแวน)</h2>
                         </v-card-title>
                         <v-card-text>

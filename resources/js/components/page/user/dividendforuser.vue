@@ -5,7 +5,8 @@
         <v-toolbar flat color="white">
           <v-toolbar-title>
             <h3>
-              <v-icon large color="pink">monetization_on</v-icon>&nbsp;รายงานปันผลและเฉลี่ยคืน
+              <v-icon large color="pink">monetization_on</v-icon>
+              &nbsp;รายงานปันผลและเฉลี่ยคืน ({{pageShow}})
             </h3>
           </v-toolbar-title>
           <v-divider class="mx-2" inset vertical></v-divider>
@@ -36,7 +37,10 @@
                     <show-dividend text="ยอดปันผลจากหุ้น(บาท)" :value="Math.round(usernow.unit)"></show-dividend>
                   </v-flex>
                   <v-flex xs12 sm5 md6>
-                    <show-dividend text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)" :value="Math.round(this.totalPaid*0.02)"></show-dividend>
+                    <show-dividend
+                      text="ยอดเฉลี่ยคืนจากการซื้อ(บาท)"
+                      :value="Math.round(this.totalPaid*0.02)"
+                    ></show-dividend>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -236,6 +240,9 @@ export default {
           this.filteredReport[i].count * this.filteredReport[i].cost;
       }
       return month;
+    },
+    pageShow() {
+      return 'U1'
     }
   },
   created() {

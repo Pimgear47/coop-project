@@ -6,7 +6,8 @@
           <v-card-title>
             <v-layout row wrap justify-space-between>
               <h2 class="txt-title mt-0">
-                <v-icon large color="pink">description</v-icon>&nbsp;รายงานยอดขาย
+                <v-icon large color="pink">description</v-icon>
+                &nbsp;รายงานยอดขาย ({{pageShow}})
               </h2>
               <v-flex xs12 sm5 md4>
                 <v-layout row wrap>
@@ -302,6 +303,9 @@ export default {
       return sortDataSet.filter(sort => {
         return sort.product.type.match(this.type);
       });
+    },
+    pageShow() {
+      return "A3";
     }
   }
 };

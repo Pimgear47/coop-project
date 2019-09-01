@@ -6,7 +6,8 @@
           <v-card-title>
             <v-layout row wrap justify-space-between>
               <h2 class="txt-title mt-0">
-                <v-icon large color="pink">description</v-icon>&nbsp;รายงานการซิื้อ
+                <v-icon large color="pink">description</v-icon>
+                &nbsp;รายงานการซื้อ ({{pageShow}})
               </h2>
               <v-flex xs12 sm5 md3>
                 <v-dialog
@@ -189,6 +190,9 @@ export default {
       return total.reduce(function(total, num) {
         return total + num;
       }, 0);
+    },
+    pageShow() {
+      return "U4";
     }
   }
 };

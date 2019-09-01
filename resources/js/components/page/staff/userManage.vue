@@ -4,7 +4,8 @@
       <v-toolbar flat color="white">
         <v-toolbar-title>
           <h3>
-            <v-icon large color="pink">supervised_user_circle</v-icon>&nbsp;สมาชิกในระบบ
+            <v-icon large color="pink">supervised_user_circle</v-icon>
+            &nbsp;สมาชิกในระบบ ({{pageShow}})
           </h3>
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
@@ -274,6 +275,9 @@ export default {
       } else {
         return false;
       }
+    },
+    pageShow() {
+      return "A5";
     }
   },
   watch: {

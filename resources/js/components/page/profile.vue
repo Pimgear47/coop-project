@@ -5,7 +5,7 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-space-between mb-4>
             <h2 class="txt-title mt-2">
-              <v-icon large color="pink">perm_identity</v-icon>&nbsp;ข้อมูลส่วนบุคคล
+              <v-icon large color="pink">perm_identity</v-icon>&nbsp;ข้อมูลส่วนบุคคล ({{pageShow}})
             </h2>
           </v-layout>
           <v-card>
@@ -108,6 +108,9 @@ export default {
       if (this.usernow.sex == "ชาย") return "เด็กชาย";
       else return "เด็กหญิง";
     },
+    pageShow() {
+      return 'U2'
+    }
   }
 };
 </script>

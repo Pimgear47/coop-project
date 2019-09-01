@@ -4,7 +4,8 @@
       <v-toolbar flat color="white">
         <v-toolbar-title>
           <h3>
-            <v-icon large color="pink">monetization_on</v-icon>&nbsp;รายงานปันผลและเฉลี่ยคืน
+            <v-icon large color="pink">monetization_on</v-icon>
+            &nbsp;รายงานปันผลและเฉลี่ยคืน ({{pageShow}})
           </h3>
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
@@ -121,6 +122,9 @@ export default {
       return total.reduce(function(total, num) {
         return total + num;
       }, 0);
+    },
+    pageShow() {
+      return "A4";
     }
   },
   created() {

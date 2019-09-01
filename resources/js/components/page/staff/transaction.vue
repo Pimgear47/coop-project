@@ -2,7 +2,8 @@
   <v-layout class="justify-end mt-4 mr-5 mb-3">
     <v-flex xs9 sm11>
       <h2 class="txt-title mt-2">
-        <v-icon large color="pink">assignment_turned_in</v-icon>&nbsp;ทำรายการ
+        <v-icon large color="pink">assignment_turned_in</v-icon>
+        &nbsp;ทำรายการ ({{pageShow}})
       </h2>
       <br />
       <v-stepper v-model="e6" vertical>
@@ -277,6 +278,15 @@ export default {
       return this.products.filter(product => {
         return product.product_code == this.code_product;
       });
+    },
+    pageShow() {
+      if (this.usernow.type == "staff") {
+        if (this.usernow.admin == 1) {
+          return "A1";
+        } else {
+          return "S1";
+        }
+      }
     }
   }
 };

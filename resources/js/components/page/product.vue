@@ -5,7 +5,7 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-space-between>
             <h2 class="txt-title mt-2">
-              <v-icon large color="pink">shopping_cart</v-icon>&nbsp;รายการสินค้า
+              <v-icon large color="pink">shopping_cart</v-icon>&nbsp;รายการสินค้า ({{pageShow}})
             </h2>
             <v-flex xs12 sm5 md3>
               <v-select :items="types" v-model="type" item-text="title" label="ประเภทสินค้า" solo></v-select>
@@ -355,6 +355,17 @@ export default {
         return true;
       } else {
         return false;
+      }
+    },
+    pageShow(){
+      if(this.usernow.type == 'staff'){
+        if(this.usernow.admin == 1){
+          return 'A2'
+        }else{
+          return 'S2'
+        }
+      }else{
+        return 'U3'
       }
     }
   }
