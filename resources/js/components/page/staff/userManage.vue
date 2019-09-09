@@ -6,6 +6,7 @@
           <h3>
             <v-icon large color="pink">supervised_user_circle</v-icon>
             &nbsp;สมาชิกในระบบ ({{pageShow}})
+            <!-- <v-btn color="primary" dark class="mb-2 txt-title" @click="genBC">GenBC</v-btn> -->
           </h3>
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
@@ -197,6 +198,7 @@
 </template>
 
 <script>
+import { Ean13Utils } from "ean13-lib";
 export default {
   $_veeValidate: {
     validator: "new"
@@ -233,6 +235,7 @@ export default {
       firstname: "",
       lastname: "",
       code: "",
+      barcode: "",
       type: "",
       sex: "",
       point: 0,
@@ -327,6 +330,9 @@ export default {
     },
     save() {
       this.$validator.validateAll();
+      let forBarcode = "1000000" + this.editItem.code + "1";
+      const result = Ean13Utils.calculateCheckDigit(forBarcode);
+      this.editItem.barcode = forBarcode + result;
       if (this.editIndex > -1) {
         //กรณีที่เคยมี Edit
         Object.assign(this.users[this.editIndex], this.editItem) &&
@@ -334,6 +340,7 @@ export default {
             firstname: this.editItem.firstname,
             lastname: this.editItem.lastname,
             code: this.editItem.code,
+            barcode: this.editItem.barcode,
             type: this.editItem.type,
             sex: this.editItem.sex,
             point: this.editItem.point,
@@ -349,6 +356,7 @@ export default {
               firstname: this.editItem.firstname,
               lastname: this.editItem.lastname,
               code: this.editItem.code,
+              barcode: this.editItem.barcode,
               type: this.editItem.type,
               sex: this.editItem.sex,
               point: this.editItem.point,
@@ -404,9 +412,12 @@ export default {
     saveDataSet() {
       console.log(this.parse_csv);
       for (var i = 0; i < this.parse_csv.length; i++) {
+        let forBarcode = "1000000" + this.parse_csv[i].code + "1";
+        const result = Ean13Utils.calculateCheckDigit(forBarcode);
         this.editItem.firstname = this.parse_csv[i].firstname;
         this.editItem.lastname = this.parse_csv[i].lastname;
         this.editItem.code = this.parse_csv[i].code;
+        this.editItem.barcode = forBarcode + result;
         this.editItem.type = "student";
         this.editItem.sex = this.parse_csv[i].sex;
         this.editItem.education = this.parse_csv[i].education;
@@ -416,6 +427,7 @@ export default {
             firstname: this.parse_csv[i].firstname,
             lastname: this.parse_csv[i].lastname,
             code: this.parse_csv[i].code,
+            barcode: this.editItem.barcode,
             education: this.parse_csv[i].education,
             bdate: this.parse_csv[i].birthDate,
             sex: this.parse_csv[i].sex,
@@ -427,7 +439,15 @@ export default {
       }
       this.snackbar = true;
       this.close2();
-    }
+    },
+    // genBC() {
+    //   let forBarcode = "1000000" + this.users[3924].code + "1";
+    //   const result = Ean13Utils.calculateCheckDigit(forBarcode);
+    //   this.editItem.barcode = forBarcode + result;
+    //   axios.put("/api/user/" + this.users[3924].id, {
+    //     barcode: this.editItem.barcode
+    //   });
+    // }
   }
 };
 </script>

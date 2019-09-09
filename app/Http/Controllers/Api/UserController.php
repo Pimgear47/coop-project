@@ -46,6 +46,7 @@ class UserController extends Controller
         $user->firstname = $request->get('firstname');
         $user->lastname = $request->get('lastname');
         $user->code = $request->get('code');
+        $user->barcode = $request->get('barcode');
         $user->type = $request->get('type');
         $user->sex = $request->get('sex');
         $user->point = $request->get('point');
@@ -95,6 +96,11 @@ class UserController extends Controller
         } else if ($request->get('email')) {
             $user = User::find($id);
             $user->email = $request->get('email');
+            $user->update();
+            return response()->json($user);
+        } else if ($request->get('barcode')) {
+            $user = User::find($id);
+            $user->barcode = $request->get('barcode');
             $user->update();
             return response()->json($user);
         } else {
