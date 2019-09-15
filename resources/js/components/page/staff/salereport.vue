@@ -44,10 +44,12 @@
             <v-flex xs9 sm11 md5>
               <v-data-table
                 :headers="headers"
+                :loading="isloading"
                 :items="filteredReport"
                 :pagination.sync="pagination"
                 class="elevation-1 txt-title"
               >
+                <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
                 <template v-slot:items="props">
                   <td>{{ props.item.product.name }}</td>
                   <td>{{ props.item.count }}</td>
@@ -146,6 +148,7 @@ export default {
       },
       { text: "รวมเป็นเงิน (บาท)", sortable: false, value: "cost*count" }
     ],
+    isloading: false,
     reports: [],
     price: [],
     forCountSumPrice: [],
@@ -176,6 +179,7 @@ export default {
   },
   methods: {
     getReportData() {
+      this.isloading = true;
       axios
         .get("api/reportuser")
         .then(response => {
@@ -183,6 +187,7 @@ export default {
           console.log(this.reports);
         })
         .then();
+      this.isloading = false;
     },
     reportPdf() {
       pdfsalereport.pdfMaker(this.filteredReport, this.total, this.date);
@@ -306,6 +311,9 @@ export default {
     },
     pageShow() {
       return "A3";
+    },
+    getData(){
+      
     }
   }
 };

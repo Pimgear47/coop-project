@@ -5,7 +5,8 @@
         <v-container fluid grid-list-md>
           <v-layout row wrap justify-space-between>
             <h2 class="txt-title mt-2">
-              <v-icon large color="pink">shopping_cart</v-icon>&nbsp;รายการสินค้า ({{pageShow}})
+              <v-icon large color="pink">shopping_cart</v-icon>
+              &nbsp;รายการสินค้า ({{pageShow}})
             </h2>
             <v-flex xs12 sm5 md3>
               <v-select :items="types" v-model="type" item-text="title" label="ประเภทสินค้า" solo></v-select>
@@ -30,7 +31,8 @@
           <v-layout row wrap>
             <v-flex v-for="product in productsFil" :key="product.id" sm2>
               <v-card>
-                <v-img :src="product.image" height="200px">
+                <v-img :src="'storage/'+product.imageName" height="200px">
+                  <!-- <v-img :src="product.image" height="200px"> -->
                   <v-container fill-height fluid pa-2>
                     <v-layout fill-height></v-layout>
                   </v-container>
@@ -127,11 +129,11 @@
                   v-if="formAddOrEdit"
                 />
                 <p class="no-upload" v-if="noUpload">The image field is required.</p>
-                <br v-if="this.editItem.image && formAddOrEdit" />
-                <br v-if="this.editItem.image && formAddOrEdit" />
+                <br v-if="this.editItem.imageName && formAddOrEdit" />
+                <br v-if="this.editItem.imageName && formAddOrEdit" />
                 <img
-                  :src="editItem.image"
-                  v-if="this.editItem.image"
+                  :src="'storage/'+editItem.imageName"
+                  v-if="this.editItem.imageName"
                   class="img-responsive"
                   height="120"
                 />
@@ -170,6 +172,7 @@ export default {
   props: ["usernow"],
   data() {
     return {
+      today : new Date(),
       color: "success",
       snackbar: false,
       dialog: false,
@@ -197,14 +200,16 @@ export default {
         name: "",
         product_code: "",
         price: "",
-        image: ""
+        image: "",
+        imageName: ""
       },
       defItem: {
         type: "",
         name: "",
         product_code: "",
         price: "",
-        image: ""
+        image: "",
+        imageName: ""
       },
       noUpload: false
     };
@@ -233,6 +238,12 @@ export default {
       this.noUpload = false;
       reader.onloadend = e => {
         this.editItem.image = reader.result;
+        var date = this.today.getFullYear()+'-'+(this.today.getMonth()+1)+'-'+this.today.getDate();
+        var time = this.today.getHours() +'-' + this.today.getMinutes() +'-' + this.today.getSeconds();
+        var dateTime = date+'-'+time;
+        const file_name = "image_" + dateTime + ".png";
+        this.editItem.imageName = file_name;
+        console.log(this.editItem.imageName)
       };
       reader.readAsDataURL(file);
       console.log("Check at onimage", this.noUpload);
@@ -285,7 +296,7 @@ export default {
             this.snackbar = true;
             this.close();
           } else {
-            alert('คุณกรอกรหัสบาร์โค้ดไม่ถูกต้อง กรุณากรอกใหม่')
+            alert("คุณกรอกรหัสบาร์โค้ดไม่ถูกต้อง กรุณากรอกใหม่");
           }
         }
       }
@@ -301,6 +312,7 @@ export default {
           .post("/api/product", {
             name: this.editItem.name,
             image: this.editItem.image,
+            imageName: this.editItem.imageName,
             type: this.editItem.type,
             product_code: this.editItem.product_code,
             price: this.editItem.price
@@ -357,15 +369,15 @@ export default {
         return false;
       }
     },
-    pageShow(){
-      if(this.usernow.type == 'staff'){
-        if(this.usernow.admin == 1){
-          return 'A2'
-        }else{
-          return 'S2'
+    pageShow() {
+      if (this.usernow.type == "staff") {
+        if (this.usernow.admin == 1) {
+          return "A2";
+        } else {
+          return "S2";
         }
-      }else{
-        return 'U3'
+      } else {
+        return "U3";
       }
     }
   }

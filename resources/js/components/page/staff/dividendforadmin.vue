@@ -28,8 +28,10 @@
         :items="filteredusers"
         :search="search"
         :pagination.sync="pagination"
+        :loading="isloading"
         class="elevation-1 txt-title"
       >
+        <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
         <template v-slot:items="props">
           <td>{{ props.item.firstname }}</td>
           <td>{{ props.item.lastname }}</td>
@@ -68,6 +70,7 @@ export default {
     },
     check: false,
     search: "",
+    isloading: false,
     headers: [
       { text: "ชื่อ", sortable: false, value: "firstname" },
       { text: "นามสกุล", sortable: false, value: "lastname" },
@@ -132,15 +135,19 @@ export default {
   },
   methods: {
     getUserData() {
+      this.isloading = true;
       axios.get("api/user").then(response => {
         this.users = response.data;
       });
+      this.isloading = false;
     },
     getReportData() {
+      this.isloading = true;
       axios.get("api/reportuser").then(response => {
         this.reports = response.data;
         console.log(this.reports);
       });
+      this.isloading = false;
     },
     reportPdf() {
       let input = groupArray(this.filteredusers, "education");

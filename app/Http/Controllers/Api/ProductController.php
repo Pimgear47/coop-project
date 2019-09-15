@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProductController extends Controller
 {
@@ -47,7 +48,19 @@ class ProductController extends Controller
         $product->price = $request->get('price');
         $product->product_code = $request->get('product_code');
         $product->type = $request->get('type');
-        $product->image = $request->get('image');
+        // $product->image = $request->get('image');
+
+        $file_data = $request->get('image'); 
+        // $file_name = 'image_' . time() . '.png'; //generating unique file name;
+        $file_name = $request->get('imageName');
+
+        @list($type, $file_data) = explode(';', $file_data);
+        @list(, $file_data) = explode(',', $file_data);
+        if ($file_data != "") { // storing image in storage/app/public Folder
+            \Storage::disk('public')->put($file_name, base64_decode($file_data));
+        }
+
+        $product->imageName = $file_name;
         $product->save();
         return response()->json($product);
     }

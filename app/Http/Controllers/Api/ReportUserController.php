@@ -49,7 +49,8 @@ class ReportUserController extends Controller
      */
     public function show($id)
     {
-        //
+        $transactions=Transaction::with('Product')->where('created_at', 'like', $id . '%')->get();
+        return response()->json($transactions);
     }
 
     /**
