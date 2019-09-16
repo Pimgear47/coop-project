@@ -26,8 +26,8 @@
               <br />
             </v-flex>
           </v-layout>
-          <v-btn class="txt-title" color="primary" @click="e6 = 2 , mapUser(filteredUser)">Continue</v-btn>
-          <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">Cancel</v-btn>
+          <v-btn class="txt-title" color="primary" @click="e6 = 2 , mapUser(filteredUser)">ถัดไป</v-btn>
+          <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">ยกเลิก</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
@@ -67,13 +67,13 @@
             class="txt-title"
             color="primary"
             @click="e6 = 3"
-          >Continue</v-btn>
+          >ถัดไป</v-btn>
           <v-btn
             v-if="this.orderProduct.length!=0"
             class="txt-title"
             flat
             @click="e6 = 1,clearTwo()"
-          >Cancel</v-btn>
+          >ยกเลิก</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 3" step="3" color="pink">
           <h3>สรุปรายการ</h3>
@@ -87,9 +87,9 @@
           <h3>รวมเป็นจำนวนเงิน {{this.orderPrice}} บาท</h3>
           <br />
           <br />
-          <v-btn class="txt-title" color="primary" @click="e6 = 1,saveTransaction()">Continue</v-btn>
-          <v-btn class="txt-title" color="primary" @click="receipt()">Receipt?</v-btn>
-          <v-btn class="txt-title" flat @click="e6 = 2">Cancel</v-btn>
+          <v-btn class="txt-title" color="primary" @click="e6 = 1,saveTransaction()">บันทึกรายการ</v-btn>
+          <v-btn class="txt-title" color="primary" @click="receipt()">ต้องการใบเสร็จ</v-btn>
+          <v-btn class="txt-title" flat @click="e6 = 2">ยกเลิก</v-btn>
         </v-stepper-content>
       </v-stepper>
     </v-flex>

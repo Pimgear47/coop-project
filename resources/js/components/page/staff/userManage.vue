@@ -104,8 +104,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-              <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+              <v-btn color="blue darken-1" flat @click="close">ยกเลิก</v-btn>
+              <v-btn color="blue darken-1" flat @click="save">บันทึก</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -151,8 +151,8 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" flat @click="close2">Cancel</v-btn>
-              <v-btn color="blue darken-1" flat @click="saveDataSet">Save</v-btn>
+              <v-btn color="blue darken-1" flat @click="close2">ยกเลิก</v-btn>
+              <v-btn color="blue darken-1" flat @click="saveDataSet">บันทึก</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -305,7 +305,7 @@ export default {
     },
     deleteUser(id, item) {
       const index = this.users.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("ต้องการจะลบใช่หรือไม่?") &&
         this.users.splice(index, 1) &&
         axios.delete("api/user/" + id).catch(error => {
           console.log(error);

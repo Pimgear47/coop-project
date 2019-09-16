@@ -53,6 +53,7 @@
                     :end="end"
                     color="primary"
                     class="txt-title"
+                    locale="th" 
                   >
                     <template v-slot:day="{ date }">
                       <template v-for="event in eventsMap[date]">
@@ -158,10 +159,10 @@
                       required
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="editItem.date" no-title scrollable>
+                  <v-date-picker v-model="editItem.date" no-title scrollable locale="th">
                     <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                    <v-btn flat color="primary" @click="$refs.menu.save(editItem.date)">OK</v-btn>
+                    <v-btn flat color="primary" @click="menu = false">ยกเลิก</v-btn>
+                    <v-btn flat color="primary" @click="$refs.menu.save(editItem.date)">ตกลง</v-btn>
                   </v-date-picker>
                 </v-menu>
               </v-flex>
@@ -173,8 +174,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click="close">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click="close">ยกเลิก</v-btn>
+          <v-btn color="blue darken-1" flat @click="save">บันทึก</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -254,7 +255,7 @@ export default {
     },
     deleteEvent(id, item) {
       const index = this.events.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("ต้องการจะลบใช่หรือไม่?") &&
         this.events.splice(index, 1) &&
         axios.delete("api/event/" + id).catch(error => {
           console.log(error);
