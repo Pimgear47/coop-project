@@ -11,10 +11,15 @@
         </v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
+        <v-flex xs12 sm4 md2>
+          <v-select :items="select" v-model="selected" item-text="title" label="เลือกดูระดับชั้น"></v-select>
+        </v-flex>&nbsp;&nbsp;
+        <v-flex xs12 sm4 md2>
+          <v-text-field v-model="search" append-icon="search" label="ค้นหา" single-line></v-text-field>
+        </v-flex>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2 txt-title" v-on="on">New User</v-btn>
+            <v-btn color="primary" dark class="mb-2 txt-title" v-on="on">เพิ่มสมาชิก</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -156,10 +161,16 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-btn
+          color="orange accent-3"
+          dark
+          class="mb-2 txt-title"
+          @click="reportPdf()"
+        >พิมพ์บัตรสมาชิก</v-btn>
       </v-toolbar>
       <v-data-table
         :headers="headers"
-        :items="users"
+        :items="filterUsers"
         :search="search"
         :pagination.sync="pagination"
         class="elevation-1 txt-title"
@@ -187,7 +198,6 @@
         </template>
       </v-data-table>
     </v-flex>
-
     <v-snackbar class="txt-title" v-model="snackbar" :color="color" :timeout="3000">
       บันทึกสำเร็จแล้ว
       <v-btn dark flat @click="snackbar = false">
@@ -198,6 +208,8 @@
 </template>
 
 <script>
+import pdfmemberCard from "./pdfReport/pdfmemberCard";
+var groupArray = require("group-array");
 import { Ean13Utils } from "ean13-lib";
 export default {
   $_veeValidate: {
@@ -215,6 +227,7 @@ export default {
     color: "success",
     editid: null,
     search: "",
+    selected: "",
     dialog: false,
     dialog2: false,
     statusTypes: ["staff", "student"],
@@ -228,6 +241,26 @@ export default {
       { text: "คะแนน", value: "point" },
       { text: "ระดับชั้น", value: "education" },
       { text: "จำนวนหุ้น", value: "unit" }
+    ],
+    select: [
+      "ประถมศึกษาปีที่ 1/1",
+      "ประถมศึกษาปีที่ 1/2",
+      "ประถมศึกษาปีที่ 1/3",
+      "ประถมศึกษาปีที่ 2/1",
+      "ประถมศึกษาปีที่ 2/2",
+      "ประถมศึกษาปีที่ 2/3",
+      "ประถมศึกษาปีที่ 3/1",
+      "ประถมศึกษาปีที่ 3/2",
+      "ประถมศึกษาปีที่ 3/3",
+      "ประถมศึกษาปีที่ 4/1",
+      "ประถมศึกษาปีที่ 4/2",
+      "ประถมศึกษาปีที่ 4/3",
+      "ประถมศึกษาปีที่ 5/1",
+      "ประถมศึกษาปีที่ 5/2",
+      "ประถมศึกษาปีที่ 5/3",
+      "ประถมศึกษาปีที่ 6/1",
+      "ประถมศึกษาปีที่ 6/2",
+      "ประถมศึกษาปีที่ 6/3"
     ],
     users: [],
     editIndex: -1,
@@ -281,6 +314,15 @@ export default {
     },
     pageShow() {
       return "A5";
+    },
+    filterUsers() {
+      return this.users.filter(user => {
+        return (
+          user.education.match(this.selected) &&
+          (user.firstname.match(this.search) ||
+            user.lastname.match(this.search))
+        );
+      });
     }
   },
   watch: {
@@ -440,6 +482,19 @@ export default {
       this.snackbar = true;
       this.close2();
     },
+    reportPdf() {
+      let input = groupArray(this.filterUsers, "education");
+      var output = [],
+        item;
+      for (var name in input) {
+        item = {};
+        item.name = name;
+        item.data = input[name];
+        output.push(item);
+      }
+      output.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+      pdfmemberCard.pdfMaker(output);
+    }
     // genBC() {
     //   let forBarcode = "1000000" + this.users[3924].code + "1";
     //   const result = Ean13Utils.calculateCheckDigit(forBarcode);

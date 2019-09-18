@@ -98,7 +98,7 @@ export default {
         {
           title: "ทำรายการ",
           icon: "assignment_turned_in",
-          link: "/transaction"
+          link: "/transaction-staff"
         },
         {
           title: "ดูรายงานยอดขาย",
@@ -131,7 +131,7 @@ export default {
         {
           title: "ทำรายการ",
           icon: "assignment_turned_in",
-          link: "/transaction"
+          link: "/transaction-staff"
         },
         {
           title: "ปฏิทินกำหนดการ",

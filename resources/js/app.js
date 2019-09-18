@@ -28,6 +28,7 @@ Vue.component('report-user', require('./components/page/user/reportforuser.vue')
 Vue.component('sale-report', require('./components/page/staff/salereport.vue').default);
 Vue.component('dividend-for-admin', require('./components/page/staff/dividendforadmin.vue').default);
 Vue.component('dividend-for-user', require('./components/page/user/dividendforuser.vue').default);
+Vue.component('transaction-select', require('./components/page/staff/transactionSelection.vue').default);
 
 
 const app = new Vue({

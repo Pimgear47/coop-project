@@ -20,7 +20,7 @@
           <v-select :items="select" v-model="selected" item-text="title" label="เลือกดูระดับชั้น"></v-select>
         </v-flex>&nbsp;&nbsp;
         <v-flex xs12 sm5 md3>
-          <v-text-field v-model="search" append-icon="search" label="Search" single-line></v-text-field>
+          <v-text-field v-model="search" append-icon="search" label="ค้นหา" single-line></v-text-field>
         </v-flex>
       </v-layout>
       <v-data-table

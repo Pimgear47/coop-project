@@ -8,14 +8,10 @@
       <br />
       <v-stepper v-model="e6" vertical>
         <v-stepper-step :complete="e6 > 1" step="1" color="pink">
-          <h3>กรอกชื่อหรือรหัสสมาชิก</h3>
+          <h3>กรอกรหัสสมาชิก</h3>
         </v-stepper-step>
         <v-stepper-content step="1">
-          <v-text-field
-            @keyup.enter="e6 = 2 , mapUser(filteredUser)"
-            v-model="code_user"
-            label="รหัสสมาชิก"
-          ></v-text-field>
+          <v-text-field @keyup.enter="mapUser(filteredUser)" v-model="code_user" label="รหัสสมาชิก"></v-text-field>
           <v-layout v-if="filteredUser.length===1 && code_user!=''" row wrap>
             <v-flex v-for="user in filteredUser" :key="user.firstname" sm4 mb-2>
               <h3 class="txt-title">
@@ -26,8 +22,8 @@
               <br />
             </v-flex>
           </v-layout>
-          <v-btn class="txt-title" color="primary" @click="e6 = 2 , mapUser(filteredUser)">ถัดไป</v-btn>
-          <v-btn class="txt-title" v-if="code_user!=''" flat @click="clearOne()">ยกเลิก</v-btn>
+          <v-btn v-if="filteredUser.length===1 && code_user!=''" class="txt-title" color="primary" @click="mapUser(filteredUser)">ถัดไป</v-btn>
+          <v-btn class="txt-title" v-if="filteredUser.length===1 && code_user!=''" flat @click="clearOne()">ยกเลิก</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
@@ -154,10 +150,10 @@ export default {
     mapUser(user) {
       console.log(this.code_user);
       if (this.code_user == "") {
-        this.currentUser = null;
-        console.log("this.currentUserIF", this.currentUser);
+        alert("กรุณากรอกรหัสสมาชิก");
       } else {
         this.currentUser = user[0];
+        this.e6 = 2;
         console.log("this.currentUser", this.currentUser);
       }
     },
