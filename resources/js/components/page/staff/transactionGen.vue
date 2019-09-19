@@ -118,8 +118,7 @@ export default {
     checkEnter() {
       if (
         this.code_user.length == 4 ||
-        (this.code_user.length == 13 &&
-          this.code_user.substr(0, 6) == "1000000")
+        (this.code_user.length == 13 && this.code_user.substr(0, 7) == "1000000")
       ) {
         if (this.is_firstTransaction) {
           this.currentUser = this.filteredUser[0];
@@ -133,7 +132,9 @@ export default {
           this.code_user = "";
           console.log("this.currentUser", this.currentUser);
         }
-      } else {
+      } else if (this.code_user.length == 13 && this.code_user.substr(0, 7) != "1000000") {
+        console.log(this.code_user.substr(0, 6))
+        console.log('what?')
         console.log(this.filteredProduct);
         this.addProduct();
         // this.code_user = "";
