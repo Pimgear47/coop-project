@@ -133,10 +133,11 @@
                 <br v-if="this.editItem.imageName && formAddOrEdit" />
                 <img
                   :src="'storage/'+editItem.imageName"
-                  v-if="this.editItem.imageName"
+                  v-if="editIndex!=-1"
                   class="img-responsive"
                   height="120"
                 />
+                <img :src="editItem.image" v-if="editIndex==-1" class="img-responsive" height="120" />
               </v-flex>
             </v-layout>
           </v-container>
@@ -172,7 +173,7 @@ export default {
   props: ["usernow"],
   data() {
     return {
-      today : new Date(),
+      today: new Date(),
       color: "success",
       snackbar: false,
       dialog: false,
@@ -238,12 +239,22 @@ export default {
       this.noUpload = false;
       reader.onloadend = e => {
         this.editItem.image = reader.result;
-        var date = this.today.getFullYear()+'-'+(this.today.getMonth()+1)+'-'+this.today.getDate();
-        var time = this.today.getHours() +'-' + this.today.getMinutes() +'-' + this.today.getSeconds();
-        var dateTime = date+'-'+time;
+        var date =
+          this.today.getFullYear() +
+          "-" +
+          (this.today.getMonth() + 1) +
+          "-" +
+          this.today.getDate();
+        var time =
+          this.today.getHours() +
+          "-" +
+          this.today.getMinutes() +
+          "-" +
+          this.today.getSeconds();
+        var dateTime = date + "-" + time;
         const file_name = "image_" + dateTime + ".png";
         this.editItem.imageName = file_name;
-        console.log(this.editItem.imageName)
+        console.log(this.editItem.imageName);
       };
       reader.readAsDataURL(file);
       console.log("Check at onimage", this.noUpload);
