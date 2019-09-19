@@ -13,7 +13,7 @@
               <v-card>
                 <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuy1S.png" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
-                  <v-btn block color="green" dark class="txt-title">ทำรายการทั่วไป</v-btn>
+                  <v-btn href="/transaction-gen" block color="green" dark class="txt-title">ทำรายการทั่วไป</v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>

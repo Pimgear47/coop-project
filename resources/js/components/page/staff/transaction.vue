@@ -3,7 +3,7 @@
     <v-flex xs9 sm11>
       <h2 class="txt-title mt-2">
         <v-icon large color="pink">assignment_turned_in</v-icon>
-        &nbsp;ทำรายการ ({{pageShow}})
+        &nbsp;ทำรายการแบบรับใบเสร็จ ({{pageShow}})
       </h2>
       <br />
       <v-stepper v-model="e6" vertical>
@@ -22,8 +22,18 @@
               <br />
             </v-flex>
           </v-layout>
-          <v-btn v-if="filteredUser.length===1 && code_user!=''" class="txt-title" color="primary" @click="mapUser(filteredUser)">ถัดไป</v-btn>
-          <v-btn class="txt-title" v-if="filteredUser.length===1 && code_user!=''" flat @click="clearOne()">ยกเลิก</v-btn>
+          <v-btn
+            v-if="filteredUser.length===1 && code_user!=''"
+            class="txt-title"
+            color="primary"
+            @click="mapUser(filteredUser)"
+          >ถัดไป</v-btn>
+          <v-btn
+            class="txt-title"
+            v-if="filteredUser.length===1 && code_user!=''"
+            flat
+            @click="clearOne()"
+          >ยกเลิก</v-btn>
         </v-stepper-content>
         <v-stepper-step :complete="e6 > 2" step="2" color="pink">
           <h3>รายการสินค้าที่ซื้อ</h3>
@@ -34,7 +44,7 @@
             <v-flex v-for="product in filteredProduct" :key="product.name" sm4 mb-2>
               <h4 class="txt-title">ชื่อสินค้า : {{product.name}}</h4>
               <h4 class="txt-title">ราคา : {{product.price}} บาท</h4>
-              <img :src="product.image" height="200px" />
+              <v-img :src="'storage/'+product.imageName" height="150px" />
               <br />
             </v-flex>
           </v-layout>
@@ -265,9 +275,9 @@ export default {
   },
   computed: {
     filteredUser: function() {
+      console.log(this.code_user.substr(1, 4).length)
       return this.users.filter(user => {
-        name = user.firstname + " " + user.lastname;
-        return user.code == this.code_user || name.match(this.code_user);
+        return user.code == this.code_user || user.barcode == this.code_user;
       });
     },
     filteredProduct: function() {

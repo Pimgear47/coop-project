@@ -2,9 +2,10 @@ import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 import * as moment from 'moment'
 var JsBarcode = require('jsbarcode')
+const path = require('path')
+const axios = require('axios')
 
 async function pdfMaker(productsFil) {
-
     console.log('productsFil', productsFil)
 
     pdfMake.vfs = pdfFonts.pdfMake.vfs
@@ -49,15 +50,24 @@ async function pdfMaker(productsFil) {
         }
         let name_title = { text: type, fontSize: 16 }
         let col = [name_title]
-        let coll = []
+
         for (let index = 0; index < productsFil[j].data.length; index++) {
-            //ใส่ตารางดาต้าตรงนี้
+            let url = 'storage/' + productsFil[j].data[index].imageName;
+            try {
+                var result = await axios.get(url, {
+                    responseType: 'arraybuffer'
+                })
+            } catch (err) {
+                return next(err.message)
+            }
+            var image = new Buffer(result.data, 'base64')
+                // console.log(image)
             table_product = {
                 table: {
                     widths: [160, '*'],
                     body: [
                         [{
-                            image: productsFil[j].data[index].image,
+                            image: image,
                             rowSpan: 3,
                             width: 100,
                             height: 100,
@@ -87,6 +97,8 @@ async function pdfMaker(productsFil) {
             }
             col.push(table_product)
         }
+
+
         let col2 = [col]
         content.push({
             columns: col2,

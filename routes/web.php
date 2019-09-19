@@ -23,6 +23,7 @@ Route::resource('product','ProductController');
 Route::resource('user','UserController');
 Route::resource('transaction','TransactionController');
 Route::resource('transaction-staff','TransactionSelectController');
+Route::resource('transaction-gen','TransactionGenController');
 Route::resource('reportuser','ReportUserController');
 Route::resource('salereport','SaleReportController');
 Route::resource('dividend-for-admin','DividendAdminController');
