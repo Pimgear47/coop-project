@@ -8,9 +8,24 @@
       <br />
       <v-card>
         <v-layout row wrap justify-space-between pt-4 pl-5 pr-5 pb-4>
-          <v-flex xs12 sm9>
+          <v-flex xs12 sm12>
             <h3>กรอกรหัสหรือสแกนบาร์โค้ด</h3>
-            <v-text-field @keyup.enter="checkEnter()" v-model="code_user" label="วางเม้าส์ที่นี่"></v-text-field>
+            <v-layout row>
+              <v-flex xs8 sm5>
+                <v-text-field
+                  @keyup.enter="checkEnter()"
+                  v-model="code_user"
+                  label="วางเม้าส์ที่นี่"
+                ></v-text-field>
+              </v-flex>&nbsp;&nbsp;&nbsp;
+              <v-flex xs4 sm1>
+                <v-btn
+                  :color="color"
+                  :disabled="orderProduct.length == 0"
+                  @click="buttonSave()"
+                >บันทึก</v-btn>
+              </v-flex>
+            </v-layout>
             <v-layout v-if="(code_user!='')" row wrap>
               <v-flex v-for="user in filteredUser" :key="user.firstname" sm4 mb-2>
                 <h3 class="txt-title" v-if="filteredUser.length===1">
@@ -97,7 +112,8 @@ export default {
         { text: "ราคา", sortable: false, value: "price" },
         { text: "จำนวน", value: "count" },
         { text: "รวมเป็นเงิน", value: "cost" }
-      ]
+      ],
+      color: "success"
     };
   },
   mounted() {
@@ -118,7 +134,8 @@ export default {
     checkEnter() {
       if (
         this.code_user.length == 4 ||
-        (this.code_user.length == 13 && this.code_user.substr(0, 7) == "1000000")
+        (this.code_user.length == 13 &&
+          this.code_user.substr(0, 7) == "1000000")
       ) {
         if (this.is_firstTransaction) {
           this.currentUser = this.filteredUser[0];
@@ -132,10 +149,10 @@ export default {
           this.code_user = "";
           console.log("this.currentUser", this.currentUser);
         }
-      } else if (this.code_user.length == 13 && this.code_user.substr(0, 7) != "1000000") {
-        console.log(this.code_user.substr(0, 6))
-        console.log('what?')
-        console.log(this.filteredProduct);
+      } else if (
+        this.code_user.length == 13 &&
+        this.code_user.substr(0, 7) != "1000000"
+      ) {
         this.addProduct();
         // this.code_user = "";
       }
@@ -169,7 +186,7 @@ export default {
           this.code_user = "";
         }
         this.checkOldSel = true;
-        //console.log(this.orderProduct);
+        console.log("this.orderProduct", this.orderProduct);
       }
     },
     deleteItem(item) {
@@ -194,6 +211,11 @@ export default {
     clearTwo() {
       this.orderProduct = [];
       this.orderPrice = 0;
+    },
+    buttonSave() {
+      this.saveTransaction();
+      this.clearTwo();
+      this.currentUser = "";
     },
     saveTransaction() {
       for (var step = 0; step < this.orderProduct.length; step++) {

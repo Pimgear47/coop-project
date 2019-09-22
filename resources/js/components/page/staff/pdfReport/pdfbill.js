@@ -182,7 +182,7 @@ async function pdfMaker(dataUser, dataOrder, dataPrice) {
         }
     ]
     text_buttom = [{ text: 'ได้รับเงินจาก ผู้ปกครอง ' + name_title + dataUser.firstname + ' ' + dataUser.lastname + ' ' + dataUser.education + '\n' + ' โรงเรียนอนุบาลเชียงคำ (วัดพระธาตุสบแวน) ต.หย่วน อ.เชียงคำ จ.พะเยา', fontSize: 15, }]
-    text_buttom2 = [{ text: 'ได้รับเงินจาก ผู้ปกครอง ' + name_title + dataUser.firstname + ' ' + dataUser.lastname + ' ชั้นประถมศึกษาปีที่ 1/1 \n โรงเรียนอนุบาลเชียงคำ (วัดพระธาตุสบแวน) ต.หย่วน อ.เชียงคำ จ.พะเยา', fontSize: 15, }]
+    text_buttom2 = [{ text: 'ได้รับเงินจาก ผู้ปกครอง ' + name_title + dataUser.firstname + ' ' + dataUser.lastname + ' ' + dataUser.education + '\n' + ' โรงเรียนอนุบาลเชียงคำ (วัดพระธาตุสบแวน) ต.หย่วน อ.เชียงคำ จ.พะเยา', fontSize: 15, }]
     column = {
         columns: [{
             text: '\n\n\n\n\n..................................................................................................\n(______________________________________________)\nลายมือชื่อผู้รับเงิน',
