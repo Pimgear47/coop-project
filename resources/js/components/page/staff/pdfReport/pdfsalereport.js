@@ -32,11 +32,13 @@ async function pdfMaker(filteredReport, total, dateTime) {
     let month = moment().month();
     let year = moment().year();
     let monthName = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤษจิกายน', 'ธันวาคม']
-
+    let dayShow = 'เดือน '
     let yearShow = dateTime.substr(0, 4)
     let monthShow = parseInt(dateTime.substr(6, 7))
-
-    text_top = [{ text: 'รายงานยอดขายประจำเดือน' + monthName[monthShow - 1] + ' ' + (parseInt(yearShow) + 543), fontSize: 18, alignment: 'center', bold: true, margin: [0, 6], }]
+    if (dateTime.length == 10) {
+        dayShow = 'วันที่ ' + parseInt(dateTime.substr(8, 10)) + ' เดือน '
+    }
+    text_top = [{ text: 'รายงานยอดขาย\n' + dayShow + monthName[monthShow - 1] + ' ' + (parseInt(yearShow) + 543), fontSize: 18, alignment: 'center', bold: true, margin: [0, 6], }]
     price_tb = [{
             text: 'ลำดับที่',
             fontSize: 15,

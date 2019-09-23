@@ -11,28 +11,61 @@
               </h2>
               <v-flex xs12 sm5 md4>
                 <v-layout row wrap>
+                  <v-select
+                    v-model="is_day"
+                    :items="typeRep"
+                    item-text="title"
+                    label="เลือกดูประเภทรายงาน"
+                    required
+                  ></v-select>
                   <v-dialog
                     ref="dialog"
                     v-model="modal"
                     :return-value.sync="date"
+                    v-if="is_day"
                     persistent
                     lazy
                     full-width
                     width="290px"
                   >
                     <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="date"
-                        label="รายงานประจำเดือน"
-                        prepend-icon="event"
-                        readonly
-                        v-on="on"
-                      ></v-text-field>
+                      <v-text-field v-model="date" prepend-icon="event" readonly v-on="on"></v-text-field>
                     </template>
-                    <v-date-picker v-model="date" color="pink accent-3" locale="th" type="month" scrollable>
+                    <v-date-picker
+                      v-model="date"
+                      color="pink accent-3"
+                      locale="th"
+                      type="date"
+                      scrollable
+                    >
                       <v-spacer></v-spacer>
                       <v-btn flat color="primary" @click="modal = false">ยกเลิก</v-btn>
                       <v-btn flat color="primary" @click="$refs.dialog.save(date)">ตกลง</v-btn>
+                    </v-date-picker>
+                  </v-dialog>
+                  <v-dialog
+                    ref="dialog"
+                    v-model="modal"
+                    :return-value.sync="month"
+                    v-if="!is_day"
+                    persistent
+                    lazy
+                    full-width
+                    width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field v-model="month" prepend-icon="event" readonly v-on="on"></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="month"
+                      color="pink accent-3"
+                      locale="th"
+                      type="month"
+                      scrollable
+                    >
+                      <v-spacer></v-spacer>
+                      <v-btn flat color="primary" @click="modal = false">ยกเลิก</v-btn>
+                      <v-btn flat color="primary" @click="$refs.dialog.save(month)">ตกลง</v-btn>
                     </v-date-picker>
                   </v-dialog>
                   <v-btn color="primary" @click="reportPdf()">พิมพ์รายงาน</v-btn>
@@ -116,10 +149,21 @@ export default {
   props: ["usernow"],
   data: () => ({
     check: false,
-    date: new Date().toISOString().substr(0, 7),
+    is_day: true,
+    dateTime: "",
     pagination: {
       rowsPerPage: 7
     },
+    selectReport: { title: "รายงานประจำวัน", value: true },
+    typeRep: [
+      { title: "รายงานประจำวัน", value: true },
+      {
+        title: "รายงานประจำเดือน",
+        value: false
+      }
+    ],
+    date: new Date().toISOString().substr(0, 10),
+    month: new Date().toISOString().substr(0, 7),
     type: "",
     types: [
       { title: "อาหาร/เครื่องดื่ม", value: "food" },
@@ -190,7 +234,11 @@ export default {
       this.isloading = false;
     },
     reportPdf() {
-      pdfsalereport.pdfMaker(this.filteredReport, this.total, this.date);
+      if (this.is_day) {
+        pdfsalereport.pdfMaker(this.filteredReport, this.total, this.date);
+      }else{
+        pdfsalereport.pdfMaker(this.filteredReport, this.total, this.month);
+      }
     }
   },
   computed: {
@@ -277,9 +325,16 @@ export default {
     },
     filteredReport: function() {
       var arrReport = [];
-      arrReport = this.reports.filter(report => {
-        return report.created_at.substr(0, 7) == this.date;
-      });
+      if (this.is_day) {
+        arrReport = this.reports.filter(report => {
+          return report.created_at.substr(0, 10) == this.date;
+        });
+      } else {
+        arrReport = this.reports.filter(report => {
+          return report.created_at.substr(0, 7) == this.month;
+        });
+      }
+
       this.forCountSumPrice = arrReport;
       const result = [
         ...arrReport
@@ -311,10 +366,16 @@ export default {
     },
     pageShow() {
       return "A3";
-    },
-    getData(){
-      
     }
+    // date() {
+
+    //   if (this.is_day) {
+    //     return date;
+    //   }
+    //   else {
+    //     return month;
+    //   }
+    // }
   }
 };
 </script>
