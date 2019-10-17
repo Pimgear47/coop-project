@@ -245,14 +245,10 @@ export default {
           (this.today.getMonth() + 1) +
           "-" +
           this.today.getDate();
-        var time =
-          this.today.getHours() +
-          "-" +
-          this.today.getMinutes() +
-          "-" +
-          this.today.getSeconds();
-        var dateTime = date + "-" + time;
-        const file_name = "image_" + dateTime + ".png";
+        var time = this.today.getHours() + "-" + this.today.getMinutes();
+        var x = Math.floor(Math.random() * 100);
+        var dateTime = date + "_" + time;
+        const file_name = "image_" + dateTime + "_" + x + ".png";
         this.editItem.imageName = file_name;
         console.log(this.editItem.imageName);
       };

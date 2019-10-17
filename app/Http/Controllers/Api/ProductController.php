@@ -48,10 +48,8 @@ class ProductController extends Controller
         $product->price = $request->get('price');
         $product->product_code = $request->get('product_code');
         $product->type = $request->get('type');
-        // $product->image = $request->get('image');
 
         $file_data = $request->get('image'); 
-        // $file_name = 'image_' . time() . '.png'; //generating unique file name;
         $file_name = $request->get('imageName');
 
         @list($type, $file_data) = explode(';', $file_data);
