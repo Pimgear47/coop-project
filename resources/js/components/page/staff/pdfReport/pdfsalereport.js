@@ -34,7 +34,8 @@ async function pdfMaker(filteredReport, total, dateTime) {
     let monthName = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤษจิกายน', 'ธันวาคม']
     let dayShow = 'เดือน '
     let yearShow = dateTime.substr(0, 4)
-    let monthShow = parseInt(dateTime.substr(6, 7))
+    let monthShow = parseInt(dateTime.substr(5, 7))
+    console.log('monthShow', monthShow)
     if (dateTime.length == 10) {
         dayShow = 'วันที่ ' + parseInt(dateTime.substr(8, 10)) + ' เดือน '
     }

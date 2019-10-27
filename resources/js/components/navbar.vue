@@ -89,7 +89,7 @@ export default {
     return {
       drawer: true,
       itemsAdmin: [
-        // { title: "หน้าแรก", icon: "dashboard", link: "/" },
+        { title: "เมนูหลัก", icon: "dashboard", link: "/" },
         {
           title: "รายการสินค้า",
           icon: "shopping_cart",

@@ -31,6 +31,8 @@ Vue.component('dividend-for-user', require('./components/page/user/dividendforus
 Vue.component('transaction-select', require('./components/page/staff/transactionSelection.vue').default);
 Vue.component('transaction-gen', require('./components/page/staff/transactionGen.vue').default);
 
+Vue.component('main-menu', require('./components/page/staff/mainMenu.vue').default);
+
 
 const app = new Vue({
     el: '#app',

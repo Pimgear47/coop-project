@@ -13,7 +13,9 @@
               <v-card>
                 <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuy1S.png" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
-                  <v-btn href="/transaction-gen" block color="green" dark class="txt-title">ทำรายการทั่วไป</v-btn>
+                  <v-btn href="/transaction-gen" block color="green" dark>
+                    <h1 class="txt-thS mt-2" style="font-size: 32px;">ทำรายการทั่วไป</h1>
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -21,7 +23,9 @@
               <v-card>
                 <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuFDn.jpg" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
-                  <v-btn href="/transaction" block color="green" dark class="txt-title">ทำรายการแบบรับใบเสร็จ</v-btn>
+                  <v-btn href="/transaction" block color="green" dark>
+                    <h1 class="txt-thS mt-2" style="font-size: 32px;">ทำรายการแบบรับใบเสร็จ</h1>
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-flex>
