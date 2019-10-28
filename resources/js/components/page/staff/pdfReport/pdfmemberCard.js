@@ -41,7 +41,7 @@ async function pdfMaker(usersEd) {
 
             table_card = {
                 table: {
-                    widths: [220, 220],
+                    widths: [230, 230],
                     body: [
                         [{
                             border: [true, true, true, false],
@@ -52,17 +52,17 @@ async function pdfMaker(usersEd) {
                                         width: 30,
                                         alignment: 'center',
                                         border: [false, false, false, false],
-                                        margin: [8, 10, 0, 0]
+                                        margin: [8, 13, 0, 0]
                                     }, {
                                         text: 'โรงเรียนอนุบาลเชียงคำ (วัดพระธาตุสบแวน) \n บัตรสมาชิกสหกรณ์ร้านค้าโรงเรียน',
-                                        margin: [8, 8, 0, 0],
+                                        margin: [8, 15, 0, 12],
                                         fontSize: 13,
                                         alignment: 'center',
                                         border: [false, false, false, false],
                                     }],
                                 ]
                             },
-                        }, { text: 'โปรดแสดงบัตรสมาชิกทุกครั้งเมื่อซื้อของจากสหกรณ์ร้านค้า', margin: [5, 5, 0, 0], border: [true, true, true, false], }],
+                        }, { text: 'โปรดแสดงบัตรสมาชิกทุกครั้งเมื่อซื้อของจากสหกรณ์ร้านค้า', margin: [6, 5, 0, 0], border: [true, true, true, false], }],
                         [{
                             table: {
                                 body: [
