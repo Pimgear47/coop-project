@@ -88,34 +88,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->get('total')) {
-            $user = User::find($id);
-            $user->total = $request->get('total');
-            $user->update();
-            return response()->json($user);
-        } else if ($request->get('email')) {
-            $user = User::find($id);
-            $user->email = $request->get('email');
-            $user->update();
-            return response()->json($user);
-        } else if ($request->get('barcode')) {
-            $user = User::find($id);
-            $user->barcode = $request->get('barcode');
-            $user->update();
-            return response()->json($user);
-        } else {
-            $user = User::find($id);
-            $user->firstname = $request->get('firstname');
-            $user->lastname = $request->get('lastname');
-            $user->code = $request->get('code');
-            $user->type = $request->get('type');
-            $user->sex = $request->get('sex');
-            $user->point = $request->get('point');
-            $user->education = $request->get('education');
-            $user->unit = $request->get('unit');
-            $user->update();
-            return response()->json($user);
-        }
+        $user = User::find($id);
+        $user->firstname = $request->get('firstname');
+        $user->lastname = $request->get('lastname');
+        $user->email = $request->get('email');
+        $user->code = $request->get('code');
+        $user->barcode = $request->get('barcode');
+        $user->total = $request->get('total');
+        $user->type = $request->get('type');
+        $user->sex = $request->get('sex');
+        $user->point = $request->get('point');
+        $user->education = $request->get('education');
+        $user->unit = $request->get('unit');
+        $user->update();
+        return response()->json($user);
     }
 
     /**

@@ -11,7 +11,7 @@
           <v-layout row wrap justify-space-between>
             <v-flex xs12 sm4 pl-3 pr-3>
               <v-card>
-                <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuy1S.png" aspect-ratio="1.5"></v-img>
+                <v-img src="https://image.freepik.com/free-vector/shopping-basket-with-marketing-set-icons_24877-50233.jpg" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
                   <v-btn href="/product" block color="green" dark>
                     <h1 class="txt-thS mt-2" style="font-size: 32px;">รายการสินค้า</h1>
@@ -31,7 +31,7 @@
             </v-flex>
             <v-flex xs12 sm4 pl-3 pr-3>
               <v-card>
-                <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuFDn.jpg" aspect-ratio="1.5"></v-img>
+                <v-img src="https://image.freepik.com/free-vector/magnifying-glass-data-analysis_23-2147501894.jpg" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
                   <v-btn href="/salereport" block color="green" dark>
                     <h1 class="txt-thS mt-1" style="font-size: 32px;">ดูรายงานยอดขาย</h1>
@@ -53,7 +53,7 @@
             </v-flex>
             <v-flex xs12 sm4 pl-3 pr-3>
               <v-card>
-                <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuFDn.jpg" aspect-ratio="1.5"></v-img>
+                <v-img src="https://sv1.picz.in.th/images/2019/11/12/gs71gv.png" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
                   <v-btn href="/event" block color="green" dark>
                     <h1 class="txt-thS mt-1" style="font-size: 32px;">ปฏิทินกำหนดการ</h1>
@@ -63,7 +63,7 @@
             </v-flex>
             <v-flex xs12 sm4 pl-3 pr-3>
               <v-card>
-                <v-img src="https://sv1.picz.in.th/images/2019/09/18/cYuFDn.jpg" aspect-ratio="1.5"></v-img>
+                <v-img src="https://image.freepik.com/free-vector/template-login-green-background_1017-7451.jpg" aspect-ratio="1.5"></v-img>
                 <v-card-actions>
                   <v-btn href="/user" block color="green" dark>
                     <h1 class="txt-thS mt-2" style="font-size: 32px;">จัดการสมาชิก</h1>
